@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness Engineering — Cheatsheet</title>
+<style>
+:root{
+  --ink:#101d29;
+  --ink2:#4a5d6d;
+  --rule:#c7d3dc;
+  --accent:#1a4f8a;
+  --amber:#a8641c;
+  --tint:#eff4f8;
+  --paper:#ffffff;
+  --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:#dde5eb; color:var(--ink);
+  font-family:var(--sans); font-size:13px; line-height:1.45;
+}
+.sheet{
+  max-width:940px; margin:24px auto; background:var(--paper);
+  padding:26px 30px 34px; box-shadow:0 1px 3px rgba(16,29,41,.18);
+}
+
+/* ---------- masthead ---------- */
+header{border-bottom:3px solid var(--ink); padding-bottom:10px; margin-bottom:18px;}
+h1{
+  margin:0; font-size:27px; line-height:1.05; letter-spacing:-.02em; font-weight:800;
+}
+h1 .thin{font-weight:300; color:var(--ink2);}
+.kicker{
+  font-size:10px; text-transform:uppercase; letter-spacing:.16em;
+  color:var(--accent); font-weight:700; margin-bottom:7px;
+}
+.sub{margin:7px 0 0; font-size:11.5px; color:var(--ink2);}
+
+/* ---------- section headings ---------- */
+h2{
+  font-size:11px; text-transform:uppercase; letter-spacing:.13em; font-weight:700;
+  color:var(--ink); margin:22px 0 9px; padding-bottom:4px;
+  border-bottom:1px solid var(--rule);
+}
+h2:first-of-type{margin-top:0;}
+
+/* ---------- the ladder: signature element ---------- */
+/* Each level is a rung. The square's fill darkens with the level, because the
+   levels are cumulative — the encoding carries real information. */
+.ladder{display:flex; flex-direction:column; gap:0;}
+.rung{
+  display:grid; grid-template-columns:34px 1fr; gap:12px;
+  border-bottom:1px solid var(--rule); padding:9px 0;
+}
+.rung:last-child{border-bottom:none;}
+.num{
+  width:26px; height:26px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono); font-size:12px; font-weight:700;
+  border:1.5px solid var(--accent); color:var(--accent); background:var(--paper);
+}
+.rung:nth-child(1) .num{background:var(--paper);}
+.rung:nth-child(2) .num{background:#d5e2ee;}
+.rung:nth-child(3) .num{background:#8fb0cd; color:#0b2138; border-color:#0b2138;}
+.rung:nth-child(4) .num{background:var(--accent); color:#fff;}
+.rung h3{
+  margin:0 0 3px; font-size:14px; font-weight:700; letter-spacing:-.01em;
+  display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+}
+.rung h3 .era{
+  font-family:var(--mono); font-size:10.5px; font-weight:600; color:var(--ink2);
+  white-space:nowrap;
+}
+.rung dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:1px 8px; font-size:11.5px;}
+.rung dt{
+  color:var(--ink2); font-size:9.5px; text-transform:uppercase; letter-spacing:.09em;
+  font-weight:700; padding-top:2px; white-space:nowrap;
+}
+.rung dd{margin:0;}
+.rung code{font-family:var(--mono); font-size:11px; background:var(--tint); padding:0 3px;}
+
+/* ---------- simplicity statement ---------- */
+.simplicity{
+  border-left:4px solid var(--amber); background:#fdf7f0;
+  padding:12px 16px; margin:20px 0 0; font-size:12.5px;
+}
+.simplicity strong{display:block; margin-bottom:4px; color:var(--amber); font-size:12px;
+  text-transform:uppercase; letter-spacing:.06em;}
+
+/* ---------- five subsystems strip ---------- */
+.subsystems{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
+.sub-chip{
+  flex:1 1 auto; min-width:118px; border:1px solid var(--rule); padding:7px 9px;
+}
+.sub-chip b{display:block; font-size:12px;}
+.sub-chip span{font-size:10.5px; color:var(--ink2);}
+.sub-chip.hot{border-color:var(--amber); background:#fdf7f0;}
+.note{font-size:11px; color:var(--ink2); margin:0;}
+
+/* ---------- code columns ---------- */
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+pre{
+  font-family:var(--mono); font-size:9.7px; line-height:1.42;
+  background:var(--tint); border:1px solid var(--rule); border-left:3px solid var(--accent);
+  padding:8px 10px; margin:0 0 8px; overflow-x:auto; white-space:pre;
+}
+.filename{
+  font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--accent);
+  margin:0 0 3px;
+}
+.filename em{font-family:var(--sans); font-style:normal; font-weight:400; color:var(--ink2);}
+
+/* ---------- checklist ---------- */
+.check{list-style:none; margin:0; padding:0; columns:2; column-gap:22px;}
+.check li{
+  break-inside:avoid; display:grid; grid-template-columns:15px 1fr; gap:7px;
+  margin-bottom:6px; font-size:11.5px;
+}
+.box{
+  width:11px; height:11px; border:1.5px solid var(--ink); margin-top:3px;
+}
+.check b{font-weight:700;}
+.check span{color:var(--ink2);}
+.verdict{
+  margin:8px 0 0; font-size:11px; font-weight:700; color:var(--amber);
+}
+
+/* ---------- footer ---------- */
+footer{
+  margin-top:22px; padding-top:10px; border-top:1px solid var(--rule);
+  font-size:10px; color:var(--ink2); line-height:1.5;
+}
+footer a{color:var(--accent); text-decoration:none; word-break:break-all;}
+footer b{color:var(--ink);}
+
+/* ---------- print ---------- */
+@page{size:A4; margin:11mm;}
+@media print{
+  body{background:#fff; font-size:9.2pt;}
+  .sheet{max-width:none; margin:0; padding:0; box-shadow:none;}
+  h1{font-size:19pt;}
+  pre{font-size:6.8pt; background:#f4f7fa;}
+  .rung, .simplicity, .check li, .sub-chip, pre{break-inside:avoid;}
+  h2{break-after:avoid;}
+  footer{break-inside:avoid;}
+}
+@media (max-width:720px){
+  .cols{grid-template-columns:1fr;}
+  .check{columns:1;}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header>
+  <p class="kicker">UNESCO UNEVOC Centre Magdeburg · OVGU</p>
+  <h1>Harness Engineering <span class="thin">— one-page cheatsheet</span></h1>
+  <p class="sub">Handout for students and staff. Everything here runs against a local Ollama model; nothing leaves the machine. Prints on one A4 sheet, both sides.</p>
+</header>
+
+<h2>The four levels — cumulative, not competing</h2>
+<div class="ladder">
+
+  <div class="rung">
+    <div class="num">1</div>
+    <div>
+      <h3>Prompt Engineering <span class="era">2020–2022</span></h3>
+      <dl>
+        <dt>You edit</dt><dd>the prompt string</dd>
+        <dt>It fixes</dt><dd>the model answering the wrong question</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="rung">
+    <div class="num">2</div>
+    <div>
+      <h3>Skill Engineering <span class="era">2023–2025</span></h3>
+      <dl>
+        <dt>You edit</dt><dd>the skill file — <code>SKILL.md</code>, agent persona file</dd>
+        <dt>It fixes</dt><dd>re-explaining the same conventions in every session</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="rung">
+    <div class="num">3</div>
+    <div>
+      <h3>Harness Engineering <span class="era">2025</span></h3>
+      <dl>
+        <dt>You edit</dt><dd>the harness — <code>AGENTS.md</code>, tool definitions, state file, verification command</dd>
+        <dt>It fixes</dt><dd>“done” that isn’t done, and losing everything between sessions</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="rung">
+    <div class="num">4</div>
+    <div>
+      <h3>Loop Engineering <span class="era">2026</span></h3>
+      <dl>
+        <dt>You edit</dt><dd>the evaluation signal and the stop condition</dd>
+        <dt>It fixes</dt><dd>you being the bottleneck — nothing moves unless you type</dd>
+      </dl>
+    </div>
+  </div>
+
+</div>
+
+<div class="simplicity">
+  <strong>Simplicity Statement — Harness Engineering</strong>
+  A harness does not make the model smarter. It gives a fixed model a place to keep state, a way to
+  check its own work, and rules for when to stop. Everything else in this package is one worked
+  example of that idea.
+</div>
+
+<h2>The five subsystems — miss one and the harness is incomplete</h2>
+<div class="subsystems">
+  <div class="sub-chip"><b>Instructions</b><span>AGENTS.md — a map, ~100 lines</span></div>
+  <div class="sub-chip"><b>Tools</b><span>what the agent may do</span></div>
+  <div class="sub-chip"><b>Environment</b><span>one command sets it up</span></div>
+  <div class="sub-chip"><b>State</b><span>memory that outlives a session</span></div>
+  <div class="sub-chip hot"><b>Feedback</b><span>cheapest to add, biggest return</span></div>
+</div>
+<p class="note">If it is not model weights, it is harness. The generator must never be the evaluator.</p>
+
+<h2>Templates — copy into your repo root</h2>
+<div class="cols">
+  <div>
+    <p class="filename">AGENTS.md <em>— the operating rules</em></p>
+<pre># AGENTS.md
+
+## Project
+One paragraph: what this repo produces, for whom.
+
+## Stack
+- Runtime: python 3.11
+- Model:   gemma3:12b @ 127.0.0.1:11434
+- Export:  liaex --format scorm1.2
+
+## Start here, every session
+1. Read PROGRESS.md
+2. Read feature_list.json, take the highest
+   priority not_started item
+3. Set exactly ONE item to in_progress
+
+## Hard constraints
+- No network except 127.0.0.1:11434
+- Do not edit outside ./content and ./build
+- No "passing" without pasted evidence
+
+## Verification commands
+- Structure: python tools/check_module.py FILE
+- Export:    liaex --format scorm1.2 FILE
+- Full:      make verify   # non-zero on failure
+
+## Definition of done
+make verify exits 0 AND evidence is recorded.
+
+## End of session
+Update PROGRESS.md: done / in progress /
+blocked / next best action.</pre>
+
+    <p class="filename">PROGRESS.md <em>— state that outlives the session</em></p>
+<pre>## Current verified state
+- Repo root:      ~/microcredential-factory
+- Start command:  ./init.sh
+- Verify command: make verify
+- Next item:      mod-hydraulics-01
+- Blocker:        none
+
+## Session record — 2026-07-27
+- Goal:         draft mod-hydraulics-01
+- Completed:    slides 1-4
+- Verify run:   make verify -> FAILED
+- Evidence:     logs/verify-2026-07-27.txt
+- Next action:  add quiz block, re-run verify</pre>
+  </div>
+
+  <div>
+    <p class="filename">feature_list.json <em>— the work, machine-readable</em></p>
+<pre>{
+  "features": [
+    {
+      "id": "mod-hydraulics-01",
+      "priority": 1,
+      "area": "content",
+      "title": "Hydraulic safety - intro module",
+      "user_visible_behavior":
+        "6 slides, 1 quiz, exports to SCORM 1.2.",
+      "status": "not_started",
+      "verification": [
+        "make verify content/mod-hydraulics-01.md",
+        "open SCORM package, confirm quiz scores"
+      ],
+      "evidence": "",
+      "notes": ""
+    }
+  ]
+}</pre>
+    <p class="note" style="margin-bottom:8px;">
+      <b>Status:</b> <code style="font-family:var(--mono)">not_started → in_progress → passing</code>, or <code style="font-family:var(--mono)">blocked</code>.
+      Only <b>one</b> item may be <code style="font-family:var(--mono)">in_progress</code> at a time — this single rule prevents most scope sprawl.
+    </p>
+
+    <p class="filename">The loop, in three parts <em>— level 4</em></p>
+<pre>GOAL          what the end state looks like
+VERIFICATION  a command with an exit code, or a
+              DIFFERENT model with different
+              instructions doing the judging
+STOP          a written, machine-checkable rule
+              (never "when it feels done")</pre>
+  </div>
+</div>
+
+<h2>Harness health checklist — run this before trusting anything unattended</h2>
+<ul class="check">
+  <li><span class="box"></span><span><b>State persists.</b> Kill the process mid-run and restart — does it know what was already done?</span></li>
+  <li><span class="box"></span><span><b>Verification exists.</b> Is there a pass/fail command independent of the model’s own opinion?</span></li>
+  <li><span class="box"></span><span><b>Stop condition defined.</b> Is “finished” written down, not felt?</span></li>
+  <li><span class="box"></span><span><b>Logs observable.</b> Could a colleague reconstruct what happened, and why, from files alone?</span></li>
+  <li><span class="box"></span><span><b>Instructions on disk.</b> Are the conventions in the repo, not in someone’s head?</span></li>
+  <li><span class="box"></span><span><b>Environment reproducible.</b> Does one command set up the machine from scratch?</span></li>
+  <li><span class="box"></span><span><b>Generator ≠ evaluator.</b> Is the judge different from the maker?</span></li>
+  <li><span class="box"></span><span><b>Scope bounded.</b> One item in progress; retries capped at N.</span></li>
+</ul>
+<p class="verdict">Four or fewer boxes ticked: do not run it unattended.</p>
+
+<footer>
+  <p><b>Sources.</b>
+    Learn Harness Engineering (Walking Labs), lectures 01, 02, 13 and the template library —
+    <a href="https://walkinglabs.github.io/learn-harness-engineering/en/">walkinglabs.github.io/learn-harness-engineering/en/</a> ·
+    Meta-Harness: End-to-End Optimization of Model Harnesses, Lee, Nair, Zhang, Lee, Khattab &amp; Finn, COLM 2026 —
+    <a href="https://yoonholee.com/meta-harness/">yoonholee.com/meta-harness/</a> ·
+    UNESCO AI competency frameworks for teachers and students (2024) —
+    <a href="https://www.unesco.org/en/articles/ai-competency-framework-teachers">unesco.org/en/articles/ai-competency-framework-teachers</a>
+  </p>
+  <p><b>UNESCO alignment.</b> This sheet supports the <em>Acquire</em> and <em>Deepen</em> levels of the UNESCO AI competency framework for teachers, under the aspects <em>AI foundations and applications</em> and <em>AI pedagogy</em>. The health checklist is a concrete operationalisation of the framework’s human-agency and accountability principles: each box is one form of the requirement that the teacher remain accountable for, and able to critically evaluate, what an AI system produces. UNESCO’s progression levels are Acquire / Deepen / Create (teachers) and Understand / Apply / Create (students).</p>
+</footer>
+
+</div>
+</body>
+</html>

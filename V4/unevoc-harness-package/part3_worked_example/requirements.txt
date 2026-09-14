@@ -1,0 +1,9 @@
+# Part 3 dependencies. Install with:  pip install -r requirements.txt
+#
+# The harness core (state, verification, stop condition, logging, the Ollama
+# client) uses only the Python standard library on purpose. These packages are
+# for the document work, and every one of them runs offline.
+
+pdfplumber>=0.11        # PDF -> text and tables. Pulls in pdfminer.six.
+matplotlib>=3.7         # the chart, rendered locally to a PNG (Agg backend)
+reportlab>=4.0          # optional: report.pdf, and make_sample_pdfs.py

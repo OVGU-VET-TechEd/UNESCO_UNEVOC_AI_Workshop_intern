@@ -1,0 +1,65 @@
+{
+  "_comment": "Evaluation set for the demo corpus. 'expect' is what SHOULD happen. Questions with expect='refused' are as important as the others: an assistant that never declines is not trustworthy. 'expect_doc' is a substring of the filename that must appear among the retrieved passages.",
+  "questions": [
+    {
+      "question": "What kinds of evidence are acceptable for quality assurance self-assessment?",
+      "expect": "answered",
+      "expect_doc": "01_tvet_quality_framework"
+    },
+    {
+      "question": "How often does full external review of a centre take place?",
+      "expect": "answered",
+      "expect_doc": "01_tvet_quality_framework"
+    },
+    {
+      "question": "Can a microcredential be issued without a stated assessment method?",
+      "expect": "answered",
+      "expect_doc": "02_microcredential_guidelines"
+    },
+    {
+      "question": "What is the minimum interoperability target for packaging credentials?",
+      "expect": "answered",
+      "expect_doc": "02_microcredential_guidelines"
+    },
+    {
+      "question": "Which project milestone has slipped, and what was the reason given?",
+      "expect": "answered",
+      "expect_doc": "04_progress_report_q3"
+    },
+    {
+      "question": "How many learners completed at partner B?",
+      "expect": "answered",
+      "expect_doc": "04_progress_report_q3"
+    },
+    {
+      "question": "What claims can the evaluation not support, and why?",
+      "expect": "answered",
+      "expect_doc": "06_evaluation_methodology_note"
+    },
+    {
+      "question": "What must be checked before a module is published, regarding licensing?",
+      "expect": "answered",
+      "expect_doc": "08_open_licensing_note"
+    },
+    {
+      "question": "How is the instructor training assessed?",
+      "expect": "answered",
+      "expect_doc": "05_instructor_training_outline"
+    },
+    {
+      "question": "What is the capital city of Peru?",
+      "expect": "refused",
+      "expect_doc": null
+    },
+    {
+      "question": "What was the exact salary of the project coordinator last year?",
+      "expect": "refused",
+      "expect_doc": null
+    },
+    {
+      "question": "Which brand of welding helmet should we purchase for the workshop?",
+      "expect": "refused",
+      "expect_doc": null
+    }
+  ]
+}

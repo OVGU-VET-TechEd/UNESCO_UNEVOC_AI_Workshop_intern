@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From one prompt to a self-improving agent — UNESCO UNEVOC Magdeburg</title>
+<style>
+/* ==========================================================================
+   Design notes, for whoever edits this next.
+
+   The subject is layers of text accumulating around a model that never changes.
+   So: monospace is the DISPLAY face and the sans is for prose — an inversion,
+   because everything on this page is literally text going into a prompt.
+
+   Colour is information, not decoration. Six hues run cool -> hot, encoding how
+   much autonomy the layer has. A layer's hue is its identity everywhere it
+   appears: ladder, prompt block, badge, code header. Never use a layer hue for
+   anything that is not that layer.
+
+   No web fonts, no CDN, no external anything. This package is offline-first and
+   this file has to open on a machine with the network switched off.
+   ========================================================================== */
+
+:root{
+  --paper:#eceee9;
+  --surface:#ffffff;
+  --sunk:#e2e5e0;
+  --ink:#141a1c;
+  --ink2:#57666c;
+  --ink3:#8c9a9f;
+  --rule:#c6cec9;
+  --rule2:#dde2de;
+
+  /* the layer ramp: cool -> hot as autonomy rises */
+  --L0:#64748b;
+  --L1:#0d7490;
+  --L2:#0f766e;
+  --L3:#4d7c0f;
+  --L4:#b45309;
+  --L5:#9f1239;
+
+  --ok:#1a7f4b;
+  --bad:#b3261e;
+
+  --mono: ui-monospace,"SF Mono",SFMono-Regular,"Cascadia Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace;
+  --sans: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+
+  --rail:190px;
+  --insp:340px;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+
+/* ---------- hero ---------------------------------------------------- */
+.hero{
+  border-bottom:1px solid var(--rule);
+  background:
+    linear-gradient(var(--surface),var(--surface)) padding-box,
+    var(--surface);
+  padding:40px 28px 34px;
+}
+.hero-in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 400px;gap:44px;align-items:start}
+.eyebrow{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink2);
+  letter-spacing:.02em;margin:0 0 14px;
+}
+h1{
+  font-family:var(--mono);font-weight:700;font-size:38px;line-height:1.08;
+  letter-spacing:-.025em;margin:0 0 16px;max-width:16ch;
+}
+.hero p.lede{font-size:16.5px;line-height:1.6;color:var(--ink2);margin:0 0 10px;max-width:56ch}
+.hero p.lede strong{color:var(--ink);font-weight:600}
+.hero-meta{
+  font-family:var(--mono);font-size:11.5px;color:var(--ink3);
+  margin:20px 0 0;padding-top:14px;border-top:1px solid var(--rule2);
+}
+
+/* the assembling stack — the one orchestrated motion on the page */
+.hero-stack{display:flex;flex-direction:column;gap:5px}
+.hs-row{
+  display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:center;
+  font-family:var(--mono);font-size:12px;
+  padding:8px 11px;background:var(--sunk);
+  border-left:4px solid var(--c);
+  opacity:0;animation:rise .5s ease-out forwards;
+}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.hs-row .n{color:var(--c);font-weight:700}
+.hs-row .t{color:var(--ink)}
+.hs-row .g{color:var(--ink3);font-size:11px}
+.hs-cap{font-family:var(--mono);font-size:11px;color:var(--ink3);margin:12px 0 0;line-height:1.5}
+
+.start{
+  display:inline-flex;align-items:center;gap:9px;margin-top:22px;
+  font-family:var(--mono);font-size:13px;font-weight:600;
+  background:var(--ink);color:#fff;border:none;padding:12px 20px;cursor:pointer;
+}
+.start:hover{background:#2b3538}
+.start:focus-visible{outline:3px solid var(--L1);outline-offset:2px}
+
+/* ---------- three-column working area ------------------------------- */
+.work{
+  max-width:1180px;margin:0 auto;padding:0 28px;
+  display:grid;grid-template-columns:var(--rail) minmax(0,1fr) var(--insp);
+  gap:34px;align-items:start;
+}
+
+/* ladder ------------------------------------------------------------- */
+.ladder{position:sticky;top:20px;padding:26px 0}
+.ladder h2{
+  font-family:var(--mono);font-size:11px;color:var(--ink3);
+  font-weight:600;margin:0 0 12px;letter-spacing:.02em;
+}
+.rung{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  border-left:3px solid var(--rule);padding:9px 0 9px 13px;margin-bottom:2px;
+  cursor:pointer;font-family:var(--sans);color:var(--ink2);
+  transition:border-color .18s,color .18s;
+}
+.rung:hover{color:var(--ink);border-left-color:var(--ink3)}
+.rung:focus-visible{outline:2px solid var(--L1);outline-offset:1px}
+.rung .rn{font-family:var(--mono);font-size:10.5px;color:var(--ink3);display:block}
+.rung .rt{font-size:13.5px;font-weight:500;line-height:1.3;display:block}
+.rung[aria-current="true"]{border-left-color:var(--c);color:var(--ink)}
+.rung[aria-current="true"] .rn{color:var(--c);font-weight:700}
+.rung[aria-current="true"] .rt{font-weight:700}
+.rung[data-locked="1"]{opacity:.42}
+
+/* stage -------------------------------------------------------------- */
+.stage{padding:26px 0 70px;min-width:0}
+.panel{display:none}
+.panel.on{display:block;animation:fade .35s ease-out}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+.badge{
+  display:inline-block;font-family:var(--mono);font-size:11px;font-weight:700;
+  color:#fff;background:var(--c);padding:3px 9px;margin-bottom:14px;
+}
+.panel h3{
+  font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-.02em;
+  margin:0 0 6px;line-height:1.15;
+}
+.sub{color:var(--ink2);font-size:15.5px;margin:0 0 26px;max-width:62ch}
+.panel h4{
+  font-family:var(--mono);font-size:13px;font-weight:700;margin:32px 0 10px;
+  padding-bottom:5px;border-bottom:1px solid var(--rule);
+}
+.panel p{max-width:66ch;margin:0 0 14px}
+.panel ul{max-width:66ch;padding-left:20px;margin:0 0 14px}
+.panel li{margin-bottom:6px}
+.panel a{color:var(--L1)}
+
+.callout{
+  border-left:4px solid var(--c);background:var(--surface);
+  padding:14px 18px;margin:20px 0;font-size:14.5px;
+}
+.callout b{display:block;font-family:var(--mono);font-size:12px;color:var(--c);margin-bottom:4px}
+.callout p{margin:0;max-width:62ch}
+
+/* interactive widgets ------------------------------------------------ */
+.demo{border:1px solid var(--rule);background:var(--surface);margin:20px 0}
+.demo-head{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:9px 14px;border-bottom:1px solid var(--rule2);background:var(--sunk);
+  font-family:var(--mono);font-size:11.5px;font-weight:600;
+}
+.demo-head span.hint{font-weight:400;color:var(--ink3)}
+.demo-body{padding:16px}
+.btn{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  background:var(--ink);color:#fff;border:none;padding:8px 15px;cursor:pointer;
+}
+.btn:hover{background:#2b3538}
+.btn:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.btn[disabled]{background:var(--ink3);cursor:default}
+.btn.ghost{background:none;color:var(--ink2);border:1px solid var(--rule)}
+.btn.ghost:hover{background:var(--sunk);color:var(--ink)}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+
+textarea,input[type=text]{
+  width:100%;font-family:var(--mono);font-size:13px;padding:10px;
+  border:1px solid var(--rule);background:var(--sunk);color:var(--ink);resize:vertical;
+}
+textarea:focus,input:focus{outline:2px solid var(--c);outline-offset:-1px}
+
+.tokens{display:flex;flex-wrap:wrap;gap:3px;margin-top:12px;min-height:30px}
+.tok{
+  font-family:var(--mono);font-size:12px;padding:2px 5px;background:var(--sunk);
+  border-bottom:2px solid var(--ink3);
+}
+.tok.w{border-bottom-color:var(--L1)}
+.tok.p{border-bottom-color:var(--L4);color:var(--ink2)}
+
+.meter{height:22px;background:var(--sunk);position:relative;margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--c);transition:width .4s ease}
+.meter em{
+  position:absolute;inset:0;display:flex;align-items:center;padding-left:9px;
+  font-family:var(--mono);font-size:11px;font-style:normal;color:var(--ink);
+}
+
+.log{
+  font-family:var(--mono);font-size:11.5px;line-height:1.65;background:var(--sunk);
+  padding:12px;max-height:290px;overflow:auto;margin-top:12px;white-space:pre-wrap;
+}
+.log .ok{color:var(--ok);font-weight:700}
+.log .bad{color:var(--bad);font-weight:700}
+.log .dim{color:var(--ink3)}
+.log .hi{color:var(--c);font-weight:700}
+
+pre.code{
+  font-family:var(--mono);font-size:11.5px;line-height:1.55;background:var(--surface);
+  border:1px solid var(--rule);border-left:4px solid var(--c);
+  padding:13px 15px;margin:8px 0 16px;overflow-x:auto;white-space:pre;
+}
+pre.code .c{color:var(--ink3)}
+pre.code .k{color:var(--L5)}
+pre.code .s{color:var(--L2)}
+.filelabel{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--c);margin:18px 0 0}
+.filelabel span{font-weight:400;color:var(--ink3)}
+
+table.grid{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0 18px}
+table.grid th{
+  text-align:left;font-family:var(--mono);font-size:11px;font-weight:700;
+  border-bottom:2px solid var(--c);padding:7px 9px 6px;vertical-align:bottom;
+}
+table.grid td{border-bottom:1px solid var(--rule2);padding:7px 9px;vertical-align:top}
+table.grid td:first-child{font-family:var(--mono);font-size:12px;white-space:nowrap}
+
+.unesco{border:1px solid var(--rule);border-top:3px solid var(--c);background:var(--surface);padding:15px 18px;margin:22px 0}
+.unesco b{font-family:var(--mono);font-size:11.5px;display:block;margin-bottom:6px}
+.unesco p{margin:0 0 8px;font-size:14px;max-width:64ch}
+.unesco p:last-child{margin:0}
+
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:40px;padding-top:18px;border-top:1px solid var(--rule)}
+
+/* inspector ---------------------------------------------------------- */
+.inspector{position:sticky;top:20px;padding:26px 0}
+.insp-card{border:1px solid var(--rule);background:var(--surface)}
+.insp-head{padding:10px 13px;border-bottom:1px solid var(--rule2);background:var(--sunk)}
+.insp-head b{font-family:var(--mono);font-size:11.5px;display:block}
+.insp-head span{font-family:var(--mono);font-size:10.5px;color:var(--ink3)}
+.insp-body{padding:11px;max-height:52vh;overflow:auto}
+.blk{
+  border-left:4px solid var(--bc);background:var(--sunk);
+  padding:7px 10px;margin-bottom:5px;font-family:var(--mono);font-size:10.5px;line-height:1.5;
+}
+.blk.new{animation:pop .55s ease-out}
+@keyframes pop{0%{background:#fff8d8;transform:translateX(-5px)}100%{background:var(--sunk);transform:none}}
+.blk b{display:block;color:var(--bc);font-size:10.5px;margin-bottom:2px}
+.blk .body{color:var(--ink2);white-space:pre-wrap}
+.blk .sz{float:right;color:var(--ink3);font-weight:400}
+.blk.off{opacity:.5;border-left-style:dashed;background:transparent}
+.insp-foot{padding:10px 13px;border-top:1px solid var(--rule2);font-family:var(--mono);font-size:10.5px;color:var(--ink2)}
+.empty{font-family:var(--mono);font-size:11px;color:var(--ink3);padding:14px 4px;line-height:1.6}
+
+/* footer ------------------------------------------------------------- */
+footer{border-top:1px solid var(--rule);background:var(--surface);margin-top:20px;padding:30px 28px 46px}
+.foot-in{max-width:1180px;margin:0 auto;font-size:13px;color:var(--ink2)}
+.foot-in h5{font-family:var(--mono);font-size:12px;margin:0 0 10px;color:var(--ink)}
+.foot-in a{color:var(--L1);word-break:break-word}
+.foot-in ul{padding-left:18px;max-width:76ch}
+.foot-in li{margin-bottom:5px}
+
+/* responsive --------------------------------------------------------- */
+@media (max-width:1080px){
+  .work{grid-template-columns:var(--rail) minmax(0,1fr)}
+  .inspector{grid-column:1/-1;position:static;padding-top:0}
+  .insp-body{max-height:none}
+  .hero-in{grid-template-columns:1fr;gap:30px}
+}
+@media (max-width:720px){
+  .hero{padding:28px 18px 26px}
+  h1{font-size:29px}
+  .work{grid-template-columns:1fr;padding:0 18px;gap:0}
+  .ladder{position:static;padding:20px 0 0}
+  .ladder .rungs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+  .rung{border-left:none;border-top:3px solid var(--rule);min-width:118px;padding:8px 0 0}
+  .rung[aria-current="true"]{border-top-color:var(--c)}
+  .panel h3{font-size:21px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-in">
+    <div>
+      <p class="eyebrow">UNESCO UNEVOC Centre Magdeburg · Otto von Guericke University</p>
+      <h1>One prompt, then five more layers around it</h1>
+      <p class="lede">A language model is a fixed function. It has no memory, no access to your files,
+        and no way to check its own work. <strong>Everything you actually want from it lives in the text
+        you put around it</strong> — and in the code that decides what that text should be.</p>
+      <p class="lede">Start with a single instruction. Add one layer at a time and watch the prompt on
+        the right grow. By the last layer, the machine is writing that text itself.</p>
+      <button class="start" id="begin">Start at layer 0 — foundations</button>
+      <p class="hero-meta">Runs offline · local models via Ollama on 127.0.0.1 · nothing leaves this machine</p>
+    </div>
+
+    <div>
+      <div class="hero-stack" id="heroStack">
+        <div class="hs-row" style="--c:var(--L0);animation-delay:.05s">
+          <span class="n">0</span><span><span class="t">tokens · weights · context</span> <span class="g">what a model is</span></span></div>
+        <div class="hs-row" style="--c:var(--L1);animation-delay:.20s">
+          <span class="n">1</span><span><span class="t">+ TASK</span> <span class="g">prompt engineering</span></span></div>
+        <div class="hs-row" style="--c:var(--L2);animation-delay:.35s">
+          <span class="n">2</span><span><span class="t">+ SKILL</span> <span class="g">skill engineering</span></span></div>
+        <div class="hs-row" style="--c:var(--L3);animation-delay:.50s">
+          <span class="n">3</span><span><span class="t">+ RULES · STATE · TOOLS</span> <span class="g">harness engineering</span></span></div>
+        <div class="hs-row" style="--c:var(--L4);animation-delay:.65s">
+          <span class="n">4</span><span><span class="t">+ ATTEMPT · WHY IT FAILED</span> <span class="g">loop engineering</span></span></div>
+        <div class="hs-row" style="--c:var(--L5);animation-delay:.80s">
+          <span class="n">5</span><span><span class="t">+ SKILL, written by the machine</span> <span class="g">self-improving agents</span></span></div>
+      </div>
+      <p class="hs-cap">Each layer keeps everything below it. Nothing is replaced.<br>
+        The model is identical at every level.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ================= WORKING AREA ================= -->
+<div class="work">
+
+  <!-- ladder -->
+  <nav class="ladder" aria-label="Layers">
+    <h2>Layers</h2>
+    <div class="rungs" id="rungs"></div>
+  </nav>
+
+  <!-- stage -->
+  <main class="stage" id="stage">
+
+  <!-- ============ LAYER 0 ============ -->
+  <section class="panel on" data-level="0" style="--c:var(--L0)">
+    <span class="badge">LAYER 0</span>
+    <h3>What you are actually talking to</h3>
+    <p class="sub">Before any of the engineering makes sense, three words have to mean something
+      precise: token, weights, context window.</p>
+
+    <h4>Tokens — the units the model actually sees</h4>
+    <p>A model does not read words. Text is chopped into <em>tokens</em>: common words are usually one
+      token, rarer and longer words split into pieces, and every space and punctuation mark costs
+      something. Roughly ¾ of a word each in English, and noticeably worse for languages the
+      tokenizer saw less of during training — which is a real equity issue for a UNESCO audience,
+      because the same sentence in Amharic or Khmer can cost several times more than in English.</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>Type anything — watch it become tokens</span><span class="hint">approximate</span></div>
+      <div class="demo-body">
+        <textarea id="tokIn" rows="3">Write one learning objective for hydraulic system safety.</textarea>
+        <div class="tokens" id="tokOut"></div>
+        <p style="font-family:var(--mono);font-size:11.5px;color:var(--ink2);margin:12px 0 0" id="tokStat"></p>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--ink2)">This splitter is a rough imitation for teaching, not
+      a real tokenizer. Real ones are learned from data. The lesson it gets right is the one that
+      matters: your text becomes a countable number of pieces, and you are billed — in time, memory
+      and quality — per piece.</p>
+
+    <h4>Weights — fixed at training, never updated by you</h4>
+    <p>The weights are billions of numbers, frozen the day training finished. Four things follow, and
+      almost every misunderstanding in this field is a failure to accept one of them:</p>
+    <ul>
+      <li><strong>No memory.</strong> Every call starts from nothing. Anything it "remembers" was put back in by software.</li>
+      <li><strong>No access.</strong> It cannot see your files, your email or the web unless something fetched them and pasted them in.</li>
+      <li><strong>No looking up.</strong> It produces what fits the patterns it learned. When those patterns and the truth coincide, the output is right. It cannot tell the two cases apart.</li>
+      <li><strong>No doing.</strong> It emits text. If a file got written, other code wrote it.</li>
+    </ul>
+
+    <div class="callout">
+      <b>The consequence worth memorising</b>
+      <p>"We trained the AI on our documents" is almost always false. The documents sit in a folder,
+        and passages are copied into the prompt at question time. That is good news: you can update
+        it in seconds, and you can delete from it.</p>
+    </div>
+
+    <h4>Context window — one budget, everything competes</h4>
+    <p>Each call accepts a maximum number of tokens. Instructions, retrieved documents, the
+      conversation so far, <em>and the answer</em> all come out of the same allowance. "Just give it
+      all our documents" fails for an unglamorous reason: they do not fit. And where they do fit,
+      quality falls as the relevant sentence gets buried.</p>
+    <p>So something has to <strong>choose</strong> what goes in. Everything from layer 1 onwards is a
+      progressively better answer to that one question.</p>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Layer 0 is <strong>Acquire</strong>-level material for teachers, under <em>AI foundations and
+        applications</em>: knowing what an AI system is made of well enough to evaluate and choose
+        tools rather than accept a vendor's description of them. For students it maps to
+        <em>AI techniques and applications</em> at <strong>Understand</strong>.</p>
+      <p>The tokenizer demo also touches <em>ethics of AI</em>: token cost is not neutral across
+        languages, and a system priced or budgeted per token is more expensive for some learners
+        than others.</p>
+    </div>
+
+    <div class="nav"><span></span><button class="btn" data-go="1">Layer 1 — the prompt →</button></div>
+  </section>
+
+  <!-- ============ LAYER 1 ============ -->
+  <section class="panel" data-level="1" style="--c:var(--L1)">
+    <span class="badge">LAYER 1 · PROMPT ENGINEERING</span>
+    <h3>One instruction, one call</h3>
+    <p class="sub">You edit the prompt string. That is the whole control surface. It works, and for a
+      great deal of daily academic work it is the correct level.</p>
+
+    <p>Try both prompts below and watch the answer change. The model is identical; only the text
+      going in differs.</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>Single call — no memory, no checking</span><span class="hint">simulated</span></div>
+      <div class="demo-body">
+        <div class="btnrow" style="margin:0 0 12px">
+          <button class="btn ghost" data-p="vague">Vague prompt</button>
+          <button class="btn ghost" data-p="specific">Specific prompt</button>
+        </div>
+        <textarea id="p1in" rows="4">Write a learning objective about hydraulic safety.</textarea>
+        <div class="btnrow"><button class="btn" id="p1run">Send to the model</button></div>
+        <div class="log" id="p1log">Nothing sent yet.</div>
+      </div>
+    </div>
+
+    <h4>What it fixes, and where it stops</h4>
+    <p>Prompting fixes ambiguity: the model answered the wrong question and you asked a better one.
+      It stops at the point where you are typing the same conventions for the fourth time this week,
+      and getting slightly different results each time because you phrased them slightly
+      differently.</p>
+
+    <div class="callout">
+      <b>The honest test for whether you need layer 2</b>
+      <p>Are you pasting the same paragraph of house rules into the chat window repeatedly? If yes,
+        that paragraph belongs in a file, not in your fingers.</p>
+    </div>
+
+    <h4>Automating it — 15 lines against a local model</h4>
+    <p class="filelabel">one_call.py <span>— standard library only, no packages to install</span></p>
+<pre class="code"><span class="k">import</span> json, urllib.request
+
+<span class="c"># The ONLY network endpoint anywhere in this package. Nothing leaves the machine.</span>
+URL = <span class="s">"http://127.0.0.1:11434/api/generate"</span>
+
+<span class="k">def</span> ask(model, prompt):
+    body = json.dumps({<span class="s">"model"</span>: model, <span class="s">"prompt"</span>: prompt,
+                       <span class="s">"stream"</span>: <span class="k">False</span>}).encode()
+    req = urllib.request.Request(URL, data=body,
+                                 headers={<span class="s">"Content-Type"</span>: <span class="s">"application/json"</span>})
+    <span class="k">with</span> urllib.request.urlopen(req, timeout=180) <span class="k">as</span> r:
+        <span class="k">return</span> json.loads(r.read())[<span class="s">"response"</span>].strip()
+
+print(ask(<span class="s">"llama3.1:8b"</span>, <span class="s">"Write one learning objective on hydraulic safety."</span>))</pre>
+    <p>That is a complete, working local AI integration. Everything in the remaining layers is code
+      <em>around</em> this function — and in the shipped example, this function stays fifteen lines
+      while the code around it grows to several hundred.</p>
+
+    <h4>Where it earns its place at UNEVOC</h4>
+    <table class="grid">
+      <tr><th>Use it for</th><th>Because</th></tr>
+      <tr><td>Rewriting, shortening, translating</td><td>The material arrives with the question. Nothing needs retrieving.</td></tr>
+      <tr><td>First drafts of anything</td><td>The value is having something to react to, not something to publish.</td></tr>
+      <tr><td>Explaining an unfamiliar document</td><td>You paste it in; the budget is one document wide.</td></tr>
+      <tr><th>Do not use it for</th><th>Because</th></tr>
+      <tr><td>Anything needing a number to be exactly right</td><td>Use a query or a spreadsheet. Determinism is available; take it.</td></tr>
+      <tr><td>Work spanning sessions</td><td>There is no memory to span them with. That is layer 3.</td></tr>
+    </table>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Prompting is <strong>Acquire</strong>-level work under <em>AI pedagogy</em>: selecting and
+        using an AI tool appropriately for a defined teaching task, and remaining the person
+        accountable for what is produced.</p>
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-go="0">← Layer 0</button><button class="btn" data-go="2">Layer 2 — skills →</button></div>
+  </section>
+
+  <!-- ============ LAYER 2 ============ -->
+  <section class="panel" data-level="2" style="--c:var(--L2)">
+    <span class="badge">LAYER 2 · SKILL ENGINEERING</span>
+    <h3>Write the conventions down once</h3>
+    <p class="sub">You edit a file, not a sentence. The model loads it when the task calls for it,
+      so everyone in the department gets the same conventions on a Friday as on a Monday.</p>
+
+    <p>A skill is a folder with a <code>SKILL.md</code> in it: metadata at the top so the system knows
+      when to load it, then the procedural knowledge. Note what has just appeared in the prompt
+      inspector — a second block, above your task. Your task did not change.</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>Same task, with and without the skill file</span><span class="hint">simulated</span></div>
+      <div class="demo-body">
+        <div class="btnrow" style="margin:0 0 12px">
+          <button class="btn ghost" id="skToggle">Skill file: <b id="skState">loaded</b></button>
+        </div>
+        <div class="log" id="skLog">Press “Run the task”.</div>
+        <div class="btnrow"><button class="btn" id="skRun">Run the task</button></div>
+      </div>
+    </div>
+
+    <h4>This package's own skill files</h4>
+    <p>The teaching package ships five of them, one per role. They are surface-neutral prose in
+      <code>bmad/agents/</code>, with thin adapters that make them appear as agents in VS Code. Here
+      is the shape:</p>
+
+    <p class="filelabel">bmad/agents/author.md <span>— excerpt</span></p>
+<pre class="code"># @author — teaching material
+
+**Owns:** all prose in the package.
+
+## May write to
+Markdown and HTML under part1..part4. NOT the Python.
+
+## House rules
+- UNESCO progression levels are Acquire / Deepen / Create (teachers)
+  and Understand / Apply / Create (students).
+  "AI-literate" and "AI-enhanced educator" are NOT UNESCO's words.
+- LiaScript: single choice [( )] / [(X)], multiple [[ ]] / [[X]].
+- Re-open sources before asserting anything. Do not paraphrase
+  from memory.
+- If a claim cannot be verified, SAY SO in the text.</pre>
+
+    <div class="callout">
+      <b>Why that fourth rule is the valuable one</b>
+      <p>"If a claim cannot be verified, say so" is a convention that would otherwise live in one
+        person's head and be applied inconsistently. Written into a skill file, it applies on every
+        run, to every author, including the machine.</p>
+    </div>
+
+    <h4>Progressive disclosure — the trick that makes it scale</h4>
+    <p>Skills are not all loaded at once. Each has a short description in its frontmatter; the system
+      reads only the descriptions, and loads the full file only when a task matches. Twenty skill
+      files cost you twenty one-line descriptions of context, not twenty full documents. That is what
+      keeps the context budget from collapsing as your library grows.</p>
+
+    <h4>Automating it — loading a skill on demand</h4>
+    <p class="filelabel">with_skill.py <span>— the prompt is now assembled, not typed</span></p>
+<pre class="code"><span class="k">from</span> pathlib <span class="k">import</span> Path
+
+<span class="k">def</span> load_skill(name):
+    <span class="c"># The skill lives on disk, versioned, reviewable, shared by the team.</span>
+    <span class="k">return</span> Path(<span class="s">f"skills/{name}/SKILL.md"</span>).read_text()
+
+<span class="k">def</span> build_prompt(task, skill_name=<span class="k">None</span>):
+    parts = []
+    <span class="k">if</span> skill_name:
+        parts.append(<span class="s">f"Follow this guidance exactly:\n---\n{load_skill(skill_name)}\n---"</span>)
+    parts.append(<span class="s">f"Task: {task}"</span>)
+    <span class="k">return</span> <span class="s">"\n\n"</span>.join(parts)          <span class="c"># <- assembly begins here</span>
+
+print(ask(<span class="s">"llama3.1:8b"</span>, build_prompt(<span class="s">"hydraulic safety"</span>, <span class="s">"objectives"</span>)))</pre>
+    <p><code>build_prompt()</code> is the first line of harness code on this page. From here on, the
+      prompt is <em>constructed</em> rather than written, and every later layer adds another block to
+      that function.</p>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Writing a skill file for your own department is <strong>Deepen</strong>-level work under
+        <em>AI pedagogy</em>: not just using a tool but shaping how it behaves in your professional
+        context, and making that shaping inspectable by colleagues.</p>
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-go="1">← Layer 1</button><button class="btn" data-go="3">Layer 3 — the harness →</button></div>
+  </section>
+
+  <!-- ============ LAYER 3 ============ -->
+  <section class="panel" data-level="3" style="--c:var(--L3)">
+    <span class="badge">LAYER 3 · HARNESS ENGINEERING</span>
+    <h3>Memory, tools, and a way to check the work</h3>
+    <p class="sub">A harness is everything outside the model weights. Five subsystems:
+      instructions, tools, environment, state, feedback. Three of them just appeared in your prompt.</p>
+
+    <div class="callout">
+      <b>Simplicity statement</b>
+      <p>A harness does not make the model smarter. It gives a fixed model a place to keep state, a
+        way to check its own work, and rules for when to stop. Everything else in this package is one
+        worked example of that idea.</p>
+    </div>
+
+    <h4>The subsystem that pays for itself first</h4>
+    <p><strong>Feedback.</strong> Not a nicer prompt — a command that returns pass or fail and cannot
+      be argued with. Until you have one, "done" means "the model stopped talking".</p>
+    <p>This package's own check is a script with nine tests. It is the arbiter of whether any work in
+      the repository counts as finished:</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>make verify — the real definition of done</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-body">
+        <div class="btnrow" style="margin:0 0 4px">
+          <button class="btn" id="vRun">Run make verify</button>
+          <button class="btn ghost" id="vBreak">Break something first</button>
+        </div>
+        <div class="log" id="vLog">Not run.</div>
+      </div>
+    </div>
+
+    <h4>State — the file that survives you closing the laptop</h4>
+    <p>The model forgets between calls. The repository does not. Two files carry everything:
+      <code>feature_list.json</code> holds the work with a status field, and <code>PROGRESS.md</code>
+      holds what happened and what to do next. One rule prevents most sprawl: <strong>exactly one item
+      may be <code>in_progress</code> at a time</strong>.</p>
+
+    <h4>Tools — the list of things that can go wrong</h4>
+    <p>The model never executes anything. It emits text naming an action; your code parses it, decides
+      whether to allow it, runs it, and pastes the result back. "The agent can send email" always means
+      "we wrote code that sends email when the model asks". The permission is yours to withhold.</p>
+    <p>In this package, the QA agent is defined with <em>no edit tool at all</em>:</p>
+
+    <p class="filelabel">.github/agents/qa.agent.md <span>— read-only by design</span></p>
+<pre class="code">---
+name: QA
+description: Verification only. Runs the checks, reports verbatim,
+             never fixes what it finds.
+tools: [<span class="s">'search/codebase'</span>, <span class="s">'runCommands'</span>]   <span class="c"># <- no 'edit'</span>
+handoffs:
+  - label: Fix teaching content
+    agent: Author
+---
+You are READ-ONLY. You must not ask for an edit tool.
+
+This is the subject of the package, not caution. The reliability
+rule taught here is generator/evaluator separation. A QA agent that
+fixes what it finds HAS BECOME the generator, and its verdict stops
+carrying information.</pre>
+
+    <div class="callout">
+      <b>Generator ≠ evaluator</b>
+      <p>The agent that produced the work must not be the agent that judges it. A model looking back
+        at its own output sees its reasoning, not its mistakes. Use a command with an exit code, or a
+        different model with different instructions — never the same one twice.</p>
+    </div>
+
+    <h4>Where each layer of the harness earns its keep at UNEVOC</h4>
+    <table class="grid">
+      <tr><th>Task</th><th>What the harness adds</th></tr>
+      <tr><td>Document review</td><td>The checklist becomes a file. Every finding must quote text that actually occurs in the source — a string match, checkable by code.</td></tr>
+      <tr><td>Knowledge management</td><td>Retrieval gate and citation check. No answer without a citation that resolves; an explicit refusal when the corpus does not cover the question.</td></tr>
+      <tr><td>Project monitoring</td><td>Every extracted figure re-checked against the source cell. Mismatch means the field is flagged, not filled.</td></tr>
+      <tr><td>Training development</td><td>Structural checks plus the export command exiting zero. A module is done when it builds, not when it reads well.</td></tr>
+    </table>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Verification and logging are the concrete mechanism behind the framework's emphasis on
+        <em>transparency</em> and <em>critical evaluation of AI outputs</em>. Nothing is accepted on
+        the model's say-so, and a colleague who does not read Python can reconstruct what happened
+        from the log. This is <strong>Deepen</strong>, moving toward <strong>Create</strong> once you
+        design the verification rule for your own subject area.</p>
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-go="2">← Layer 2</button><button class="btn" data-go="4">Layer 4 — the loop →</button></div>
+  </section>
+
+  <!-- ============ LAYER 4 ============ -->
+  <section class="panel" data-level="4" style="--c:var(--L4)">
+    <span class="badge">LAYER 4 · LOOP ENGINEERING</span>
+    <h3>The system prompts itself now</h3>
+    <p class="sub">You stop supplying the next instruction and start supplying a goal, a verification
+      method, and a stop condition. Those three things are the whole of it.</p>
+
+    <p>Run the agent below. It is a faithful replay of this package's <code>agent.py</code> against
+      three input documents. Watch what the harness does when the model proposes something it is not
+      allowed to do.</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>agent.py — the model proposes, the harness disposes</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-body">
+        <div class="btnrow" style="margin:0 0 4px">
+          <button class="btn" id="loopRun">Run the agent</button>
+          <button class="btn ghost" id="loopStep">Step once</button>
+          <button class="btn ghost" id="loopReset">Reset</button>
+        </div>
+        <div class="log" id="loopLog">Not started. The stop condition is: every input PDF has a section in the report.</div>
+      </div>
+    </div>
+
+    <h4>Three gates every proposal passes through</h4>
+    <ul>
+      <li><strong>Is it a known tool?</strong> Five are permitted. Anything else is overridden.</li>
+      <li><strong>Is its precondition met?</strong> You cannot summarise a document that has not been converted yet.</li>
+      <li><strong>Did it actually produce a file?</strong> Exists and is non-empty, or the step is not marked done and the bookkeeping is rolled back.</li>
+    </ul>
+    <p>Every override is written to <code>agent_log.md</code> in plain sentences, which is why that
+      file is the best five minutes of a workshop: a non-programmer can read exactly where the machine
+      was wrong and where the code caught it.</p>
+
+    <div class="callout">
+      <b>The stop condition is not optional</b>
+      <p>A system that chooses and acts but has no written stop condition is not an agent. It is an
+        unbounded expense with write access. This one stops when every input document has a section in
+        the report, with a hard cap of 40 steps as a second line of defence.</p>
+    </div>
+
+    <h4>The four costs nobody puts in the proposal</h4>
+    <table class="grid">
+      <tr><th>Cost</th><th>What it looks like</th></tr>
+      <tr><td>Verification debt</td><td>"Looks fine" quietly replaces "confirmed correct".</td></tr>
+      <tr><td>Comprehension rot</td><td>Output arrives faster than anyone reads it.</td></tr>
+      <tr><td>Cognitive surrender</td><td>The loop is used to avoid thinking rather than to amplify it.</td></tr>
+      <tr><td>Token blowout</td><td>Context grows every iteration unless actively managed.</td></tr>
+    </table>
+    <p>Two people can build the same loop and get opposite results: one goes faster on work they
+      understand, the other avoids understanding the work. The loop cannot tell the difference — which
+      is precisely why items two and three matter so much in an education setting.</p>
+
+    <h4>Automating it — the loop in twenty lines</h4>
+    <p class="filelabel">loop.py <span>— the retry carries the reason, which is the whole point</span></p>
+<pre class="code">MAX_ATTEMPTS = 3                     <span class="c"># bounded. never `while True`.</span>
+
+<span class="k">def</span> solve(task, model):
+    complaint = <span class="k">None</span>
+    <span class="k">for</span> attempt <span class="k">in</span> range(1, MAX_ATTEMPTS + 1):
+        answer = ask(model, build_prompt(task, complaint))
+        ok, reason = verify(answer)          <span class="c"># plain code. no model.</span>
+        log(<span class="s">f"attempt {attempt}: {reason}"</span>)
+        <span class="k">if</span> ok:
+            <span class="k">return</span> answer
+        complaint = reason                   <span class="c"># <- feed the reason back in</span>
+    log(<span class="s">"gave up; the retry limit IS the stop condition"</span>)
+    <span class="k">return</span> <span class="k">None</span></pre>
+    <p>The line that matters is <code>complaint = reason</code>. A retry loop that just asks again is a
+      slot machine. A retry loop that tells the model precisely which rule it broke is engineering.</p>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Deciding what your own system must refuse to do, and when it must stop, is
+        <strong>Create</strong>-level work under <em>AI pedagogy</em> and the framework's
+        <em>human-centred mindset</em>. The four costs above are the framework's human-agency and
+        accountability concerns stated as engineering risks rather than as a moral panic.</p>
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-go="3">← Layer 3</button><button class="btn" data-go="5">Layer 5 — self-improvement →</button></div>
+  </section>
+
+  <!-- ============ LAYER 5 ============ -->
+  <section class="panel" data-level="5" style="--c:var(--L5)">
+    <span class="badge">LAYER 5 · SELF-IMPROVING AGENTS</span>
+    <h3>The loop writes the skill file</h3>
+    <p class="sub">Layers 1–4 are things a person writes. At layer 5 the system writes its own layer 2
+      — and keeps a wiki of everything it learned trying.</p>
+
+    <p>This follows <strong>WikiSkill</strong> (Tang, Rashtchian, Ferng, Tomkins, Juan &amp; Vu,
+      Google Research, August 2026), which builds on Karpathy's proposal for an LLM wiki. The idea is
+      one asymmetry, and everything else follows from it.</p>
+
+    <div class="callout">
+      <b>The asymmetry that makes it work</b>
+      <p>A rejected skill is thrown away. <strong>What was learned by trying it is not.</strong> Skills
+        are gated and rolled back; the wiki only ever grows. That is why the skill stays short while
+        the knowledge compounds.</p>
+    </div>
+
+    <h4>Three folders, four roles</h4>
+    <table class="grid">
+      <tr><th>Folder</th><th>Holds</th><th>Lifecycle</th></tr>
+      <tr><td>raw/</td><td>Execution traces, complete</td><td>Immutable. Never edited.</td></tr>
+      <tr><td>wiki/</td><td>Patterns, evolution log, audit trail</td><td>Grows only. <strong>Never rolled back.</strong></td></tr>
+      <tr><td>skills/</td><td>The active SKILL.md</td><td>Gated. Reverted if it makes things worse.</td></tr>
+    </table>
+    <p>Each iteration runs four roles: an <strong>Inference Agent</strong> does the task with the
+      current skill; a <strong>Wiki Maintainer</strong> reads the traces and writes patterns; a
+      <strong>Skill Proposer</strong> reads the wiki and proposes one edit; a <strong>Gate</strong>
+      scores it on held-out tasks and keeps or reverts it.</p>
+
+    <div class="demo">
+      <div class="demo-head"><span>wiki_agent.py — watch the skill get written</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-body">
+        <div class="btnrow" style="margin:0 0 4px">
+          <button class="btn" id="evoRun">Run evolution</button>
+          <button class="btn ghost" id="evoStep">One iteration</button>
+          <button class="btn ghost" id="evoReset">Reset</button>
+        </div>
+        <div class="log" id="evoLog">Not started. Nobody has written a skill file. Validation score with no skill at all: 0%.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>Notice what the Inference Agent is not given</b>
+      <p>The wiki. Deliberately. The paper's ablation found that letting the working agent read the
+        wiki made the <em>final skill worse</em> — 63.7% down to 60.9% average — because the agent
+        solves the task from the wiki instead of from the skill, and the traces stop revealing what
+        the skill needs to fix. The wiki informs the <em>Proposer</em>, never the worker.</p>
+    </div>
+
+    <h4>What the published results actually say</h4>
+    <table class="grid">
+      <tr><th>Finding</th><th>Numbers</th></tr>
+      <tr><td>Skills beat no skills</td><td>Gemini-3.5-Flash averaged 49.5% → 68.1% across five benchmarks; Qwen-3.6-27B 39.4% → 63.3%.</td></tr>
+      <tr><td>Skills can substitute for size</td><td>Qwen-3.5-9B with evolved skills (47.4%) beat Qwen-3.6-27B without them (39.4%). A smaller model, better organised, won.</td></tr>
+      <tr><td>The wiki is the active ingredient</td><td>Removing persistent knowledge dropped the average from 63.7% to 48.7%. The loop alone is not enough.</td></tr>
+      <tr><td>Skills transfer between models</td><td>Sometimes a model does better with a skill another model evolved than with its own — discovering procedures and executing them are different abilities.</td></tr>
+      <tr><td>Transfer can also backfire</td><td>Skills from a 4B model cut Gemini-3.5-Flash from 50.5% to 18.1% on spreadsheets: the small model's low-level workarounds constrained the larger one.</td></tr>
+    </table>
+
+    <h4>The wiki grows, in Markdown you can read</h4>
+    <p class="filelabel">workspace/wiki/patterns/opened-with-x-not-an-approved-action-verb.md</p>
+<pre class="code"># Pattern: opened with 'X', not an approved action verb
+
+**First seen:** iteration 1
+
+**What happens:** the answer is rejected because it opens with a noun.
+
+**Example:** `Understanding of hydraulic system safety is something the...`
+
+**Proposed rule:** Begin every objective with an approved action verb
+such as identify or inspect.
+
+## Evidence
+- Iteration 1: 4 occurrence(s).
+- Iteration 2: recurred 3 time(s). Still unresolved.</pre>
+
+    <p class="filelabel">workspace/wiki/skill-impact.md <span>— the audit trail that stops it repeating itself</span></p>
+<pre class="code">## Iteration 3 — ROLLED BACK
+
+- Validation score: 0% (previous best 67%)
+- Skill length: 6 lines
+- Outcome: reverted; do not propose this again</pre>
+    <p>That last line is what makes the loop converge instead of oscillating. The Proposer reads the
+      impact log before proposing, so a change that has already been rejected is not offered twice.</p>
+
+    <h4>Running it yourself</h4>
+<pre class="code"><span class="c"># with a real local model</span>
+python part5_self_improving/wiki_agent.py --model llama3.1:8b --iterations 5
+
+<span class="c"># no model installed? the mock server needs none</span>
+python tools/mock_ollama.py &amp;
+python part5_self_improving/wiki_agent.py --model mock:demo --reset
+
+<span class="c"># then read what it wrote — nobody typed these</span>
+cat part5_self_improving/workspace/skills/SKILL.md
+ls  part5_self_improving/workspace/wiki/patterns/</pre>
+
+    <h4>Where this is genuinely useful at UNEVOC — and where it is not</h4>
+    <table class="grid">
+      <tr><th>Good fit</th><th>Why</th></tr>
+      <tr><td>A repeated task with a machine-checkable outcome</td><td>Module structure checks, SCORM export success, citation resolution. The gate needs a real score.</td></tr>
+      <tr><td>Small local models on modest hardware</td><td>This is the finding with real budget implications: an organised 9B can beat an unorganised 27B, and both run offline.</td></tr>
+      <tr><td>Capturing what leaves with staff</td><td>The wiki is the institutional memory that normally walks out of the door at the end of a contract.</td></tr>
+      <tr><th>Poor fit</th><th>Why</th></tr>
+      <tr><td>Anything without a reliable score</td><td>The loop optimises whatever you measure. If the scorer is wrong, it will get confidently better at the wrong thing.</td></tr>
+      <tr><td>Pedagogical quality, safety-critical content</td><td>Not machine-checkable. A named human stays accountable, and their name belongs in the module metadata.</td></tr>
+      <tr><td>Anything where you cannot afford to be surprised</td><td>The skill file changes without anyone approving it. Read it before you ship it.</td></tr>
+    </table>
+
+    <div class="callout">
+      <b>Read the file before you trust it</b>
+      <p>At this layer the instructions the model follows were written by a machine and accepted by a
+        score. The score is only as good as the scoring function a person wrote. Check the scorer
+        first, then read the skill — it is short, in Markdown, and takes two minutes.</p>
+    </div>
+
+    <div class="unesco">
+      <b>UNESCO AI competency framework — where this sits</b>
+      <p>Squarely <strong>Create</strong>, under <em>AI system design</em> and <em>AI for professional
+        learning</em>: designing a system that accumulates institutional knowledge, and deciding what
+        it is allowed to change about itself. The rollback gate and the append-only audit trail are
+        what keep the framework's accountability requirement satisfiable — every change is attributable
+        to a proposal, a score, and a decision that a person can read afterwards.</p>
+      <p>It also sharpens the <em>human-centred mindset</em> requirement into a concrete question worth
+        putting to any vendor: <em>who approved the instructions your system is currently following,
+        and when did they last read them?</em></p>
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-go="4">← Layer 4</button><button class="btn ghost" data-go="0">Back to layer 0</button></div>
+  </section>
+
+  </main>
+
+  <!-- inspector -->
+  <aside class="inspector" aria-label="Prompt inspector">
+    <div class="insp-card">
+      <div class="insp-head">
+        <b>The prompt, right now</b>
+        <span id="inspSub">what the model actually receives</span>
+      </div>
+      <div class="insp-body" id="inspBody"></div>
+      <div class="insp-foot" id="inspFoot"></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div class="foot-in">
+    <h5>Sources</h5>
+    <ul>
+      <li><strong>WikiSkill: Compiling Agent Experience into Persistent Knowledge for Skill Evolution</strong> — Liyan Tang, Cyrus Rashtchian, Chun-Sung Ferng, Andrew Tomkins, Da-Cheng Juan &amp; Tu Vu, Google Research, August 2026. <a href="https://arxiv.org/abs/2608.27454">arxiv.org/abs/2608.27454</a>. All layer-5 figures are from this paper. It credits Karpathy's LLM Wiki proposal as its starting point.</li>
+      <li><strong>Meta-Harness: End-to-End Optimization of Model Harnesses</strong> — Lee, Nair, Zhang, Lee, Khattab &amp; Finn, COLM 2026. <a href="https://yoonholee.com/meta-harness/">yoonholee.com/meta-harness</a>. Source of the harness definition used at layer 3.</li>
+      <li><strong>Learn Harness Engineering</strong> (Walking Labs) — lectures 01, 02 and 13. <a href="https://walkinglabs.github.io/learn-harness-engineering/en/">walkinglabs.github.io/learn-harness-engineering/en/</a>. Source of the five subsystems and generator/evaluator separation.</li>
+      <li><strong>UNESCO AI competency framework for teachers</strong> (2024) — 15 competencies, five aspects, levels Acquire / Deepen / Create. <a href="https://www.unesco.org/en/articles/ai-competency-framework-teachers">unesco.org/en/articles/ai-competency-framework-teachers</a></li>
+      <li><strong>UNESCO AI competency framework for students</strong> (2024) — 12 competencies, four dimensions, levels Understand / Apply / Create. <a href="https://www.unesco.org/en/articles/ai-competency-framework-students">unesco.org/en/articles/ai-competency-framework-students</a></li>
+    </ul>
+    <p style="max-width:76ch"><strong>What is simulated here.</strong> The three runnable demos replay
+      real output from this package's scripts against the mock server, so the page works with no model
+      installed. The tokenizer is a teaching approximation, not a real one. Every code sample is
+      excerpted from a file that runs. The UNESCO progression labels are UNESCO's own: "AI-literate"
+      and "AI-enhanced educator" are not their terms and are not used here.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ======================================================================
+   THE PROMPT STACK — the spine of the page.
+   Every layer contributes blocks. Advancing reveals the next ones and
+   flashes them, so "this layer ADDS to the last" is visible, not asserted.
+   ====================================================================== */
+
+const HUE = ['--L0','--L1','--L2','--L3','--L4','--L5'];
+
+const BLOCKS = [
+  { lvl:1, key:'task', label:'TASK', hue:1,
+    body:'Write one learning objective for a vocational training\nmodule on: hydraulic system safety.' },
+
+  { lvl:2, key:'skill', label:'SKILL  (loaded from skills/objectives/SKILL.md)', hue:2,
+    body:'Follow this guidance exactly:\n- Begin with an approved action verb.\n- Use at most 20 words.\n- Write exactly one sentence.' },
+
+  { lvl:3, key:'rules', label:'INSTRUCTIONS  (AGENTS.md)', hue:3,
+    body:'Never call a network endpoint other than 127.0.0.1:11434.\nNever mark an item passing without pasting verify output.\nExactly one item may be in_progress.' },
+  { lvl:3, key:'state', label:'STATE  (PROGRESS.md + feature_list.json)', hue:3,
+    body:'Done: 3 of 4 objectives accepted.\nIn progress: mod-hydraulics-01.\nBlocker: none.' },
+  { lvl:3, key:'tools', label:'TOOLS  (the five permitted actions)', hue:3,
+    body:'list_pdfs · convert_pdf_to_md · summarize_md\nextract_table_data · write_report' },
+
+  { lvl:4, key:'loop', label:'LOOP CONTEXT  (added by the harness, not by you)', hue:4,
+    body:'Attempt 2 of 3.\nYour previous answer was rejected because:\n  it was 34 words long; the limit is 20.\nStop when: verification passes, or 3 attempts.' },
+
+  { lvl:5, key:'evolved', label:'EVOLVED SKILL  (written by the machine, iteration 4)', hue:5,
+    body:'# Writing learning objectives\n- Begin with an approved action verb.\n- Use at most twenty words.\n- Write exactly one sentence on one line.\n- Output the sentence only, no preamble.' },
+  { lvl:5, key:'nowiki', label:'WIKI  —  deliberately NOT sent', hue:5, off:true,
+    body:'8 pattern pages + the audit trail informed the skill above.\nNone of it is in this prompt. Giving the working agent\nthe wiki made the final skill measurably worse.' }
+];
+
+/* A rough token estimate. Honest about being rough — see the page text. */
+function tokenize(text){
+  const out = [];
+  const re = /(\s+|[^\sA-Za-z0-9]|[A-Za-z]+|[0-9]+)/g;
+  let m;
+  while((m = re.exec(text)) !== null){
+    const piece = m[0];
+    if(/^\s+$/.test(piece)){ continue; }
+    if(/^[A-Za-z]+$/.test(piece) && piece.length > 6){
+      // long words split into subword-ish chunks, as real tokenizers do
+      for(let i = 0; i < piece.length; i += 4){ out.push(piece.slice(i, i+4)); }
+    } else {
+      out.push(piece);
+    }
+  }
+  return out;
+}
+const tokCount = t => tokenize(t).length;
+
+let level = 0;
+const seen = new Set();
+
+function renderInspector(){
+  const body = document.getElementById('inspBody');
+  const foot = document.getElementById('inspFoot');
+  const active = BLOCKS.filter(b => b.lvl <= level);
+
+  document.getElementById('inspSub').textContent =
+    level === 0 ? 'nothing assembled yet' :
+    level === 1 ? 'you typed all of this' :
+    level === 2 ? 'one block now comes from a file' :
+    level === 3 ? 'three blocks assembled by the harness' :
+    level === 4 ? 'the harness writes the retry context' :
+                  'a block the machine wrote for itself';
+
+  if(!active.length){
+    body.innerHTML = '<div class="empty">Empty.\n\nAt layer 0 there is no prompt yet — only a model,\nwaiting for text.\n\nAdvance to layer 1 and this fills up.</div>';
+    foot.textContent = '0 blocks · 0 tokens';
+    return;
+  }
+
+  body.innerHTML = active.map(b => {
+    const isNew = !seen.has(b.key);
+    seen.add(b.key);
+    const n = b.off ? 0 : tokCount(b.body);
+    return '<div class="blk' + (isNew ? ' new' : '') + (b.off ? ' off' : '') +
+           '" style="--bc:var(' + HUE[b.hue] + ')">' +
+           '<b>' + (b.off ? '' : '<span class="sz">~' + n + ' tok</span>') + b.label + '</b>' +
+           '<div class="body">' + b.body.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</div></div>';
+  }).join('');
+
+  const sent = active.filter(b => !b.off);
+  const total = sent.reduce((s,b) => s + tokCount(b.body), 0);
+  foot.textContent = sent.length + ' block' + (sent.length===1?'':'s') + ' · ~' + total +
+                     ' tokens · 1 model call';
+}
+
+/* ---------- ladder + navigation ---------- */
+const TITLES = ['Foundations','Prompting','Skills','Harness','Loop','Self-improving'];
+const SUBT   = ['tokens · weights','one instruction','SKILL.md','state · verify','goal · stop','wiki + gate'];
+
+const rungs = document.getElementById('rungs');
+rungs.innerHTML = TITLES.map((t,i) =>
+  '<button class="rung" data-go="' + i + '" style="--c:var(' + HUE[i] + ')" aria-current="' +
+  (i===0) + '"><span class="rn">' + i + ' · ' + SUBT[i] + '</span><span class="rt">' + t + '</span></button>'
+).join('');
+
+function goTo(n){
+  level = n;
+  document.querySelectorAll('.panel').forEach(p =>
+    p.classList.toggle('on', Number(p.dataset.level) === n));
+  document.querySelectorAll('.rung').forEach(r =>
+    r.setAttribute('aria-current', String(Number(r.dataset.go) === n)));
+  renderInspector();
+  const work = document.querySelector('.work');
+  if(window.scrollY > work.offsetTop) work.scrollIntoView({block:'start'});
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-go]');
+  if(t) goTo(Number(t.dataset.go));
+});
+document.getElementById('begin').addEventListener('click', () => goTo(0));
+
+/* ---------- L0: tokenizer ---------- */
+const tokIn = document.getElementById('tokIn');
+function drawTokens(){
+  const toks = tokenize(tokIn.value);
+  document.getElementById('tokOut').innerHTML = toks.slice(0,140).map(t =>
+    '<span class="tok ' + (/^[A-Za-z]+$/.test(t) ? 'w' : 'p') + '">' +
+    t.replace(/&/g,'&amp;').replace(/</g,'&lt;') + '</span>').join('');
+  const chars = tokIn.value.length;
+  const words = (tokIn.value.trim().match(/\S+/g) || []).length;
+  document.getElementById('tokStat').textContent =
+    chars + ' characters · ' + words + ' words · ~' + toks.length + ' tokens' +
+    (words ? '  (' + (toks.length/words).toFixed(2) + ' tokens per word)' : '');
+}
+tokIn.addEventListener('input', drawTokens);
+drawTokens();
+
+/* ---------- L1: single call ---------- */
+const PROMPTS = {
+  vague: 'Write a learning objective about hydraulic safety.',
+  specific: 'Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.'
+};
+const REPLIES = {
+  vague: 'Understanding of hydraulic system safety is something that the learner will come to\nappreciate over time, and it matters a great deal in day-to-day practice.',
+  specific: 'Inspect a hydraulic system for leaks and pressure faults before operation.'
+};
+let p1kind = 'vague';
+document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => {
+  p1kind = b.dataset.p;
+  document.getElementById('p1in').value = PROMPTS[p1kind];
+}));
+document.getElementById('p1run').addEventListener('click', () => {
+  const typed = document.getElementById('p1in').value;
+  const kind = typed === PROMPTS.specific ? 'specific' : (typed === PROMPTS.vague ? 'vague' : p1kind);
+  const reply = REPLIES[kind];
+  const good = kind === 'specific';
+  document.getElementById('p1log').innerHTML =
+    '<span class="dim">POST 127.0.0.1:11434/api/generate  model=llama3.1:8b</span>\n' +
+    '<span class="dim">prompt: ~' + tokCount(typed) + ' tokens</span>\n\n' + reply + '\n\n' +
+    (good
+      ? '<span class="ok">Usable.</span> But nothing here CHECKED that. You did, by reading it.\nAsk again tomorrow, phrase it differently, get something different.'
+      : '<span class="bad">Not usable.</span> No action verb, 24 words, two sentences.\nThe model was not wrong — the request never said any of that.') +
+    '\n<span class="dim">The model has now forgotten this happened.</span>';
+});
+
+/* ---------- L2: skill on / off ---------- */
+let skOn = true;
+document.getElementById('skToggle').addEventListener('click', () => {
+  skOn = !skOn;
+  document.getElementById('skState').textContent = skOn ? 'loaded' : 'not loaded';
+});
+document.getElementById('skRun').addEventListener('click', () => {
+  document.getElementById('skLog').innerHTML = skOn
+    ? '<span class="dim">prompt = SKILL.md + your task  (2 blocks, ~46 tokens)</span>\n\n' +
+      'Inspect a hydraulic system for leaks and pressure faults before operation.\n\n' +
+      '<span class="ok">Passes all three house rules.</span>\nYou did not type those rules. The file did.\n' +
+      '<span class="dim">Your colleague running this at 4pm on Friday gets the same rules.</span>'
+    : '<span class="dim">prompt = your task only  (1 block, ~18 tokens)</span>\n\n' +
+      'Understanding of hydraulic system safety is something that the learner\nwill come to appreciate over time.\n\n' +
+      '<span class="bad">Fails: no action verb, two sentences.</span>\nSame model. Same task. The conventions were simply absent.';
+});
+
+/* ---------- L3: make verify ---------- */
+const VERIFY_OK = [
+  ['ok','syntax: 13 Python file(s) compile'],
+  ['ok','json: 6 JSON file(s) parse'],
+  ['ok','structure: 46 required file(s) present'],
+  ['ok','offline: 13 Python file(s) contain no remote endpoints'],
+  ['ok','liascript: 2 deck(s), 25 answered questions, 86 speaker-note blocks'],
+  ['ok','anonymisation: no unredacted emails or phone numbers in the indexed corpus'],
+  ['ok','knowledgebase: 41 passages from 8 documents, all carry metadata'],
+  ['ok','agents: 6 agents, 6 prompts, all handoff targets resolve'],
+  ['ok','links: all relative Markdown links resolve']
+];
+let broken = false;
+document.getElementById('vBreak').addEventListener('click', () => {
+  broken = !broken;
+  document.getElementById('vBreak').textContent = broken ? 'Repair it' : 'Break something first';
+});
+document.getElementById('vRun').addEventListener('click', () => {
+  let out = '<span class="dim">$ make verify</span>\n\n';
+  VERIFY_OK.forEach(([, text], i) => {
+    if(broken && i === 5){ return; }
+    out += '  <span class="ok">ok</span>   ' + text + '\n';
+  });
+  if(broken){
+    out += '\n<span class="bad">1 FAILURE:</span>\n\n' +
+      '  <span class="bad">FAIL</span> [anonymisation] corpus/07_steering_minutes.md still\n' +
+      '       contains an unredacted email: maria.sanchez@example-partner.org\n\n' +
+      'VERIFICATION FAILED. Nothing may be marked passing until this exits 0.\n' +
+      '<span class="dim">exit code 1</span>\n\n' +
+      'The check found it. Not a reviewer, not luck, not next month.';
+  } else {
+    out += '\nAll checks passed.\n<span class="dim">exit code 0</span>\n\n' +
+      'THIS is what "done" means here. Not the model\'s opinion of its work.';
+  }
+  document.getElementById('vLog').innerHTML = out;
+});
+
+/* ---------- L4: the agent loop ---------- */
+const LOOP = [
+  ['dim','The rule I follow: one action per step. Check it is allowed before acting,'],
+  ['dim','check a real file appeared after. Stop when every PDF is in the report,'],
+  ['dim','or after 40 steps, whichever comes first.\n'],
+  ['hi','Step 1'],
+  ['','  Model proposed list_pdfs, because: "Nothing is listed yet."'],
+  ['','  Preconditions hold. Running it.'],
+  ['ok','  Verified: manifest.json exists, 214 bytes. Step done.'],
+  ['hi','Step 2'],
+  ['','  Model proposed write_report, because: "I think we are probably finished."'],
+  ['bad','  OVERRIDE. Not allowed: 3 documents are not ready yet.'],
+  ['','  Doing convert_pdf_to_md on site_a instead.'],
+  ['ok','  Verified: site_a.md exists, 3,981 bytes. Step done.'],
+  ['dim','  (a small model proposing "done" early is the failure this whole'],
+  ['dim','   package is about. The harness caught it and wrote down why.)\n'],
+  ['','Steps 3-9   convert, summarise, extract tables for all three documents'],
+  ['ok','            every output verified: exists, non-empty, recorded in state.json'],
+  ['hi','Step 10'],
+  ['','  Model proposed write_report. Preconditions now hold.'],
+  ['ok','  Verified: report.md, report.html, report.pdf written.'],
+  ['hi','Stopping.'],
+  ['','  The report contains a section for all 3 input documents.'],
+  ['ok','  Stop condition met. Nothing left to do. Nobody typed anything.']
+];
+let loopAt = 0;
+function loopDraw(){
+  document.getElementById('loopLog').innerHTML = LOOP.slice(0, loopAt).map(([cls, text]) =>
+    cls ? '<span class="' + cls + '">' + text + '</span>' : text).join('\n') ||
+    'Not started. The stop condition is: every input PDF has a section in the report.';
+  document.getElementById('loopLog').scrollTop = 9e9;
+}
+document.getElementById('loopStep').addEventListener('click', () => {
+  if(loopAt < LOOP.length){ loopAt++; loopDraw(); }
+});
+document.getElementById('loopReset').addEventListener('click', () => { loopAt = 0; loopDraw(); });
+document.getElementById('loopRun').addEventListener('click', () => {
+  loopAt = 0; loopDraw();
+  const timer = setInterval(() => {
+    loopAt++; loopDraw();
+    if(loopAt >= LOOP.length) clearInterval(timer);
+  }, 190);
+});
+
+/* ---------- L5: the evolution loop ---------- */
+const EVO = [
+  ['dim','Baseline with no skill at all: 0%   (nobody has written one)\n'],
+  ['hi','ITERATION 1'],
+  ['','  1. rollouts        0% on training tasks'],
+  ['','  2. wiki maintainer wrote patterns/opened-with-x-not-an-approved-action-verb.md'],
+  ['','  3. proposer        candidate skill, 3 lines'],
+  ['ok','  4. gate            33% > 0% previous -> KEPT\n'],
+  ['hi','ITERATION 2'],
+  ['','  1. rollouts        25% on training tasks'],
+  ['','  2. wiki maintainer wrote patterns/n-words-limit-is-n.md  (2 pages now)'],
+  ['','  3. proposer        candidate skill, 4 lines'],
+  ['ok','  4. gate            67% > 33% previous -> KEPT\n'],
+  ['hi','ITERATION 3'],
+  ['','  1. rollouts        50% on training tasks'],
+  ['','  2. wiki maintainer wrote patterns/more-than-one-sentence.md  (3 pages now)'],
+  ['','  3. proposer        candidate skill, 6 lines  (added a rule about context)'],
+  ['bad','  4. gate            0% <= 67% previous -> ROLLED BACK'],
+  ['dim','     The skill reverted. The three wiki pages did NOT.'],
+  ['dim','     skill-impact.md now records: "do not propose this again."\n'],
+  ['hi','ITERATION 4'],
+  ['','  1. rollouts        50% on training tasks'],
+  ['','  2. wiki maintainer updated existing patterns with new evidence'],
+  ['','  3. proposer        read the impact log, avoided the rejected change'],
+  ['ok','  4. gate            100% > 67% previous -> KEPT\n'],
+  ['hi','Baseline 0%  ->  final 100%'],
+  ['dim','The model never changed. Only the text around it did.'],
+  ['','And this time, nobody wrote that text.']
+];
+let evoAt = 0;
+function evoDraw(){
+  document.getElementById('evoLog').innerHTML = EVO.slice(0, evoAt).map(([cls, text]) =>
+    cls ? '<span class="' + cls + '">' + text + '</span>' : text).join('\n') ||
+    'Not started. Nobody has written a skill file. Validation score with no skill at all: 0%.';
+  document.getElementById('evoLog').scrollTop = 9e9;
+}
+document.getElementById('evoStep').addEventListener('click', () => {
+  let target = evoAt + 1;
+  while(target < EVO.length && EVO[target][0] !== 'hi') target++;
+  evoAt = Math.min(target, EVO.length); evoDraw();
+});
+document.getElementById('evoReset').addEventListener('click', () => { evoAt = 0; evoDraw(); });
+document.getElementById('evoRun').addEventListener('click', () => {
+  evoAt = 0; evoDraw();
+  const timer = setInterval(() => {
+    evoAt++; evoDraw();
+    if(evoAt >= EVO.length) clearInterval(timer);
+  }, 200);
+});
+
+renderInspector();
+</script>
+</body>
+</html>

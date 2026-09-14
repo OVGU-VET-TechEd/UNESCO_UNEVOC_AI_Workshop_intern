@@ -1,0 +1,8 @@
+# Part 4 demo assistant.
+#
+# Retrieval, chunking, citation checking and the evaluation harness use ONLY the
+# Python standard library. That is deliberate: the parts that determine answer
+# quality should be readable without installing anything.
+#
+# This one package is needed only if your corpus contains PDFs:
+pdfplumber>=0.11

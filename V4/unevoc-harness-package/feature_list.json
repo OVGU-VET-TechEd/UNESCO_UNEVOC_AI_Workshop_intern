@@ -1,0 +1,118 @@
+{
+  "_comment": "The work, machine-readable. Exactly ONE item may have status 'in_progress'. Nothing becomes 'passing' without `make verify` output pasted into 'evidence'. See bmad/checklists/definition_of_done.md.",
+  "_status_values": [
+    "not_started",
+    "in_progress",
+    "blocked",
+    "passing"
+  ],
+  "features": [
+    {
+      "id": "harness-core",
+      "priority": 1,
+      "area": "code",
+      "owner": "@librarian",
+      "title": "Minimal harness, semi-agent and agent run end to end",
+      "user_visible_behavior": "make demo completes: File D accepts 3 of 3 objectives, both Part 3 variants produce reports, the agent stops on its own stop condition.",
+      "status": "passing",
+      "verification": [
+        "make verify",
+        "make demo"
+      ],
+      "evidence": "make verify -> exit 0, all checks ok. make demo -> exit 0; agent reached 'Stopping. The report exists and contains a section for all 3 input documents.'",
+      "notes": "Verified against tools/mock_ollama.py. Re-run against a real model before any session (workflow W2)."
+    },
+    {
+      "id": "demo-assistant",
+      "priority": 2,
+      "area": "code",
+      "owner": "@librarian",
+      "title": "Document assistant answers with citations and refuses when uncovered",
+      "user_visible_behavior": "Covered questions answer with resolvable [S#] citations; uncovered questions are refused at the retrieval gate before any model call.",
+      "status": "passing",
+      "verification": [
+        "make verify",
+        "make eval MODEL=<model>"
+      ],
+      "evidence": "make eval MODEL=mock:demo -> retrieval hit 100%, answered-when-expected 100%, refused-when-expected 100% (12 questions).",
+      "notes": "Thresholds MIN_RETRIEVAL_SCORE=5.0 and MIN_TERM_COVERAGE=0.55 are tuned to the synthetic demo corpus and WILL be wrong for any other corpus."
+    },
+    {
+      "id": "teaching-parts-1-4",
+      "priority": 3,
+      "area": "content",
+      "owner": "@author",
+      "title": "Timeline, decks, cheatsheet, runbooks and use cases complete",
+      "user_visible_behavior": "A facilitator can deliver Part 2 and Part 4 sessions from these files without further preparation beyond the runbook.",
+      "status": "passing",
+      "verification": [
+        "make verify",
+        "render both LiaScript decks at liascript.github.io"
+      ],
+      "evidence": "make verify -> liascript checks pass on both decks (12 and 13 answered questions, 45 and 41 speaker-note blocks); all relative links resolve.",
+      "notes": "UNESCO terminology corrected to Acquire/Deepen/Create; the 'AI-literate / AI-enhanced' phrasing in the original brief is flagged as non-UNESCO in PART1 and 00_INDEX."
+    },
+    {
+      "id": "agent-surfaces",
+      "priority": 4,
+      "area": "harness",
+      "owner": "@qa",
+      "title": "Copilot and Continue surfaces defined over shared bmad/ doctrine",
+      "user_visible_behavior": "Six custom agents appear in the VS Code agents dropdown with working handoffs; the same six slash commands exist in both Copilot and Continue.",
+      "status": "passing",
+      "verification": [
+        "make verify",
+        "open the workspace in VS Code and confirm the agents dropdown lists all six"
+      ],
+      "evidence": "make verify -> agents checks pass: 6 agents, 6 prompts, 3 instruction files, all handoff targets resolve, .continue/config.yaml points only at 127.0.0.1.",
+      "notes": "Tool names in agent frontmatter follow the VS Code custom-agent format as of July 2026; unavailable tools are ignored by VS Code rather than erroring."
+    },
+    {
+      "id": "interactive-learning-page",
+      "priority": 5,
+      "area": "content",
+      "owner": "@author",
+      "title": "Interactive six-layer learning page and the layer-5 agent",
+      "user_visible_behavior": "LEARN_the_five_layers.html opens with no network and walks a reader from tokens to a self-improving agent, with a prompt inspector that grows at each layer. wiki_agent.py evolves a skill file and rolls back a bad proposal.",
+      "status": "passing",
+      "verification": [
+        "make verify",
+        "make demo",
+        "make evolve MODEL=<model>"
+      ],
+      "evidence": "make verify -> exit 0 (offline check now covers HTML assets and browser storage). make demo -> exit 0; layer 5 arc 0% -> 33% -> 67% -> ROLLED BACK -> 100%. Page logic exercised headlessly: stack grows 0/1/2/5/6/8 blocks, 0 -> 239 tokens across the six layers.",
+      "notes": "Layer-5 figures are from WikiSkill (arXiv:2608.27454). Demos replay real script output via the mock so the page works with no model installed; the tokenizer is a stated approximation."
+    },
+    {
+      "id": "real-model-validation",
+      "priority": 6,
+      "area": "verification",
+      "owner": "@librarian",
+      "title": "Validate every component against a real local model, not the mock",
+      "user_visible_behavior": "make eval and make demo produce sensible output with llama3.1:8b and qwen2.5:7b on the session machine.",
+      "status": "not_started",
+      "verification": [
+        "make eval MODEL=llama3.1:8b",
+        "make eval MODEL=qwen2.5:7b",
+        "python3 ask.py 'What is the capital city of Peru?' --model llama3.1:8b  # must refuse"
+      ],
+      "evidence": "",
+      "notes": "BLOCKING for any session. make demo uses the mock and therefore cannot catch a missing or broken model. This is workflow W2 step 2."
+    },
+    {
+      "id": "pilot-question-set",
+      "priority": 7,
+      "area": "content",
+      "owner": "@librarian",
+      "title": "Replace the 12 demo questions with 30-50 collected from real staff",
+      "user_visible_behavior": "eval_questions.json contains real institutional questions, including at least eight the corpus does not cover.",
+      "status": "not_started",
+      "verification": [
+        "make eval MODEL=<model>",
+        "at least 8 questions with expect=refused"
+      ],
+      "evidence": "",
+      "notes": "Collect the questions BEFORE building anything for a pilot. Twelve is a demonstration; this is the difference between a demo and a pilot."
+    }
+  ]
+}

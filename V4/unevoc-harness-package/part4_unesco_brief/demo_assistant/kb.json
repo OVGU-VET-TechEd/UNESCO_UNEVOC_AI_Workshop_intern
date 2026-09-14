@@ -1,0 +1,347 @@
+{
+ "built_at": "2026-07-28T09:16:49",
+ "source_folder": "/home/claude/build/unevoc-harness-package/part4_unesco_brief/demo_assistant/corpus",
+ "documents": [
+  "01_tvet_quality_framework.md",
+  "02_microcredential_guidelines.md",
+  "03_project_charter_greenskills.md",
+  "04_progress_report_q3.md",
+  "05_instructor_training_outline.md",
+  "06_evaluation_methodology_note.md",
+  "07_steering_minutes.md",
+  "08_open_licensing_note.md"
+ ],
+ "embedding_model": null,
+ "chunk_target_words": 180,
+ "chunk_overlap_words": 40,
+ "chunks": [
+  {
+   "doc": "01_tvet_quality_framework.md",
+   "title": "Regional TVET Quality Assurance Framework (synthetic sample)",
+   "section": "1. Purpose",
+   "text": "This framework describes how participating centres assure the quality of technical and\nvocational training provision. It applies to all publicly funded programmes of 120 hours\nor more. It does not apply to short awareness courses of fewer than 20 hours.",
+   "words": 40,
+   "id": "01_tvet_quality_framework.md#000"
+  },
+  {
+   "doc": "01_tvet_quality_framework.md",
+   "title": "Regional TVET Quality Assurance Framework (synthetic sample)",
+   "section": "2. Quality dimensions",
+   "text": "Provision is assessed against five dimensions: relevance to labour market need,\nlearner outcomes, staff competence, facilities and equipment, and inclusion.\n\nEach dimension is rated on a four-point scale: not established, emerging, established,\nadvanced. A centre must reach \"established\" on all five dimensions to hold full\nrecognition. A centre rated \"emerging\" on any dimension receives conditional\nrecognition for twelve months.",
+   "words": 59,
+   "id": "01_tvet_quality_framework.md#001"
+  },
+  {
+   "doc": "01_tvet_quality_framework.md",
+   "title": "Regional TVET Quality Assurance Framework (synthetic sample)",
+   "section": "3. Review cycle",
+   "text": "Full external review takes place every four years. A lighter self-assessment is\nsubmitted annually by 31 March. Centres holding conditional recognition submit\nself-assessment every six months until the condition is lifted.",
+   "words": 31,
+   "id": "01_tvet_quality_framework.md#002"
+  },
+  {
+   "doc": "01_tvet_quality_framework.md",
+   "title": "Regional TVET Quality Assurance Framework (synthetic sample)",
+   "section": "4. Evidence",
+   "text": "Self-assessment must be supported by evidence. Acceptable evidence includes completion\nand progression data, employer feedback, staff qualification records, and equipment\ninspection reports. Learner satisfaction surveys alone are not sufficient evidence for\nany dimension.",
+   "words": 33,
+   "id": "01_tvet_quality_framework.md#003"
+  },
+  {
+   "doc": "01_tvet_quality_framework.md",
+   "title": "Regional TVET Quality Assurance Framework (synthetic sample)",
+   "section": "5. Appeals",
+   "text": "A centre may appeal a rating within 30 calendar days of notification. Appeals are heard\nby a panel that did not take part in the original review.",
+   "words": 27,
+   "id": "01_tvet_quality_framework.md#004"
+  },
+  {
+   "doc": "02_microcredential_guidelines.md",
+   "title": "Guidelines for Microcredential Design (synthetic sample)",
+   "section": "Scope",
+   "text": "These guidelines cover microcredentials of between 5 and 60 notional learning hours\noffered by participating centres.",
+   "words": 16,
+   "id": "02_microcredential_guidelines.md#000"
+  },
+  {
+   "doc": "02_microcredential_guidelines.md",
+   "title": "Guidelines for Microcredential Design (synthetic sample)",
+   "section": "Required elements",
+   "text": "Every microcredential must state: the learning outcomes, the notional learning hours,\nthe assessment method, the level, and the issuing body. Learning outcomes must be\nwritten as observable statements beginning with an action verb.\n\nA microcredential without a stated assessment method may not be issued. Attendance is\nnot an assessment method.",
+   "words": 50,
+   "id": "02_microcredential_guidelines.md#001"
+  },
+  {
+   "doc": "02_microcredential_guidelines.md",
+   "title": "Guidelines for Microcredential Design (synthetic sample)",
+   "section": "Stacking",
+   "text": "Microcredentials may be stacked toward a larger qualification only where the issuing\nbody has published a stacking rule in advance. Retrospective stacking is not permitted.",
+   "words": 25,
+   "id": "02_microcredential_guidelines.md#002"
+  },
+  {
+   "doc": "02_microcredential_guidelines.md",
+   "title": "Guidelines for Microcredential Design (synthetic sample)",
+   "section": "Digital format",
+   "text": "Credentials should be issued in a machine-readable format that carries the issuer, the\nholder, the outcomes and the issue date. Where a learning management system is used,\nSCORM 1.2 remains the minimum interoperability target for participating centres,\nalthough newer packaging formats are encouraged.",
+   "words": 43,
+   "id": "02_microcredential_guidelines.md#003"
+  },
+  {
+   "doc": "02_microcredential_guidelines.md",
+   "title": "Guidelines for Microcredential Design (synthetic sample)",
+   "section": "Review",
+   "text": "Guidelines are reviewed every two years. The current version was adopted in the third\nquarter of the reporting year.",
+   "words": 19,
+   "id": "02_microcredential_guidelines.md#004"
+  },
+  {
+   "doc": "03_project_charter_greenskills.md",
+   "title": "Project Charter — Green Skills for Manufacturing (synthetic sample)",
+   "section": "Summary",
+   "text": "A 24-month project to develop and pilot six microcredentials in energy-efficient\nmanufacturing practice across four partner centres.",
+   "words": 17,
+   "id": "03_project_charter_greenskills.md#000"
+  },
+  {
+   "doc": "03_project_charter_greenskills.md",
+   "title": "Project Charter — Green Skills for Manufacturing (synthetic sample)",
+   "section": "Objectives",
+   "text": "1. Map green-skill gaps in the regional manufacturing sector.\n2. Develop six microcredentials of 20 to 40 notional hours each.\n3. Train 24 instructors to deliver them.\n4. Pilot with at least 300 learners.\n5. Publish an open evaluation report.",
+   "words": 40,
+   "id": "03_project_charter_greenskills.md#001"
+  },
+  {
+   "doc": "03_project_charter_greenskills.md",
+   "title": "Project Charter — Green Skills for Manufacturing (synthetic sample)",
+   "section": "Milestones",
+   "text": "| Milestone | Due | Owner |\n|---|---|---|\n| Skills gap report published | Month 4 | Work package 1 lead |\n| First two microcredentials drafted | Month 9 | Work package 2 lead |\n| Instructor training delivered | Month 13 | Work package 3 lead |\n| Pilot completed, 300 learners | Month 20 | Work package 4 lead |\n| Evaluation report published | Month 23 | Coordinator |",
+   "words": 73,
+   "id": "03_project_charter_greenskills.md#002"
+  },
+  {
+   "doc": "03_project_charter_greenskills.md",
+   "title": "Project Charter — Green Skills for Manufacturing (synthetic sample)",
+   "section": "Budget summary",
+   "text": "| Category | Share of total |\n|---|---|\n| Staff | 62 |\n| Equipment | 14 |\n| Travel | 9 |\n| Dissemination | 8 |\n| Indirect | 7 |",
+   "words": 33,
+   "id": "03_project_charter_greenskills.md#003"
+  },
+  {
+   "doc": "03_project_charter_greenskills.md",
+   "title": "Project Charter — Green Skills for Manufacturing (synthetic sample)",
+   "section": "Risks",
+   "text": "The most significant identified risk is instructor availability during the pilot term.\nA secondary risk is that equipment procurement in one partner country exceeds the\nplanned lead time of eight weeks.",
+   "words": 31,
+   "id": "03_project_charter_greenskills.md#004"
+  },
+  {
+   "doc": "04_progress_report_q3.md",
+   "title": "Progress Report — Green Skills for Manufacturing, Quarter 3 (synthetic sample)",
+   "section": "Status summary",
+   "text": "The project is broadly on schedule. Three of five milestones due by the end of the\nquarter were met in full, one was met in part, and one has slipped.\n\n| Milestone | Planned | Actual | Status |\n|---|---|---|---|\n| Skills gap report published | Month 4 | Month 4 | Met |\n| Partner agreements signed | Month 5 | Month 5 | Met |\n| Instructor recruitment complete | Month 7 | Month 7 | Met |\n| First two microcredentials drafted | Month 9 | Month 10 | Partly met |\n| Equipment installed at partner C | Month 8 | not yet | Slipped |",
+   "words": 110,
+   "id": "04_progress_report_q3.md#000"
+  },
+  {
+   "doc": "04_progress_report_q3.md",
+   "title": "Progress Report — Green Skills for Manufacturing, Quarter 3 (synthetic sample)",
+   "section": "Explanation of variance",
+   "text": "Drafting of the first two microcredentials took one month longer than planned because\nthe assessment design required a second review round against the microcredential\nguidelines. The content is now complete and has passed review.\n\nEquipment installation at partner C has slipped by an estimated ten weeks. The cause is\na customs delay, not a procurement failure. Mitigation: the pilot at partner C will\nbegin with the two microcredentials that do not require the delayed equipment.",
+   "words": 75,
+   "id": "04_progress_report_q3.md#001"
+  },
+  {
+   "doc": "04_progress_report_q3.md",
+   "title": "Progress Report — Green Skills for Manufacturing, Quarter 3 (synthetic sample)",
+   "section": "Learner numbers",
+   "text": "| Partner | Enrolled | Completed |\n|---|---|---|\n| Partner A | 84 | 71 |\n| Partner B | 62 | 55 |\n| Partner C | 0 | 0 |\n| Partner D | 77 | 69 |",
+   "words": 40,
+   "id": "04_progress_report_q3.md#002"
+  },
+  {
+   "doc": "04_progress_report_q3.md",
+   "title": "Progress Report — Green Skills for Manufacturing, Quarter 3 (synthetic sample)",
+   "section": "Next quarter",
+   "text": "Complete drafting of microcredentials three and four, begin instructor training, and\nconfirm a revised equipment date with partner C.",
+   "words": 19,
+   "id": "04_progress_report_q3.md#003"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Audience",
+   "text": "Vocational instructors delivering the green-skills microcredentials. No prior experience\nof digital course authoring is assumed.",
+   "words": 15,
+   "id": "05_instructor_training_outline.md#000"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Duration",
+   "text": "Three days, delivered face to face, with a half-day follow-up after six weeks.",
+   "words": 13,
+   "id": "05_instructor_training_outline.md#001"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Day 1 — Content and outcomes",
+   "text": "Writing observable learning outcomes. Aligning assessment to outcomes. Common failure\nmodes: outcomes that cannot be assessed, and assessments that test recall when the\noutcome asks for application.",
+   "words": 27,
+   "id": "05_instructor_training_outline.md#002"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Day 2 — Delivery and assessment",
+   "text": "Practical workshop delivery. Formative versus summative assessment. Recording evidence\nfor quality assurance purposes.",
+   "words": 13,
+   "id": "05_instructor_training_outline.md#003"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Day 3 — Digital authoring and packaging",
+   "text": "Authoring a module in a plain-text format. Adding a quiz. Exporting to the learning\nmanagement system. Participants finish the day with one complete module of their own.",
+   "words": 27,
+   "id": "05_instructor_training_outline.md#004"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Follow-up",
+   "text": "A half-day session six weeks later reviews what participants actually delivered and\nwhat went wrong.",
+   "words": 15,
+   "id": "05_instructor_training_outline.md#005"
+  },
+  {
+   "doc": "05_instructor_training_outline.md",
+   "title": "Instructor Training — Outline (synthetic sample)",
+   "section": "Assessment of participants",
+   "text": "Participants are assessed on the module they produce, against a published rubric. There\nis no written examination.",
+   "words": 17,
+   "id": "05_instructor_training_outline.md#006"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "Purpose",
+   "text": "This note records how the project's evaluation claims should and should not be phrased.",
+   "words": 14,
+   "id": "06_evaluation_methodology_note.md#000"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "Design",
+   "text": "The pilot is not a controlled trial. There is no comparison group. Learners self-select\ninto the microcredentials, and partner centres differ in size, sector focus and prior\nprovision.",
+   "words": 28,
+   "id": "06_evaluation_methodology_note.md#001"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "What can be claimed",
+   "text": "Completion rates, learner satisfaction, and instructor-reported changes in practice can\nbe reported directly as observations.",
+   "words": 15,
+   "id": "06_evaluation_methodology_note.md#002"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "What cannot be claimed",
+   "text": "Any statement of the form \"the microcredential caused an improvement in employment\noutcomes\" cannot be supported by this design. Where employment data is collected, it\nshould be reported as an association and explicitly labelled as such.",
+   "words": 36,
+   "id": "06_evaluation_methodology_note.md#003"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "Sample size",
+   "text": "The planned pilot of 300 learners is adequate for descriptive reporting. It is not\nadequate for subgroup analysis by sector, and subgroup figures should be reported with\ncounts rather than percentages where the subgroup is smaller than 30.",
+   "words": 38,
+   "id": "06_evaluation_methodology_note.md#004"
+  },
+  {
+   "doc": "06_evaluation_methodology_note.md",
+   "title": "Evaluation Methodology Note (synthetic sample)",
+   "section": "Data protection",
+   "text": "No personal data leaves the partner centre. Aggregated figures only are transmitted to\nthe coordinator.",
+   "words": 15,
+   "id": "06_evaluation_methodology_note.md#005"
+  },
+  {
+   "doc": "07_steering_minutes.md",
+   "title": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "section": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "text": "Date: 14 October\nChair: [PERSON_1] ([EMAIL_1], [PHONE_1])\nPresent: [PERSON_1], [PERSON_2] ([EMAIL_2]), [PERSON_3]\n([EMAIL_3], [PHONE_2]), [PERSON_4]\nApologies: [PERSON_5]",
+   "words": 17,
+   "id": "07_steering_minutes.md#000"
+  },
+  {
+   "doc": "07_steering_minutes.md",
+   "title": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "section": "1. Minutes of the previous meeting",
+   "text": "Approved without amendment.",
+   "words": 3,
+   "id": "07_steering_minutes.md#001"
+  },
+  {
+   "doc": "07_steering_minutes.md",
+   "title": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "section": "2. Equipment delay at partner C",
+   "text": "[PERSON_2] reported the customs delay. The committee agreed the mitigation set out\nin the quarterly progress report: begin the pilot with the two microcredentials that do\nnot require the delayed equipment.\n\nAction: [PERSON_4] to confirm a revised installation date by 5 November.",
+   "words": 42,
+   "id": "07_steering_minutes.md#002"
+  },
+  {
+   "doc": "07_steering_minutes.md",
+   "title": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "section": "3. Microcredential review round",
+   "text": "[PERSON_3] noted that the second review round improved assessment design and\nrecommended building the second round into the schedule for the remaining four\nmicrocredentials rather than treating it as an exception.\n\nDecision: the schedule will be revised to include two review rounds per microcredential.",
+   "words": 44,
+   "id": "07_steering_minutes.md#003"
+  },
+  {
+   "doc": "07_steering_minutes.md",
+   "title": "Steering Committee Minutes — Quarter 3 (synthetic sample, contains invented personal data)",
+   "section": "4. Any other business",
+   "text": "The committee noted that the evaluation methodology note should be circulated to all\npartners before employment data is collected.\n\nNext meeting: 16 January.",
+   "words": 23,
+   "id": "07_steering_minutes.md#004"
+  },
+  {
+   "doc": "08_open_licensing_note.md",
+   "title": "Open Licensing Note (synthetic sample)",
+   "section": "Default",
+   "text": "Materials produced by the project are released under an open licence permitting reuse\nand adaptation with attribution, unless a specific exception is recorded.",
+   "words": 23,
+   "id": "08_open_licensing_note.md#000"
+  },
+  {
+   "doc": "08_open_licensing_note.md",
+   "title": "Open Licensing Note (synthetic sample)",
+   "section": "Exceptions",
+   "text": "Two categories are excepted. First, third-party material included under a separate\nlicence, which retains its own terms and must be listed in the materials register.\nSecond, assessment instruments, which are released to partner centres only, because\npublic release would compromise their use.",
+   "words": 42,
+   "id": "08_open_licensing_note.md#001"
+  },
+  {
+   "doc": "08_open_licensing_note.md",
+   "title": "Open Licensing Note (synthetic sample)",
+   "section": "Attribution",
+   "text": "Attribution must name the project and the licence. It need not name individual authors,\nalthough it may.",
+   "words": 17,
+   "id": "08_open_licensing_note.md#002"
+  },
+  {
+   "doc": "08_open_licensing_note.md",
+   "title": "Open Licensing Note (synthetic sample)",
+   "section": "Practical consequence",
+   "text": "Before publishing any module, check the materials register for third-party items. A\nmodule containing an unlisted third-party image may not be published until the item is\neither licensed, replaced, or removed.",
+   "words": 31,
+   "id": "08_open_licensing_note.md#003"
+  }
+ ]
+}

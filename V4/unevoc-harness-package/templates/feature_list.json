@@ -1,0 +1,20 @@
+{
+  "_comment": "TEMPLATE. Copy to your repo root and replace the example item. Only ONE item may have status 'in_progress' at any time. Pattern from the Learn Harness Engineering template library.",
+  "_status_values": ["not_started", "in_progress", "blocked", "passing"],
+  "features": [
+    {
+      "id": "<short-unique-id>",
+      "priority": 1,
+      "area": "<content | ingest | export | ui>",
+      "title": "<one short line>",
+      "user_visible_behavior": "<what someone sees when this works, in plain language>",
+      "status": "not_started",
+      "verification": [
+        "<the exact command to run>",
+        "<the manual check, if any, in one sentence>"
+      ],
+      "evidence": "",
+      "notes": ""
+    }
+  ]
+}
