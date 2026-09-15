@@ -1,0 +1,67 @@
+$ python wiki_agent.py --model llama3.1:8b --reset --iterations 5
+
+Workspace deleted; starting from nothing.
+
+Model: llama3.1:8b   workspace: /Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part5_self_improving/workspace
+4 training tasks, 3 validation tasks
+
+Baseline with no skill at all: 0%
+
+==============================================================
+ITERATION 1
+==============================================================
+  1. rollouts        0% on training tasks
+  2. wiki maintainer 1 pattern page(s) written or updated
+  3. proposer        candidate skill, 19 lines
+  4. gate            0% <= 0% previous -> ROLLED BACK
+     (the wiki keeps what was learned either way)
+
+==============================================================
+ITERATION 2
+==============================================================
+  1. rollouts        0% on training tasks
+  2. wiki maintainer 1 pattern page(s) written or updated
+  3. proposer        candidate skill, 25 lines
+  4. gate            0% <= 0% previous -> ROLLED BACK
+     (the wiki keeps what was learned either way)
+
+==============================================================
+ITERATION 3
+==============================================================
+  1. rollouts        0% on training tasks
+  2. wiki maintainer 1 pattern page(s) written or updated
+  3. proposer        candidate skill, 27 lines
+  4. gate            0% <= 0% previous -> ROLLED BACK
+     (the wiki keeps what was learned either way)
+
+==============================================================
+ITERATION 4
+==============================================================
+  1. rollouts        0% on training tasks
+  2. wiki maintainer 1 pattern page(s) written or updated
+  3. proposer        candidate skill, 29 lines
+  4. gate            0% <= 0% previous -> ROLLED BACK
+     (the wiki keeps what was learned either way)
+
+==============================================================
+ITERATION 5
+==============================================================
+  1. rollouts        0% on training tasks
+  2. wiki maintainer 1 pattern page(s) written or updated
+  3. proposer        candidate skill, 31 lines
+  4. gate            0% <= 0% previous -> ROLLED BACK
+     (the wiki keeps what was learned either way)
+
+==============================================================
+Baseline 0%  ->  final 0%
+
+The model never changed. Only the text around it did.
+
+  /Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part5_self_improving/workspace/skills/SKILL.md
+     the skill it wrote for itself
+  /Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part5_self_improving/workspace/wiki/patterns
+     what it worked out along the way
+  /Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part5_self_improving/workspace/wiki/skill-impact.md
+     every proposal, kept or rolled back
+
+Report: part5_self_improving/layers/output/layer5_evolve.md

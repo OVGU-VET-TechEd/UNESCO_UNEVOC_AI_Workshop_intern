@@ -1,0 +1,355 @@
+{
+  "environment": {
+    "model": "llama3.1:8b",
+    "model_details": {
+      "digest": "46e0c10c039e",
+      "parent_model": "",
+      "format": "gguf",
+      "family": "llama",
+      "families": [
+        "llama"
+      ],
+      "parameter_size": "8.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 131072,
+      "embedding_length": 4096
+    },
+    "ollama_url": "http://127.0.0.1:11434",
+    "ollama_version": "0.34.0",
+    "python": "3.10.9",
+    "platform": "macOS-26.6.2-x86_64-i386-64bit",
+    "machine": "x86_64",
+    "started": "2026-09-15T20:47:53",
+    "finished": "2026-09-15T20:52:09",
+    "total_seconds": 255.6
+  },
+  "labs": [
+    {
+      "id": "0",
+      "title": "Tokens",
+      "command": "python layer0_tokens.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "English 10 tokens (1.25/word, page est. 14); German 18 tokens (2.57/word, page est. 17); French 23 tokens (2.3/word, page est. 26); Spanish 20 tokens (1.67/word, page est. 22)",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 29.9,
+          "log": "logs/layer0_tokens.log",
+          "data": {
+            "samples": [
+              {
+                "language": "English",
+                "text": "Write one learning objective for hydraulic system safety.",
+                "words": 8,
+                "page_estimate": 14,
+                "real_tokens": 10,
+                "tokens_per_word": 1.25
+              },
+              {
+                "language": "German",
+                "text": "Formuliere ein Lernziel zur Sicherheit von Hydrauliksystemen.",
+                "words": 7,
+                "page_estimate": 17,
+                "real_tokens": 18,
+                "tokens_per_word": 2.57
+              },
+              {
+                "language": "French",
+                "text": "Rédigez un objectif d'apprentissage sur la sécurité des systèmes hydrauliques.",
+                "words": 10,
+                "page_estimate": 26,
+                "real_tokens": 23,
+                "tokens_per_word": 2.3
+              },
+              {
+                "language": "Spanish",
+                "text": "Escribe un objetivo de aprendizaje sobre la seguridad de los sistemas hidráulicos.",
+                "words": 12,
+                "page_estimate": 22,
+                "real_tokens": 20,
+                "tokens_per_word": 1.67
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "title": "Prompt: vague vs. specific",
+      "command": "python layer1_prompt.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "vague: passed 0/1; specific: passed 1/1",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 25.3,
+          "log": "logs/layer1_prompt.log",
+          "data": {
+            "results": [
+              {
+                "kind": "vague",
+                "prompt": "Write a learning objective about hydraulic safety.",
+                "answer": "Here is a potential learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, learners will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper handling and maintenance procedures, and implement safe work practices to prevent injuries and damage to equipment.\n\n**Specifically, learners will be able to:**\n\n* Recognize the hazards associated with hydraulic systems, including pressure, fluid leaks, and entanglements\n* Identify proper personal protective equipment (PPE) and safety gear for working with hydraulic systems\n* Describe safe handling and maintenance procedures for hydraulic equipment, including inspection, testing, and repair\n* Apply safe work practices to prevent injuries and damage to equipment, including lockout/tagout procedures and emergency shutdown protocols.\n\nThis learning objective is specific, measurable, achievable, relevant, and time-bound (SMART), and can be used as a guide for developing a training program on hydraulic safety.",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 143,
+                "prompt_tokens": 18,
+                "answer_tokens": 185,
+                "seconds": 13.68
+              },
+              {
+                "kind": "specific",
+                "prompt": "Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.",
+                "answer": "Identify and explain the key hazards associated with hydraulic system operation and maintenance procedures.",
+                "passed": true,
+                "reason": "ok",
+                "words": 14,
+                "prompt_tokens": 49,
+                "answer_tokens": 17,
+                "seconds": 11.55
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Skill: without vs. with SKILL.md",
+      "command": "python layer2_skill.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "without skill: passed 0/1; with skill: passed 1/1",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 29.4,
+          "log": "logs/layer2_skill.log",
+          "data": {
+            "skill_file": "part5_self_improving/layers/skills/objectives/SKILL.md",
+            "results": [
+              {
+                "variant": "without skill",
+                "prompt": "Task: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Here is a potential learning objective for a vocational training module on hydraulic system safety:\n\n**Learning Objective:**\n\nUpon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic system operation, including proper lockout/tagout procedures, personal protective equipment use, and safe system maintenance practices, in order to prevent injury and ensure a safe working environment.",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 61,
+                "prompt_tokens": 27,
+                "answer_tokens": 75,
+                "seconds": 16.93
+              },
+              {
+                "variant": "with skill",
+                "prompt": "Follow this guidance exactly:\n---\n---\nname: objectives\ndescription: House rules for writing learning objectives in vocational training modules.\n---\n# Writing learning objectives\n- Begin with an approved action verb (identify, describe, explain, demonstrate, inspect, assess).\n- Use at most 20 words.\n- Write exactly one sentence.\n- Reply with the sentence only, no preamble.\n---\n\nTask: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Identify potential hazards in hydraulic systems and describe appropriate safety measures to mitigate risks.",
+                "passed": true,
+                "reason": "ok",
+                "words": 14,
+                "prompt_tokens": 102,
+                "answer_tokens": 17,
+                "seconds": 12.32
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Harness: make verify",
+      "command": "python layer3_harness.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "verify exit 0: 15 ok line(s), 0 failure(s)",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 0.2,
+          "log": "logs/layer3_harness.log",
+          "data": {
+            "planted_leak": false,
+            "corpus_restored": true,
+            "verify_exit_code": 0,
+            "checks_ok": [
+              "syntax: 22 Python file(s) compile",
+              "json: 40 JSON file(s) parse",
+              "structure: 49 required file(s) present",
+              "offline: 26 file(s) load nothing remote",
+              "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+              "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+              "anonymisation: indexed corpus contains no unredacted emails or international phone numbers",
+              "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+              "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+              "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+              "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+              "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+              "agents: handoff targets resolve (6 agent(s) declared)",
+              "agents: .continue/config.yaml points only at 127.0.0.1",
+              "links: all relative Markdown links resolve"
+            ],
+            "failures": [],
+            "adapters_missing": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "3b",
+      "title": "Harness: verify with a planted leak",
+      "command": "python layer3_harness.py --model llama3.1:8b --break",
+      "as_expected": true,
+      "outcome": "planted email caught (verify exit 1); corpus restored: True",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 0.2,
+          "log": "logs/layer3_harness_break.log",
+          "data": {
+            "planted_leak": true,
+            "corpus_restored": true,
+            "verify_exit_code": 1,
+            "checks_ok": [
+              "syntax: 22 Python file(s) compile",
+              "json: 41 JSON file(s) parse",
+              "structure: 49 required file(s) present",
+              "offline: 26 file(s) load nothing remote",
+              "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+              "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+              "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+              "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+              "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+              "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+              "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+              "agents: handoff targets resolve (6 agent(s) declared)",
+              "agents: .continue/config.yaml points only at 127.0.0.1",
+              "links: all relative Markdown links resolve"
+            ],
+            "failures": [
+              "[anonymisation] corpus/07_steering_minutes.md still contains an unredacted email: maria.sanchez@example-partner.org"
+            ],
+            "adapters_missing": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "Loop: agent.py",
+      "command": "python layer4_loop.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "11 steps, 7 override(s), stop condition met; model in state.json: llama3.1:8b",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 109.6,
+          "log": "logs/layer4_loop.log",
+          "data": {
+            "agent_exit_code": 0,
+            "steps": 11,
+            "overrides": 7,
+            "override_reasons": [
+              "the PDFs have already been listed",
+              "site_a_workshop_report.pdf has already had `summarize_md` applied",
+              "site_b_hydraulics_report.pdf has already had `summarize_md` applied"
+            ],
+            "stop_condition_met": true,
+            "hit_step_limit": false,
+            "model_recorded_in_state": "llama3.1:8b",
+            "pdfs": 3,
+            "summaries": {
+              "site_a_workshop_report.pdf": "The site A metal workshop annual safety and training report covers the four quarters of the reporting year, summarising recorded incidents, delivered training hours, and the outcome of the annual equipment inspection. The report shows a total of 17 incidents recorded over the year, with a significant increase in training hours in the third quarter due to the introduction of a revised hot-work induction. The annual inspection identified two non-conformities related to extraction airflow, which were addressed before the end of the year.",
+              "site_b_hydraulics_report.pdf": "The document is the Site B Hydraulics Report, which outlines the safety and training record for the hydraulics laboratory at Site B. The report shows a reduction in incidents from 9 in the first quarter to 4 in the third and fourth quarters, with a corresponding increase in training hours. The replacement of an older test rig in the second quarter is cited as a possible explanation for the reduction in incidents.",
+              "site_c_electrical_report.pdf": "The Site C Electrical Report documents the annual safety and training performance of the Site C Electrical Training Centre. The centre recorded a low incident count throughout the year, with a total of 4 incidents, and no non-conformities were found during the annual inspection. Training hours dipped in the fourth quarter due to the examination period, but overall the centre's performance was consistent with its de-energised training model."
+            },
+            "report_written": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Self-improving: wiki_agent.py",
+      "command": "python layer5_evolve.py --model llama3.1:8b --iterations 5",
+      "as_expected": true,
+      "outcome": "baseline 0% -> final 0% over 5 iteration(s); 0 kept, 5 rolled back; 1 wiki page(s)",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 61.0,
+          "log": "logs/layer5_evolve.log",
+          "data": {
+            "agent_exit_code": 0,
+            "baseline_score": 0,
+            "final_score": 0,
+            "iterations_run": 5,
+            "kept": 0,
+            "rolled_back": 5,
+            "iterations": [
+              {
+                "iteration": 1,
+                "kept": false,
+                "validation_score": 0,
+                "previous_best": 0,
+                "skill_lines": 19,
+                "rollout_score": 0,
+                "rollout_passed": 0,
+                "rollout_tasks": 4
+              },
+              {
+                "iteration": 2,
+                "kept": false,
+                "validation_score": 0,
+                "previous_best": 0,
+                "skill_lines": 25,
+                "rollout_score": 0,
+                "rollout_passed": 0,
+                "rollout_tasks": 4
+              },
+              {
+                "iteration": 3,
+                "kept": false,
+                "validation_score": 0,
+                "previous_best": 0,
+                "skill_lines": 27,
+                "rollout_score": 0,
+                "rollout_passed": 0,
+                "rollout_tasks": 4
+              },
+              {
+                "iteration": 4,
+                "kept": false,
+                "validation_score": 0,
+                "previous_best": 0,
+                "skill_lines": 29,
+                "rollout_score": 0,
+                "rollout_passed": 0,
+                "rollout_tasks": 4
+              },
+              {
+                "iteration": 5,
+                "kept": false,
+                "validation_score": 0,
+                "previous_best": 0,
+                "skill_lines": 31,
+                "rollout_score": 0,
+                "rollout_passed": 0,
+                "rollout_tasks": 4
+              }
+            ],
+            "pattern_pages": [
+              "opened-with-x-not-an-approved-action-verb.md"
+            ],
+            "skill": ""
+          }
+        }
+      ]
+    }
+  ]
+}

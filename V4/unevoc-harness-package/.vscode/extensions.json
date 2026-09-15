@@ -1,0 +1,10 @@
+{
+  "// note": "Recommended when opening this workspace. Both agent surfaces are supported; you do not need both.",
+  "recommendations": [
+    "github.copilot",
+    "github.copilot-chat",
+    "continue.continue",
+    "ms-python.python",
+    "yzhang.markdown-all-in-one"
+  ]
+}

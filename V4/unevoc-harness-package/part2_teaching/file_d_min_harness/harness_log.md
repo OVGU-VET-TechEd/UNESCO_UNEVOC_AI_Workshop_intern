@@ -46,3 +46,24 @@
 - `15:59:31` SKIP  'hydraulic system safety for apprentice mechanics' — already accepted in an earlier run, nothing to do.
 - `15:59:31` SKIP  'reading an electrical circuit diagram' — already accepted in an earlier run, nothing to do.
 - `15:59:31` SKIP  'workplace risk assessment in a metal workshop' — already accepted in an earlier run, nothing to do.
+
+## Run 1 — 2026-09-15 17:59:57 — model `mock:demo`
+
+- `17:59:57` ASK   attempt 1 of 3 for 'hydraulic system safety for apprentice mechanics' using model `mock:demo`.
+- `17:59:57` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `17:59:57` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `17:59:57` ASK   attempt 2 of 3 for 'hydraulic system safety for apprentice mechanics' using model `mock:demo`.
+- `17:59:57` GOT   "Inspect a hydraulic system for leaks and pressure faults before operation."
+- `17:59:57` CHECK passed all three rules. Accepting this answer.
+- `17:59:57` ASK   attempt 1 of 3 for 'reading an electrical circuit diagram' using model `mock:demo`.
+- `17:59:57` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `17:59:57` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `17:59:57` ASK   attempt 2 of 3 for 'reading an electrical circuit diagram' using model `mock:demo`.
+- `17:59:57` GOT   "Identify the main components shown in a standard electrical circuit diagram."
+- `17:59:57` CHECK passed all three rules. Accepting this answer.
+- `17:59:57` ASK   attempt 1 of 3 for 'workplace risk assessment in a metal workshop' using model `mock:demo`.
+- `17:59:57` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `17:59:57` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `17:59:57` ASK   attempt 2 of 3 for 'workplace risk assessment in a metal workshop' using model `mock:demo`.
+- `17:59:57` GOT   "Assess common hazards in a metal workshop and record the required controls."
+- `17:59:57` CHECK passed all three rules. Accepting this answer.

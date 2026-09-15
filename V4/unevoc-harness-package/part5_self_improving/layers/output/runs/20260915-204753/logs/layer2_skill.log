@@ -1,0 +1,20 @@
+--- Skill file: not loaded ---
+prompt = your task  (1 block, 27 tokens)
+
+Here is a potential learning objective for a vocational training module on hydraulic system safety:
+
+**Learning Objective:**
+
+Upon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic system operation, including proper lockout/tagout procedures, personal protective equipment use, and safe system maintenance practices, in order to prevent injury and ensure a safe working environment.
+
+Fails: it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate).
+
+--- Skill file: loaded ---
+prompt = SKILL.md + your task  (2 blocks, 102 tokens)
+
+Identify potential hazards in hydraulic systems and describe appropriate safety measures to mitigate risks.
+
+Passes all three house rules.
+
+
+Report: part5_self_improving/layers/output/layer2_skill.md

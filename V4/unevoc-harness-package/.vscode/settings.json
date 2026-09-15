@@ -1,0 +1,46 @@
+{
+  "// AGENT SURFACES": "Copilot picks up .github/ automatically; these settings make the discovery explicit and add bmad/ as an extra location.",
+  "chat.agentFilesLocations": {
+    ".github/agents": true
+  },
+  "chat.promptFilesLocations": {
+    ".github/prompts": true
+  },
+  "chat.instructionsFilesLocations": {
+    ".github/instructions": true
+  },
+  "chat.promptFilesRecommendations": {
+    "verify": true,
+    "session-prep": true
+  },
+
+  "// PYTHON": "The package targets 3.9+ and the harness core is standard library only.",
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/part3_worked_example",
+    "${workspaceFolder}/part4_unesco_brief/demo_assistant"
+  ],
+
+  "// EDITOR": "Line length 96, per .github/instructions/python.instructions.md.",
+  "editor.rulers": [96],
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "[markdown]": {
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 100,
+    "files.trimTrailingWhitespace": false
+  },
+
+  "// GENERATED FILES": "Hidden from the explorer so nobody edits a build artefact by accident. They still exist on disk.",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.venv": true,
+    "part3_worked_example/output_semi": true,
+    "part3_worked_example/output_agent": true
+  },
+  "files.readonlyInclude": {
+    "part4_unesco_brief/demo_assistant/corpus/**": true,
+    "part4_unesco_brief/demo_assistant/kb.json": true,
+    "part4_unesco_brief/demo_assistant/anonymisation_report.md": true
+  }
+}

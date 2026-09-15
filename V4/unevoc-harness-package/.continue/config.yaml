@@ -1,0 +1,198 @@
+# config.yaml — Continue, workspace scope.
+#
+# Continue loads this file automatically when you open this workspace, and the
+# rule files in .continue/rules/ alongside it.
+#
+# This is the Continue-side ADAPTER over the same doctrine the Copilot side uses:
+# AGENTS.md and bmad/. Change doctrine there first, then update this file to
+# point at it. Never the other way round.
+
+name: UNEVOC Harness Engineering Package
+version: 1.0.0
+schema: v1
+
+# ---------------------------------------------------------------------------
+# MODELS — local only. Every entry points at 127.0.0.1.
+# ---------------------------------------------------------------------------
+# `AUTODETECT` asks Ollama what is actually installed rather than assuming, which
+# matches how the package's own scripts behave (`ollama list` / /api/tags). If you
+# prefer fixed models, comment it out and use the two explicit entries below.
+models:
+  - name: Local (autodetect)
+    provider: ollama
+    model: AUTODETECT
+    apiBase: http://127.0.0.1:11434
+    roles:
+      - chat
+      - edit
+      - apply
+
+  - name: Local Chat - llama3.1:8b
+    provider: ollama
+    model: llama3.1:8b
+    apiBase: http://127.0.0.1:11434
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultCompletionOptions:
+      temperature: 0.2
+
+  - name: Local Chat - qwen2.5:7b
+    provider: ollama
+    model: qwen2.5:7b
+    apiBase: http://127.0.0.1:11434
+    roles:
+      - chat
+      - edit
+      - apply
+    defaultCompletionOptions:
+      temperature: 0.2
+
+  # Small and fast: autocomplete must respond in well under a second or you will
+  # have dismissed it before it finishes.
+  - name: Local Autocomplete
+    provider: ollama
+    model: qwen2.5-coder:1.5b
+    apiBase: http://127.0.0.1:11434
+    roles:
+      - autocomplete
+
+  # Optional. Only useful if you have pulled it; the demo works without embeddings.
+  - name: Local Embeddings
+    provider: ollama
+    model: nomic-embed-text
+    apiBase: http://127.0.0.1:11434
+    roles:
+      - embed
+
+# ---------------------------------------------------------------------------
+# RULES — the short, always-on ones. The long-form doctrine is in .continue/rules/
+# ---------------------------------------------------------------------------
+rules:
+  - Read AGENTS.md before acting. It takes precedence over anything inferred from the code.
+  - Offline only. No code may reach any endpoint other than 127.0.0.1:11434.
+  - The harness core uses the Python standard library only.
+  - "`make verify` is the definition of done. Never report work complete without running it and pasting the output."
+  - Never edit part4_unesco_brief/demo_assistant/corpus/, kb.json or anonymisation_report.md. They are build artefacts.
+  - Never index a corpus before a human has read anonymisation_report.md. Stop and ask.
+  - Never present tools/mock_ollama.py output as model output. It returns canned text.
+  - Exactly one item may be in_progress in feature_list.json.
+  - "UNESCO progression levels are Acquire/Deepen/Create (teachers) and Understand/Apply/Create (students). 'AI-literate' and 'AI-enhanced educator' are not UNESCO terms."
+  - "LiaScript quizzes: single choice [( )] and [(X)]; multiple choice [[ ]] and [[X]]."
+  - If a claim cannot be verified from a source, say so in the text rather than inventing a plausible substitute.
+
+# ---------------------------------------------------------------------------
+# PROMPTS — slash commands. These mirror .github/prompts/*.prompt.md one for one,
+# so a facilitator gets the same commands whichever extension they are using.
+# Continue has no equivalent of Copilot's agent handoffs, so each prompt names
+# the next step in prose instead.
+# ---------------------------------------------------------------------------
+prompts:
+  - name: verify
+    description: Run the definition of done and report verbatim, with limitations
+    prompt: |
+      Act as @qa (charter: bmad/agents/qa.md). You are READ-ONLY. Do not edit anything.
+
+      Run `make verify`, then `make demo`.
+
+      Report:
+        1. PASS or FAIL, and the exit code of make verify.
+        2. The full output verbatim. Do not summarise — a summarised check is not a check.
+        3. For each failure: the check name, the file, and which agent owns the fix.
+        4. This limitations paragraph, every time:
+           "make verify checks shapes, syntax, structure and integrity. It cannot check whether
+           the teaching content is pedagogically sound, whether a citation supports the claim
+           attached to it, whether a document contains indirect identifiers, or whether an answer
+           the assistant gave is correct. Those need a person."
+
+      If you identify a fix, describe it and say which agent should apply it. Do not apply it.
+
+  - name: refresh-corpus
+    description: Workflow W1 — corpus refresh, with the mandatory human checkpoint
+    prompt: |
+      Act as @curator (charter: bmad/agents/curator.md).
+      Run workflow bmad/workflows/W1_corpus_refresh.md.
+
+      1. List everything currently in part4_unesco_brief/demo_assistant/corpus_raw/.
+      2. Run `make corpus`.
+      3. STOP. Open anonymisation_report.md. Summarise per document what was removed and what was
+         reported clean. Ask the human to confirm before indexing, and wait for an answer.
+         Do not proceed on an assumption.
+      4. Only after explicit confirmation: `make kb`.
+      5. `make verify` and paste the output.
+      6. Remind the user to run /eval-assistant next — a corpus change usually moves the
+         retrieval hit rate.
+
+      Flag loudly if any document is a PDF: anonymise.py copies PDFs through unscrubbed.
+      Never claim the corpus is anonymised. Report what was removed.
+
+  - name: eval-assistant
+    description: Evaluate the demo assistant and diagnose which rate is the problem
+    prompt: |
+      Act as @librarian (charter: bmad/agents/librarian.md).
+
+      Run `make eval MODEL=<the model I name, default llama3.1:8b>`.
+
+      Report all three rates SEPARATELY. A blended accuracy figure is not acceptable output.
+        - low retrieval hit rate      -> corpus/chunking problem. Do NOT touch thresholds or the
+                                         model. Say it belongs to @curator.
+        - low answered-when-expected  -> thresholds too strict, or the corpus lacks the material.
+        - low refused-when-expected   -> thresholds too loose. This is the serious one.
+
+      If tuning: change ONE constant at the top of ask.py, re-run, report before and after, and
+      state explicitly whether the refusal rate moved. A change that improves phrasing while
+      lowering the refusal rate is a regression and must be called one.
+
+      If the model is mock:demo, state that the output is canned and shows control flow only.
+
+  - name: new-teaching-section
+    description: Draft a teaching section to this package's editorial standard
+    prompt: |
+      Act as @author (charter: bmad/agents/author.md).
+
+      Before writing: read the neighbouring sections and match their level and sequencing. If the
+      section touches an external source, re-open that source. Do not paraphrase from memory.
+
+      While writing:
+        - UNESCO levels: Acquire/Deepen/Create (teachers), Understand/Apply/Create (students).
+        - LiaScript: [( )] / [(X)] single choice, [[ ]] / [[X]] multiple choice, --{{n}}--
+          speaker notes under every slide.
+        - If a claim cannot be confirmed, write that it could not be confirmed.
+        - End with a ONE-paragraph UNESCO mapping.
+        - No marketing language, no generic disclaimers.
+
+      After writing: run `make verify`, paste the output, and state which sources you re-read.
+
+  - name: session-prep
+    description: Workflow W2 — prepare this machine for a session tomorrow
+    prompt: |
+      Run workflow bmad/workflows/W2_session_prep.md on THIS machine.
+
+      1. `make verify` and `make demo` — both must exit 0 here.
+      2. `ollama list` — confirm the runbook's models are actually installed.
+      3. `make eval MODEL=<real model>` — NOT the mock. make demo uses the mock and cannot catch
+         a missing model; this step is what catches it.
+      4. Run two questions live: one covered (must answer with citations) and
+         "What is the capital city of Peru?" (must refuse at the retrieval gate, before any model
+         call — check ask_log.md).
+      5. Walk bmad/checklists/session_readiness.md and report every unticked box with a fallback.
+
+      If a model check fails and cannot be fixed, say clearly that the session must run on the
+      mock server and that this must be stated repeatedly to the room.
+
+  - name: release
+    description: Workflow W3 — release, ending in an archive verified from a fresh extraction
+    prompt: |
+      Run workflow bmad/workflows/W3_release.md, in order, stopping at each human checkpoint.
+
+      1. @author: re-fetch every external source. Re-check the UNESCO framework pages for a
+         revised edition — the package states none was found as of July 2026, and shipping that
+         unchecked turns a cautious claim into a false one.
+      2. @qa: make verify, make demo, full report with the limitations paragraph. Must be PASS.
+      3. @packager: make clean -> make corpus -> HUMAN confirms the report -> make kb ->
+         make verify -> make package. Then extract the archive to a temporary directory and run
+         make verify there. An archive that only verifies in place has not been verified.
+      4. HUMAN: confirm the shipped corpus is the synthetic one, and record it in PROGRESS.md.
+
+      Do not skip step 4 and do not answer it yourself.

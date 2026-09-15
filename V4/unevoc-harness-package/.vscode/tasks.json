@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "//": "Ctrl/Cmd+Shift+P -> Tasks: Run Task. These wrap the same Makefile targets the agents use, so a facilitator who does not like the terminal gets the identical definition of done.",
+  "tasks": [
+    {
+      "label": "verify (definition of done)",
+      "type": "shell",
+      "command": "make verify",
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "demo (smoke test, no model needed)",
+      "type": "shell",
+      "command": "make demo",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "corpus (anonymise — then READ the report)",
+      "type": "shell",
+      "command": "make corpus",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "kb (rebuild knowledge base — only after reading the report)",
+      "type": "shell",
+      "command": "make kb",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "eval (assistant, choose a model)",
+      "type": "shell",
+      "command": "make eval MODEL=${input:model}",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "mock Ollama server (background)",
+      "type": "shell",
+      "command": "python3 tools/mock_ollama.py",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "make clean",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "model",
+      "type": "pickString",
+      "description": "Which Ollama model? mock:demo needs no model but returns canned text.",
+      "options": ["llama3.1:8b", "qwen2.5:7b", "llama3.2:3b", "qwen2.5:3b", "mock:demo"],
+      "default": "llama3.1:8b"
+    }
+  ]
+}

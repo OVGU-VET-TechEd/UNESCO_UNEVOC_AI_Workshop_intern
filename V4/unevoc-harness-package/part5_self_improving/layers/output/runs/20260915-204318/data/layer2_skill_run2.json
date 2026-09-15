@@ -1,0 +1,33 @@
+{
+  "lab": "layer2_skill",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T20:45:52",
+  "data": {
+    "skill_file": "part5_self_improving/layers/skills/objectives/SKILL.md",
+    "results": [
+      {
+        "variant": "without skill",
+        "prompt": "Task: Write one learning objective for a vocational training module on: hydraulic system safety.",
+        "answer": "Here is a potential learning objective for a vocational training module on hydraulic system safety:\n\n**Learning Objective:**\n\nUpon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic system operation, including proper lockout/tagout procedures, personal protective equipment requirements, and safe system maintenance practices, in order to prevent injury and ensure a safe working environment.",
+        "passed": false,
+        "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+        "words": 61,
+        "prompt_tokens": 27,
+        "answer_tokens": 75,
+        "seconds": 8.86
+      },
+      {
+        "variant": "with skill",
+        "prompt": "Follow this guidance exactly:\n---\n---\nname: objectives\ndescription: House rules for writing learning objectives in vocational training modules.\n---\n# Writing learning objectives\n- Begin with an approved action verb (identify, describe, explain, demonstrate, inspect, assess).\n- Use at most 20 words.\n- Write exactly one sentence.\n- Reply with the sentence only, no preamble.\n---\n\nTask: Write one learning objective for a vocational training module on: hydraulic system safety.",
+        "answer": "Identify potential hazards associated with hydraulic system operation and maintenance procedures.",
+        "passed": true,
+        "reason": "ok",
+        "words": 11,
+        "prompt_tokens": 102,
+        "answer_tokens": 14,
+        "seconds": 11.04
+      }
+    ]
+  }
+}

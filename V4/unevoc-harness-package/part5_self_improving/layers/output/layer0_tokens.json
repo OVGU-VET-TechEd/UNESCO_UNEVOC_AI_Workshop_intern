@@ -1,0 +1,42 @@
+{
+  "lab": "layer0_tokens",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T21:02:27",
+  "data": {
+    "samples": [
+      {
+        "language": "English",
+        "text": "Write one learning objective for hydraulic system safety.",
+        "words": 8,
+        "page_estimate": 14,
+        "real_tokens": 10,
+        "tokens_per_word": 1.25
+      },
+      {
+        "language": "German",
+        "text": "Formuliere ein Lernziel zur Sicherheit von Hydrauliksystemen.",
+        "words": 7,
+        "page_estimate": 17,
+        "real_tokens": 18,
+        "tokens_per_word": 2.57
+      },
+      {
+        "language": "French",
+        "text": "Rédigez un objectif d'apprentissage sur la sécurité des systèmes hydrauliques.",
+        "words": 10,
+        "page_estimate": 26,
+        "real_tokens": 23,
+        "tokens_per_word": 2.3
+      },
+      {
+        "language": "Spanish",
+        "text": "Escribe un objetivo de aprendizaje sobre la seguridad de los sistemas hidráulicos.",
+        "words": 12,
+        "page_estimate": 22,
+        "real_tokens": 20,
+        "tokens_per_word": 1.67
+      }
+    ]
+  }
+}

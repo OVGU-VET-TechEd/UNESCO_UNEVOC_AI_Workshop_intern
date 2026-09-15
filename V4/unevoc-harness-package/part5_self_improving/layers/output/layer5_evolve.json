@@ -1,0 +1,30 @@
+{
+  "lab": "layer5_evolve",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T21:03:08",
+  "data": {
+    "agent_exit_code": 0,
+    "baseline_score": 0,
+    "final_score": 100,
+    "iterations_run": 1,
+    "kept": 1,
+    "rolled_back": 0,
+    "iterations": [
+      {
+        "iteration": 1,
+        "kept": true,
+        "validation_score": 100,
+        "previous_best": 0,
+        "skill_lines": 23,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      }
+    ],
+    "pattern_pages": [
+      "opened-with-x-not-an-approved-action-verb.md"
+    ],
+    "skill": "---\n# Pattern: opened with 'X', not an approved action verb\n\n**First seen:** iteration 1\n\n**What happens:** the answer is rejected because opened with 'X', not an approved action verb.\n\n**Example:** `Upon completion of this module, the apprentice mechanic will be able to identify and describe the key safety procedures for working with hydraulic systems, incl`\n\n**Proposed rules:**\n\n* Use approved action verbs to begin each learning objective, such as \"Identify\", \"Describe\", \"Explain\", \"Demonstrate\", \"Apply\", or \"Analyze\".\n* Replace \"Upon completion of this module\" with a more specific description of the learning outcome.\n* Ensure that each learning objective is specific, measurable, achievable, relevant, and time-bound (SMART).\n* Use a consistent verb tense throughout the learning objective.\n* Avoid using phrases that imply the learner will \"be able to\" do something, instead focus on what they will actually do.\n* Remove any unnecessary words or phrases that do not add value to the learning objective.\n* Use present tense for learning objectives that describe a future action.\n* Ensure that the learning objective is concise and easy to understand.\n\n## Evidence\n\n- Iteration 1: 4 occurrence(s)."
+  }
+}

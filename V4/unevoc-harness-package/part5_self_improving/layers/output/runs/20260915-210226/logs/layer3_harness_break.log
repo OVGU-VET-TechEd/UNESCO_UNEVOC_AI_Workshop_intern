@@ -1,0 +1,32 @@
+Planted an email address in part4_unesco_brief/demo_assistant/corpus/07_steering_minutes.md
+
+(original corpus file restored)
+
+$ make verify
+
+Verifying package at /Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package
+
+  ok   syntax: 22 Python file(s) compile
+  ok   json: 53 JSON file(s) parse
+  ok   structure: 49 required file(s) present
+  ok   offline: 26 file(s) load nothing remote
+  ok   liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)
+  ok   liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)
+  ok   anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.
+  ok   knowledgebase: 41 passage(s) from 8 document(s), all carry metadata
+  ok   agents: .github/agents/ — 6 file(s) with valid frontmatter
+  ok   agents: .github/prompts/ — 6 file(s) with valid frontmatter
+  ok   agents: .github/instructions/ — 3 file(s) with valid frontmatter
+  ok   agents: handoff targets resolve (6 agent(s) declared)
+  ok   agents: .continue/config.yaml points only at 127.0.0.1
+  ok   links: all relative Markdown links resolve
+
+1 FAILURE(S):
+
+  FAIL [anonymisation] corpus/07_steering_minutes.md still contains an unredacted email: maria.sanchez@example-partner.org
+
+VERIFICATION FAILED. Nothing may be marked `passing` until this exits 0.
+
+exit code 1
+
+Report: part5_self_improving/layers/output/layer3_harness_break.md

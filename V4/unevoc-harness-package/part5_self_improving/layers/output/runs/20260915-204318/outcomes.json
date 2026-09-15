@@ -1,0 +1,306 @@
+{
+  "environment": {
+    "model": "llama3.1:8b",
+    "model_details": {
+      "digest": "46e0c10c039e",
+      "parent_model": "",
+      "format": "gguf",
+      "family": "llama",
+      "families": [
+        "llama"
+      ],
+      "parameter_size": "8.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 131072,
+      "embedding_length": 4096
+    },
+    "ollama_url": "http://127.0.0.1:11434",
+    "ollama_version": "0.34.0",
+    "python": "3.10.9",
+    "platform": "macOS-26.6.2-x86_64-i386-64bit",
+    "machine": "x86_64",
+    "started": "2026-09-15T20:43:18",
+    "finished": "2026-09-15T20:45:53",
+    "total_seconds": 154.3
+  },
+  "labs": [
+    {
+      "id": "0",
+      "title": "Tokens",
+      "command": "python layer0_tokens.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "English 10 tokens (1.25/word, page est. 14); German 18 tokens (2.57/word, page est. 17); French 23 tokens (2.3/word, page est. 26); Spanish 20 tokens (1.67/word, page est. 22)",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 47.5,
+          "log": "logs/layer0_tokens.log",
+          "data": {
+            "samples": [
+              {
+                "language": "English",
+                "text": "Write one learning objective for hydraulic system safety.",
+                "words": 8,
+                "page_estimate": 14,
+                "real_tokens": 10,
+                "tokens_per_word": 1.25
+              },
+              {
+                "language": "German",
+                "text": "Formuliere ein Lernziel zur Sicherheit von Hydrauliksystemen.",
+                "words": 7,
+                "page_estimate": 17,
+                "real_tokens": 18,
+                "tokens_per_word": 2.57
+              },
+              {
+                "language": "French",
+                "text": "Rédigez un objectif d'apprentissage sur la sécurité des systèmes hydrauliques.",
+                "words": 10,
+                "page_estimate": 26,
+                "real_tokens": 23,
+                "tokens_per_word": 2.3
+              },
+              {
+                "language": "Spanish",
+                "text": "Escribe un objetivo de aprendizaje sobre la seguridad de los sistemas hidráulicos.",
+                "words": 12,
+                "page_estimate": 22,
+                "real_tokens": 20,
+                "tokens_per_word": 1.67
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "title": "Prompt: vague vs. specific",
+      "command": "python layer1_prompt.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "vague: passed 0/2; specific: passed 2/2",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 35.5,
+          "log": "logs/layer1_prompt_run1.log",
+          "data": {
+            "results": [
+              {
+                "kind": "vague",
+                "prompt": "Write a learning objective about hydraulic safety.",
+                "answer": "Here is a sample learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, the learner will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper maintenance, inspection, and operation procedures, in order to prevent accidents and ensure a safe working environment.\n\n**Specifically, the learner will be able to:**\n\n* Identify potential hazards associated with hydraulic systems, including fluid leaks, equipment malfunctions, and operator error\n* Describe proper maintenance and inspection procedures for hydraulic equipment, including fluid checks and filter replacements\n* Explain safe operating procedures for hydraulic equipment, including proper use of personal protective equipment (PPE) and adherence to manufacturer guidelines\n* Develop a plan to respond to hydraulic system emergencies, including fluid spills and equipment malfunctions\n\n**Assessment will be based on the learner's ability to demonstrate knowledge and application of hydraulic safety principles in a practical scenario.**",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 146,
+                "prompt_tokens": 18,
+                "answer_tokens": 182,
+                "seconds": 18.9
+              },
+              {
+                "kind": "specific",
+                "prompt": "Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.",
+                "answer": "Identify and explain the key hazards associated with hydraulic system operation and maintenance procedures.",
+                "passed": true,
+                "reason": "ok",
+                "words": 14,
+                "prompt_tokens": 49,
+                "answer_tokens": 17,
+                "seconds": 16.42
+              }
+            ]
+          }
+        },
+        {
+          "attempt": 2,
+          "exit_code": 0,
+          "seconds": 33.3,
+          "log": "logs/layer1_prompt_run2.log",
+          "data": {
+            "results": [
+              {
+                "kind": "vague",
+                "prompt": "Write a learning objective about hydraulic safety.",
+                "answer": "Here is a sample learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, the learner will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper lockout/tagout procedures, safe system operation, and emergency shutdown protocols, in order to prevent injuries and fatalities.\n\n**Key Performance Indicators:**\n\n* Identify at least three common hydraulic system hazards and their potential consequences\n* Describe the proper procedures for lockout/tagout of hydraulic systems\n* Explain the importance of regular system maintenance and inspection in preventing hydraulic-related accidents\n* Demonstrate an understanding of emergency shutdown procedures and protocols in the event of a hydraulic system failure or malfunction.",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 109,
+                "prompt_tokens": 18,
+                "answer_tokens": 136,
+                "seconds": 20.68
+              },
+              {
+                "kind": "specific",
+                "prompt": "Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.",
+                "answer": "Identify and assess potential hazards associated with hydraulic systems to prevent accidents and injuries.",
+                "passed": true,
+                "reason": "ok",
+                "words": 14,
+                "prompt_tokens": 49,
+                "answer_tokens": 17,
+                "seconds": 12.49
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Skill: without vs. with SKILL.md",
+      "command": "python layer2_skill.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "without skill: passed 0/2; with skill: passed 2/2",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 17.3,
+          "log": "logs/layer2_skill_run1.log",
+          "data": {
+            "skill_file": "part5_self_improving/layers/skills/objectives/SKILL.md",
+            "results": [
+              {
+                "variant": "without skill",
+                "prompt": "Task: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Here is a potential learning objective for a vocational training module on hydraulic system safety:\n\n**Learning Objective:**\n\nUpon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper lockout/tagout procedures, personal protective equipment requirements, and safe operating practices to prevent injury or death from hydraulic system-related accidents.",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 57,
+                "prompt_tokens": 27,
+                "answer_tokens": 71,
+                "seconds": 5.86
+              },
+              {
+                "variant": "with skill",
+                "prompt": "Follow this guidance exactly:\n---\n---\nname: objectives\ndescription: House rules for writing learning objectives in vocational training modules.\n---\n# Writing learning objectives\n- Begin with an approved action verb (identify, describe, explain, demonstrate, inspect, assess).\n- Use at most 20 words.\n- Write exactly one sentence.\n- Reply with the sentence only, no preamble.\n---\n\nTask: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Identify potential hazards in hydraulic systems and describe measures to mitigate risks.",
+                "passed": true,
+                "reason": "ok",
+                "words": 12,
+                "prompt_tokens": 102,
+                "answer_tokens": 15,
+                "seconds": 11.27
+              }
+            ]
+          }
+        },
+        {
+          "attempt": 2,
+          "exit_code": 0,
+          "seconds": 20.0,
+          "log": "logs/layer2_skill_run2.log",
+          "data": {
+            "skill_file": "part5_self_improving/layers/skills/objectives/SKILL.md",
+            "results": [
+              {
+                "variant": "without skill",
+                "prompt": "Task: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Here is a potential learning objective for a vocational training module on hydraulic system safety:\n\n**Learning Objective:**\n\nUpon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic system operation, including proper lockout/tagout procedures, personal protective equipment requirements, and safe system maintenance practices, in order to prevent injury and ensure a safe working environment.",
+                "passed": false,
+                "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+                "words": 61,
+                "prompt_tokens": 27,
+                "answer_tokens": 75,
+                "seconds": 8.86
+              },
+              {
+                "variant": "with skill",
+                "prompt": "Follow this guidance exactly:\n---\n---\nname: objectives\ndescription: House rules for writing learning objectives in vocational training modules.\n---\n# Writing learning objectives\n- Begin with an approved action verb (identify, describe, explain, demonstrate, inspect, assess).\n- Use at most 20 words.\n- Write exactly one sentence.\n- Reply with the sentence only, no preamble.\n---\n\nTask: Write one learning objective for a vocational training module on: hydraulic system safety.",
+                "answer": "Identify potential hazards associated with hydraulic system operation and maintenance procedures.",
+                "passed": true,
+                "reason": "ok",
+                "words": 11,
+                "prompt_tokens": 102,
+                "answer_tokens": 14,
+                "seconds": 11.04
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Harness: make verify",
+      "command": "python layer3_harness.py --model llama3.1:8b",
+      "as_expected": true,
+      "outcome": "verify exit 0: 15 ok line(s), 0 failure(s)",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 0.2,
+          "log": "logs/layer3_harness.log",
+          "data": {
+            "planted_leak": false,
+            "corpus_restored": true,
+            "verify_exit_code": 0,
+            "checks_ok": [
+              "syntax: 22 Python file(s) compile",
+              "json: 32 JSON file(s) parse",
+              "structure: 49 required file(s) present",
+              "offline: 26 file(s) load nothing remote",
+              "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+              "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+              "anonymisation: indexed corpus contains no unredacted emails or international phone numbers",
+              "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+              "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+              "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+              "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+              "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+              "agents: handoff targets resolve (6 agent(s) declared)",
+              "agents: .continue/config.yaml points only at 127.0.0.1",
+              "links: all relative Markdown links resolve"
+            ],
+            "failures": [],
+            "adapters_missing": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "3b",
+      "title": "Harness: verify with a planted leak",
+      "command": "python layer3_harness.py --model llama3.1:8b --break",
+      "as_expected": true,
+      "outcome": "planted email caught (verify exit 1); corpus restored: True",
+      "runs": [
+        {
+          "attempt": 1,
+          "exit_code": 0,
+          "seconds": 0.2,
+          "log": "logs/layer3_harness_break.log",
+          "data": {
+            "planted_leak": true,
+            "corpus_restored": true,
+            "verify_exit_code": 1,
+            "checks_ok": [
+              "syntax: 22 Python file(s) compile",
+              "json: 34 JSON file(s) parse",
+              "structure: 49 required file(s) present",
+              "offline: 26 file(s) load nothing remote",
+              "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+              "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+              "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+              "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+              "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+              "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+              "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+              "agents: handoff targets resolve (6 agent(s) declared)",
+              "agents: .continue/config.yaml points only at 127.0.0.1",
+              "links: all relative Markdown links resolve"
+            ],
+            "failures": [
+              "[anonymisation] corpus/07_steering_minutes.md still contains an unredacted email: maria.sanchez@example-partner.org"
+            ],
+            "adapters_missing": false
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "lab": "layer1_prompt",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T20:48:48",
+  "data": {
+    "results": [
+      {
+        "kind": "vague",
+        "prompt": "Write a learning objective about hydraulic safety.",
+        "answer": "Here is a potential learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, learners will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper handling and maintenance procedures, and implement safe work practices to prevent injuries and damage to equipment.\n\n**Specifically, learners will be able to:**\n\n* Recognize the hazards associated with hydraulic systems, including pressure, fluid leaks, and entanglements\n* Identify proper personal protective equipment (PPE) and safety gear for working with hydraulic systems\n* Describe safe handling and maintenance procedures for hydraulic equipment, including inspection, testing, and repair\n* Apply safe work practices to prevent injuries and damage to equipment, including lockout/tagout procedures and emergency shutdown protocols.\n\nThis learning objective is specific, measurable, achievable, relevant, and time-bound (SMART), and can be used as a guide for developing a training program on hydraulic safety.",
+        "passed": false,
+        "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+        "words": 143,
+        "prompt_tokens": 18,
+        "answer_tokens": 185,
+        "seconds": 13.68
+      },
+      {
+        "kind": "specific",
+        "prompt": "Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.",
+        "answer": "Identify and explain the key hazards associated with hydraulic system operation and maintenance procedures.",
+        "passed": true,
+        "reason": "ok",
+        "words": 14,
+        "prompt_tokens": 49,
+        "answer_tokens": 17,
+        "seconds": 11.55
+      }
+    ]
+  }
+}

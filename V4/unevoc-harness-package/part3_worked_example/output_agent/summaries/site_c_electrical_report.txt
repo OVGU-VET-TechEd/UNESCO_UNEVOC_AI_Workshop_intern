@@ -1,2 +1,2 @@
-[model: mock:demo]
-Identify the main components shown in a standard electrical circuit diagram.
+[model: llama3.1:8b]
+The Site C Electrical Report documents the annual safety and training performance of the Site C Electrical Training Centre. The centre recorded a low incident count throughout the year, with only one incident in the third quarter involving a hand tool rather than an electrical hazard. The training hours dipped in the fourth quarter due to the examination period, but no non-conformities were recorded at the annual inspection.

@@ -1,0 +1,32 @@
+{
+  "lab": "layer1_prompt",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T21:02:32",
+  "data": {
+    "results": [
+      {
+        "kind": "vague",
+        "prompt": "Write a learning objective about hydraulic safety.",
+        "answer": "Here is a sample learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, the learner will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper operation, maintenance, and emergency procedures, in order to prevent accidents and ensure a safe working environment.\n\n**Specifically, the learner will be able to:**\n\n* Identify potential hazards associated with hydraulic systems, including fluid leaks, pressure surges, and equipment malfunctions\n* Describe proper procedures for operating and maintaining hydraulic equipment, including pre-use checks and post-use shutdown procedures\n* Explain emergency procedures for responding to hydraulic system failures or accidents, including evacuation procedures and first aid techniques\n* Recognize the importance of personal protective equipment (PPE) and proper attire when working with hydraulic systems\n* Apply knowledge of hydraulic safety principles to prevent accidents and ensure a safe working environment.",
+        "passed": false,
+        "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+        "words": 141,
+        "prompt_tokens": 18,
+        "answer_tokens": 175,
+        "seconds": 3.78
+      },
+      {
+        "kind": "specific",
+        "prompt": "Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.",
+        "answer": "Identify and assess potential hazards associated with hydraulic system operation and maintenance procedures to ensure safe working practices.",
+        "passed": true,
+        "reason": "ok",
+        "words": 18,
+        "prompt_tokens": 49,
+        "answer_tokens": 21,
+        "seconds": 0.59
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+Model: llama3.1:8b
+
+language   words page est.  real tok/word
+English        8        14    10     1.25   Write one learning objective for hydraulic system safety.
+German         7        17    18     2.57   Formuliere ein Lernziel zur Sicherheit von Hydrauliksystemen.
+French        10        26    23     2.30   Rédigez un objectif d'apprentissage sur la sécurité des systèmes hydrauliques.
+Spanish       12        22    20     1.67   Escribe un objetivo de aprendizaje sobre la seguridad de los sistemas hidráulicos.
+
+Report: part5_self_improving/layers/output/layer0_tokens.md

@@ -1,0 +1,70 @@
+{
+  "lab": "layer5_evolve",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T20:52:09",
+  "data": {
+    "agent_exit_code": 0,
+    "baseline_score": 0,
+    "final_score": 0,
+    "iterations_run": 5,
+    "kept": 0,
+    "rolled_back": 5,
+    "iterations": [
+      {
+        "iteration": 1,
+        "kept": false,
+        "validation_score": 0,
+        "previous_best": 0,
+        "skill_lines": 19,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      },
+      {
+        "iteration": 2,
+        "kept": false,
+        "validation_score": 0,
+        "previous_best": 0,
+        "skill_lines": 25,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      },
+      {
+        "iteration": 3,
+        "kept": false,
+        "validation_score": 0,
+        "previous_best": 0,
+        "skill_lines": 27,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      },
+      {
+        "iteration": 4,
+        "kept": false,
+        "validation_score": 0,
+        "previous_best": 0,
+        "skill_lines": 29,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      },
+      {
+        "iteration": 5,
+        "kept": false,
+        "validation_score": 0,
+        "previous_best": 0,
+        "skill_lines": 31,
+        "rollout_score": 0,
+        "rollout_passed": 0,
+        "rollout_tasks": 4
+      }
+    ],
+    "pattern_pages": [
+      "opened-with-x-not-an-approved-action-verb.md"
+    ],
+    "skill": ""
+  }
+}

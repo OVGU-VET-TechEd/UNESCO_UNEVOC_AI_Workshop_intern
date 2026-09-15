@@ -366,6 +366,8 @@ footer{border-top:1px solid var(--rule);background:var(--surface);margin-top:20p
       matters: your text becomes a countable number of pieces, and you are billed — in time, memory
       and quality — per piece.</p>
 
+    <div id="realTok"></div>
+
     <h4>Weights — fixed at training, never updated by you</h4>
     <p>The weights are billions of numbers, frozen the day training finished. Four things follow, and
       almost every misunderstanding in this field is a failure to accept one of them:</p>
@@ -416,7 +418,7 @@ footer{border-top:1px solid var(--rule);background:var(--surface);margin-top:20p
       going in differs.</p>
 
     <div class="demo">
-      <div class="demo-head"><span>Single call — no memory, no checking</span><span class="hint">simulated</span></div>
+      <div class="demo-head"><span>Single call — no memory, no checking</span><span class="hint realhint">recorded run</span></div>
       <div class="demo-body">
         <div class="btnrow" style="margin:0 0 12px">
           <button class="btn ghost" data-p="vague">Vague prompt</button>
@@ -493,7 +495,7 @@ print(ask(<span class="s">"llama3.1:8b"</span>, <span class="s">"Write one learn
       inspector — a second block, above your task. Your task did not change.</p>
 
     <div class="demo">
-      <div class="demo-head"><span>Same task, with and without the skill file</span><span class="hint">simulated</span></div>
+      <div class="demo-head"><span>Same task, with and without the skill file</span><span class="hint realhint">recorded run</span></div>
       <div class="demo-body">
         <div class="btnrow" style="margin:0 0 12px">
           <button class="btn ghost" id="skToggle">Skill file: <b id="skState">loaded</b></button>
@@ -589,7 +591,7 @@ print(ask(<span class="s">"llama3.1:8b"</span>, build_prompt(<span class="s">"hy
       the repository counts as finished:</p>
 
     <div class="demo">
-      <div class="demo-head"><span>make verify — the real definition of done</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-head"><span>make verify — the real definition of done</span><span class="hint realhint">recorded run</span></div>
       <div class="demo-body">
         <div class="btnrow" style="margin:0 0 4px">
           <button class="btn" id="vRun">Run make verify</button>
@@ -663,12 +665,12 @@ carrying information.</pre>
     <p class="sub">You stop supplying the next instruction and start supplying a goal, a verification
       method, and a stop condition. Those three things are the whole of it.</p>
 
-    <p>Run the agent below. It is a faithful replay of this package's <code>agent.py</code> against
-      three input documents. Watch what the harness does when the model proposes something it is not
-      allowed to do.</p>
+    <p>Run the agent below. It replays a real run of this package's <code>agent.py</code> with a local
+      model on three input documents — every line comes from the <code>agent_log.md</code> that run
+      wrote. Watch what the harness does when the model proposes something it is not allowed to do.</p>
 
     <div class="demo">
-      <div class="demo-head"><span>agent.py — the model proposes, the harness disposes</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-head"><span>agent.py — the model proposes, the harness disposes</span><span class="hint realhint">recorded run</span></div>
       <div class="demo-body">
         <div class="btnrow" style="margin:0 0 4px">
           <button class="btn" id="loopRun">Run the agent</button>
@@ -768,7 +770,7 @@ carrying information.</pre>
       scores it on held-out tasks and keeps or reverts it.</p>
 
     <div class="demo">
-      <div class="demo-head"><span>wiki_agent.py — watch the skill get written</span><span class="hint">replay of an actual run</span></div>
+      <div class="demo-head"><span>wiki_agent.py — watch the skill get written</span><span class="hint realhint">recorded run</span></div>
       <div class="demo-body">
         <div class="btnrow" style="margin:0 0 4px">
           <button class="btn" id="evoRun">Run evolution</button>
@@ -797,31 +799,18 @@ carrying information.</pre>
       <tr><td>Transfer can also backfire</td><td>Skills from a 4B model cut Gemini-3.5-Flash from 50.5% to 18.1% on spreadsheets: the small model's low-level workarounds constrained the larger one.</td></tr>
     </table>
 
-    <h4>The wiki grows, in Markdown you can read</h4>
-    <p class="filelabel">workspace/wiki/patterns/opened-with-x-not-an-approved-action-verb.md</p>
-<pre class="code"># Pattern: opened with 'X', not an approved action verb
+    <h4>What the recorded run actually wrote — in Markdown you can read</h4>
+    <p class="filelabel">workspace/skills/SKILL.md <span>— the skill it wrote for itself, unedited</span></p>
+<pre class="code" id="realSkill"></pre>
 
-**First seen:** iteration 1
-
-**What happens:** the answer is rejected because it opens with a noun.
-
-**Example:** `Understanding of hydraulic system safety is something the...`
-
-**Proposed rule:** Begin every objective with an approved action verb
-such as identify or inspect.
-
-## Evidence
-- Iteration 1: 4 occurrence(s).
-- Iteration 2: recurred 3 time(s). Still unresolved.</pre>
+    <p class="filelabel" id="realPatternName">workspace/wiki/patterns/</p>
+<pre class="code" id="realPattern"></pre>
 
     <p class="filelabel">workspace/wiki/skill-impact.md <span>— the audit trail that stops it repeating itself</span></p>
-<pre class="code">## Iteration 3 — ROLLED BACK
-
-- Validation score: 0% (previous best 67%)
-- Skill length: 6 lines
-- Outcome: reverted; do not propose this again</pre>
-    <p>That last line is what makes the loop converge instead of oscillating. The Proposer reads the
-      impact log before proposing, so a change that has already been rejected is not offered twice.</p>
+<pre class="code" id="realImpact"></pre>
+    <p>When a proposal scores worse, the audit trail records "reverted; do not propose this again".
+      That line is what makes the loop converge instead of oscillating: the Proposer reads the impact
+      log before proposing, so a change that has already been rejected is not offered twice.</p>
 
     <h4>Running it yourself</h4>
 <pre class="code"><span class="c"># with a real local model</span>
@@ -894,16 +883,465 @@ ls  part5_self_improving/workspace/wiki/patterns/</pre>
       <li><strong>UNESCO AI competency framework for teachers</strong> (2024) — 15 competencies, five aspects, levels Acquire / Deepen / Create. <a href="https://www.unesco.org/en/articles/ai-competency-framework-teachers">unesco.org/en/articles/ai-competency-framework-teachers</a></li>
       <li><strong>UNESCO AI competency framework for students</strong> (2024) — 12 competencies, four dimensions, levels Understand / Apply / Create. <a href="https://www.unesco.org/en/articles/ai-competency-framework-students">unesco.org/en/articles/ai-competency-framework-students</a></li>
     </ul>
-    <p style="max-width:76ch"><strong>What is simulated here.</strong> The three runnable demos replay
-      real output from this package's scripts against the mock server, so the page works with no model
-      installed. The tokenizer is a teaching approximation, not a real one. Every code sample is
-      excerpted from a file that runs. The UNESCO progression labels are UNESCO's own: "AI-literate"
-      and "AI-enhanced educator" are not their terms and are not used here.</p>
+    <p style="max-width:76ch"><strong>Where the demo output comes from.</strong>
+      <span id="realProv">No recorded run is embedded in this page yet.</span> The page itself never
+      calls a model, so it still opens offline and with no model installed. To refresh it, run
+      <code>part5_self_improving/layers/run_all_layers.py</code> and then
+      <code>update_learn_page.py</code>. The interactive tokenizer is a teaching approximation; the
+      table under it holds real counts. Every code sample is excerpted from a file that runs. The
+      UNESCO progression labels are UNESCO's own: "AI-literate" and "AI-enhanced educator" are not
+      their terms and are not used here.</p>
   </div>
 </footer>
 
 <script>
 "use strict";
+
+/* REAL-DATA-BEGIN — written by part5_self_improving/layers/update_learn_page.py; do not edit by hand. */
+const REAL = {
+ "run": "20260915-210226",
+ "model": "llama3.1:8b",
+ "date": "2026-09-15 21:02",
+ "modelInfo": "8.0B Q4_K_M",
+ "ollama": "0.34.0",
+ "lab0": [
+  {
+   "language": "English",
+   "text": "Write one learning objective for hydraulic system safety.",
+   "words": 8,
+   "page_estimate": 14,
+   "real_tokens": 10,
+   "tokens_per_word": 1.25
+  },
+  {
+   "language": "German",
+   "text": "Formuliere ein Lernziel zur Sicherheit von Hydrauliksystemen.",
+   "words": 7,
+   "page_estimate": 17,
+   "real_tokens": 18,
+   "tokens_per_word": 2.57
+  },
+  {
+   "language": "French",
+   "text": "Rédigez un objectif d'apprentissage sur la sécurité des systèmes hydrauliques.",
+   "words": 10,
+   "page_estimate": 26,
+   "real_tokens": 23,
+   "tokens_per_word": 2.3
+  },
+  {
+   "language": "Spanish",
+   "text": "Escribe un objetivo de aprendizaje sobre la seguridad de los sistemas hidráulicos.",
+   "words": 12,
+   "page_estimate": 22,
+   "real_tokens": 20,
+   "tokens_per_word": 1.67
+  }
+ ],
+ "lab1": {
+  "results": [
+   {
+    "variant": "vague",
+    "answer": "Here is a sample learning objective about hydraulic safety:\n\n**Learning Objective:**\n\nUpon completion of this training, the learner will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper operation, maintenance, and emergency procedures, in order to prevent accidents and ensure a safe working environment.\n\n**Specifically, the learner will be able to:**\n\n* Identify potential hazards associated with hydraulic systems, including fluid leaks, pressure surges, and equipment malfunctions\n* Describe proper procedures for operating and maintaining hydraulic equipment, including pre-use checks and post-use shutdown procedures\n* Explain emergency procedures for responding to hydraulic system failures or accidents, including evacuation procedures and first aid techniques\n* Recognize the importance of personal protective equipment (PPE) and proper attire when working with hydraulic systems\n* Apply knowledge of hydraulic safety principles to prevent accidents and ensure a safe working environment.",
+    "passed": false,
+    "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+    "words": 141,
+    "prompt_tokens": 18,
+    "answer_tokens": 175,
+    "seconds": 3.78
+   },
+   {
+    "variant": "specific",
+    "answer": "Identify and assess potential hazards associated with hydraulic system operation and maintenance procedures to ensure safe working practices.",
+    "passed": true,
+    "reason": "ok",
+    "words": 18,
+    "prompt_tokens": 49,
+    "answer_tokens": 21,
+    "seconds": 0.59
+   }
+  ]
+ },
+ "lab2": {
+  "results": [
+   {
+    "variant": "without",
+    "answer": "Here is a potential learning objective for a vocational training module on hydraulic system safety:\n\n**Learning Objective:**\n\nUpon completion of this module, learners will be able to identify and mitigate potential hazards associated with hydraulic system operation, including proper lockout/tagout procedures, personal protective equipment requirements, and emergency shutdown protocols, in order to prevent injury or damage to equipment.",
+    "passed": false,
+    "reason": "it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate)",
+    "words": 58,
+    "prompt_tokens": 27,
+    "answer_tokens": 72,
+    "seconds": 1.65
+   },
+   {
+    "variant": "with",
+    "answer": "Identify potential hazards in hydraulic systems to ensure safe operation and maintenance practices.",
+    "passed": true,
+    "reason": "ok",
+    "words": 13,
+    "prompt_tokens": 102,
+    "answer_tokens": 16,
+    "seconds": 0.63
+   }
+  ]
+ },
+ "lab3": {
+  "ok": [
+   "syntax: 22 Python file(s) compile",
+   "json: 52 JSON file(s) parse",
+   "structure: 49 required file(s) present",
+   "offline: 26 file(s) load nothing remote",
+   "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+   "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+   "anonymisation: indexed corpus contains no unredacted emails or international phone numbers",
+   "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+   "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+   "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+   "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+   "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+   "agents: handoff targets resolve (6 agent(s) declared)",
+   "agents: .continue/config.yaml points only at 127.0.0.1",
+   "links: all relative Markdown links resolve"
+  ],
+  "failures": [],
+  "exit": 0
+ },
+ "lab3b": {
+  "ok": [
+   "syntax: 22 Python file(s) compile",
+   "json: 53 JSON file(s) parse",
+   "structure: 49 required file(s) present",
+   "offline: 26 file(s) load nothing remote",
+   "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+   "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+   "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+   "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+   "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+   "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+   "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+   "agents: handoff targets resolve (6 agent(s) declared)",
+   "agents: .continue/config.yaml points only at 127.0.0.1",
+   "links: all relative Markdown links resolve"
+  ],
+  "failures": [
+   "[anonymisation] corpus/07_steering_minutes.md still contains an unredacted email: maria.sanchez@example-partner.org"
+  ],
+  "exit": 1
+ },
+ "lab4": {
+  "lines": [
+   [
+    "dim",
+    "Model used for planning and summarising: llama3.1:8b."
+   ],
+   [
+    "dim",
+    "The rule I follow: I may take one action per step. Before acting I check that the action is allowed. After acting I check that a real, non-empty file was produced. I stop when the report contains a section for every input PDF, or after 40 steps, whichever comes first."
+   ],
+   [
+    "hi",
+    "Step 1"
+   ],
+   [
+    "",
+    "The model proposed list_pdfs, because: \"List the input PDFs first\""
+   ],
+   [
+    "",
+    "  I checked the preconditions and they hold, so I will do exactly that."
+   ],
+   [
+    "",
+    "  I ran list_pdfs. Result: found 3 PDF file(s): site_a_workshop_report.pdf, site_b_hydraulics_report.pdf, site_c_electrical_report.pdf."
+   ],
+   [
+    "ok",
+    "  I verified the result: manifest.json exists and holds 376 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 2"
+   ],
+   [
+    "",
+    "The model proposed list_pdfs, because: \"get current state of input PDFs\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. I checked whether that is allowed right now: it is not, because the PDFs have already been listed. I overrode the proposal and will do convert_pdf_to_md on site_a_workshop_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran convert_pdf_to_md. Result: converted site_a_workshop_report.pdf to Markdown (1449 characters, figures noted but not OCR'd)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_a_workshop_report.md exists and holds 1453 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 3"
+   ],
+   [
+    "",
+    "The model proposed summarise_md on site_a_workshop_report.pdf, because: \"Summarise first converted document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. summarise_md is not one of my five tools. I overrode the proposal and will do convert_pdf_to_md on site_b_hydraulics_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran convert_pdf_to_md. Result: converted site_b_hydraulics_report.pdf to Markdown (1361 characters, figures noted but not OCR'd)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_b_hydraulics_report.md exists and holds 1365 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 4"
+   ],
+   [
+    "",
+    "The model proposed convert_pdf_to_md on site_c_electrical_report.pdf, because: \"convert the last remaining PDF to Markdown\""
+   ],
+   [
+    "",
+    "  I checked the preconditions and they hold, so I will do exactly that."
+   ],
+   [
+    "",
+    "  I ran convert_pdf_to_md. Result: converted site_c_electrical_report.pdf to Markdown (1224 characters, figures noted but not OCR'd)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_c_electrical_report.md exists and holds 1228 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 5"
+   ],
+   [
+    "",
+    "The model proposed summarise_md on site_a_workshop_report.pdf, because: \"Summarise first converted document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. summarise_md is not one of my five tools. I overrode the proposal and will do summarize_md on site_a_workshop_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran summarize_md. Result: summarised site_a_workshop_report.pdf using llama3.1:8b (78 words)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_a_workshop_report.txt exists and holds 519 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 6"
+   ],
+   [
+    "",
+    "The model proposed summarise_md on site_b_hydraulics_report.pdf, because: \"summarise the second converted document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. summarise_md is not one of my five tools. I overrode the proposal and will do summarize_md on site_b_hydraulics_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran summarize_md. Result: summarised site_b_hydraulics_report.pdf using llama3.1:8b (81 words)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_b_hydraulics_report.txt exists and holds 497 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 7"
+   ],
+   [
+    "",
+    "The model proposed summarise_md on site_c_electrical_report.pdf, because: \"summarise the last converted document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. summarise_md is not one of my five tools. I overrode the proposal and will do summarize_md on site_c_electrical_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran summarize_md. Result: summarised site_c_electrical_report.pdf using llama3.1:8b (68 words)."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_c_electrical_report.txt exists and holds 450 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 8"
+   ],
+   [
+    "",
+    "The model proposed extract_table_data on site_c_electrical_report.pdf, because: \"Extract tables from last converted document\""
+   ],
+   [
+    "",
+    "  I checked the preconditions and they hold, so I will do exactly that."
+   ],
+   [
+    "",
+    "  I ran extract_table_data. Result: extracted 4 table row(s) from site_c_electrical_report.pdf."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_c_electrical_report.json exists and holds 322 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 9"
+   ],
+   [
+    "",
+    "The model proposed summarize_md on site_a_workshop_report.pdf, because: \"still need to summarise this document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. I checked whether that is allowed right now: it is not, because site_a_workshop_report.pdf has already had summarize_md applied. I overrode the proposal and will do extract_table_data on site_a_workshop_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran extract_table_data. Result: extracted 4 table row(s) from site_a_workshop_report.pdf."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_a_workshop_report.json exists and holds 322 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 10"
+   ],
+   [
+    "",
+    "The model proposed summarize_md on site_b_hydraulics_report.pdf, because: \"summarise remaining document\""
+   ],
+   [
+    "bad",
+    "  OVERRIDE. I checked whether that is allowed right now: it is not, because site_b_hydraulics_report.pdf has already had summarize_md applied. I overrode the proposal and will do extract_table_data on site_b_hydraulics_report.pdf instead."
+   ],
+   [
+    "",
+    "  I ran extract_table_data. Result: extracted 4 table row(s) from site_b_hydraulics_report.pdf."
+   ],
+   [
+    "ok",
+    "  I verified the result: site_b_hydraulics_report.json exists and holds 322 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Step 11"
+   ],
+   [
+    "",
+    "The model proposed write_report, because: \"all documents processed, time to write final report\""
+   ],
+   [
+    "",
+    "  I checked the preconditions and they hold, so I will do exactly that."
+   ],
+   [
+    "",
+    "  I ran write_report. Result: wrote report.md, report.html, report.pdf."
+   ],
+   [
+    "ok",
+    "  I verified the result: report.md exists and holds 2415 bytes. Marking this step done."
+   ],
+   [
+    "hi",
+    "Stopping."
+   ],
+   [
+    "ok",
+    "  The report exists and contains a section for all 3 input documents. The stop condition is met, so there is nothing left to do."
+   ],
+   [
+    "dim",
+    "\n7 override(s) in 11 steps. Nobody typed anything."
+   ]
+  ],
+  "steps": 11,
+  "overrides": 7
+ },
+ "lab5": {
+  "lines": [
+   [
+    "dim",
+    "Baseline with no skill at all: 0%"
+   ],
+   [
+    "hi",
+    "ITERATION 1"
+   ],
+   [
+    "",
+    "  1. rollouts        0% on training tasks"
+   ],
+   [
+    "",
+    "  2. wiki maintainer 1 pattern page(s) written or updated"
+   ],
+   [
+    "",
+    "  3. proposer        candidate skill, 23 lines"
+   ],
+   [
+    "ok",
+    "  4. gate            100% &gt; 0% previous -&gt; KEPT"
+   ],
+   [
+    "dim",
+    "     (the wiki keeps what was learned either way)"
+   ],
+   [
+    "dim",
+    "Validation is perfect; stopping early."
+   ],
+   [
+    "hi",
+    "Baseline 0%  -&gt;  final 100%"
+   ],
+   [
+    "dim",
+    "The model never changed. Only the text around it did."
+   ]
+  ],
+  "baseline": 0,
+  "final": 100,
+  "skill": "---\n# Pattern: opened with 'X', not an approved action verb\n\n**First seen:** iteration 1\n\n**What happens:** the answer is rejected because opened with 'X', not an approved action verb.\n\n**Example:** `Upon completion of this module, the apprentice mechanic will be able to identify and describe the key safety procedures for working with hydraulic systems, incl`\n\n**Proposed rules:**\n\n* Use approved action verbs to begin each learning objective, such as \"Identify\", \"Describe\", \"Explain\", \"Demonstrate\", \"Apply\", or \"Analyze\".\n* Replace \"Upon completion of this module\" with a more specific description of the learning outcome.\n* Ensure that each learning objective is specific, measurable, achievable, relevant, and time-bound (SMART).\n* Use a consistent verb tense throughout the learning objective.\n* Avoid using phrases that imply the learner will \"be able to\" do something, instead focus on what they will actually do.\n* Remove any unnecessary words or phrases that do not add value to the learning objective.\n* Use present tense for learning objectives that describe a future action.\n* Ensure that the learning objective is concise and easy to understand.\n\n## Evidence\n\n- Iteration 1: 4 occurrence(s).",
+  "skillSource": "iteration 1",
+  "patternCount": 1,
+  "patternName": "opened-with-x-not-an-approved-action-verb.md",
+  "pattern": "# Pattern: opened with 'X', not an approved action verb\n\n**First seen:** iteration 1\n\n**What happens:** the answer is rejected because opened with 'X', not an approved action verb.\n\n**Example:** `Upon completion of this module, the apprentice mechanic will be able to identify and describe the key safety procedures for working with hydraulic systems, incl`\n\n**Proposed rule:** Approved action verbs must be used to begin each learning objective, such as \"Identify\", \"Describe\", \"Explain\", \"Demonstrate\", \"Apply\", or \"Analyze\".\n\n## Evidence\n\n- Iteration 1: 4 occurrence(s).\n",
+  "impact": "\n## Iteration 1 — ACCEPTED\n\n- Validation score: 100% (previous best 0%)\n- Skill length: 23 lines\n- Outcome: kept\n"
+ }
+};
+/* REAL-DATA-END */
+
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function excerpt(text, n){
+  const lines = String(text).split('\n');
+  return lines.length <= n ? String(text) : lines.slice(0, n).join('\n') + '\n… (' + lines.length + ' lines in total)';
+}
+function recorded(lab, variant){
+  return REAL && REAL[lab] ? (REAL[lab].results.find(r => r.variant === variant) || null) : null;
+}
+function noRun(){
+  return '<span class="bad">No recorded run is embedded in this page.</span>\n' +
+    'Run part5_self_improving/layers/run_all_layers.py, then update_learn_page.py.';
+}
 
 /* ======================================================================
    THE PROMPT STACK — the spine of the page.
@@ -930,10 +1368,11 @@ const BLOCKS = [
   { lvl:4, key:'loop', label:'LOOP CONTEXT  (added by the harness, not by you)', hue:4,
     body:'Attempt 2 of 3.\nYour previous answer was rejected because:\n  it was 34 words long; the limit is 20.\nStop when: verification passes, or 3 attempts.' },
 
-  { lvl:5, key:'evolved', label:'EVOLVED SKILL  (written by the machine, iteration 4)', hue:5,
-    body:'# Writing learning objectives\n- Begin with an approved action verb.\n- Use at most twenty words.\n- Write exactly one sentence on one line.\n- Output the sentence only, no preamble.' },
+  { lvl:5, key:'evolved', hue:5,
+    label: REAL && REAL.lab5 ? 'EVOLVED SKILL  (written by ' + REAL.model + ', ' + REAL.lab5.skillSource + ')' : 'EVOLVED SKILL',
+    body: REAL && REAL.lab5 && REAL.lab5.skill ? excerpt(REAL.lab5.skill, 9) : 'No skill was kept in the recorded run.' },
   { lvl:5, key:'nowiki', label:'WIKI  —  deliberately NOT sent', hue:5, off:true,
-    body:'8 pattern pages + the audit trail informed the skill above.\nNone of it is in this prompt. Giving the working agent\nthe wiki made the final skill measurably worse.' }
+    body:(REAL && REAL.lab5 ? REAL.lab5.patternCount : 'The') + ' pattern page(s) + the audit trail informed the skill above.\nNone of it is in this prompt. Giving the working agent\nthe wiki made the final skill measurably worse.' }
 ];
 
 /* A rough token estimate. Honest about being rough — see the page text. */
@@ -1040,10 +1479,6 @@ const PROMPTS = {
   vague: 'Write a learning objective about hydraulic safety.',
   specific: 'Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.'
 };
-const REPLIES = {
-  vague: 'Understanding of hydraulic system safety is something that the learner will come to\nappreciate over time, and it matters a great deal in day-to-day practice.',
-  specific: 'Inspect a hydraulic system for leaks and pressure faults before operation.'
-};
 let p1kind = 'vague';
 document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', () => {
   p1kind = b.dataset.p;
@@ -1052,14 +1487,20 @@ document.querySelectorAll('[data-p]').forEach(b => b.addEventListener('click', (
 document.getElementById('p1run').addEventListener('click', () => {
   const typed = document.getElementById('p1in').value;
   const kind = typed === PROMPTS.specific ? 'specific' : (typed === PROMPTS.vague ? 'vague' : p1kind);
-  const reply = REPLIES[kind];
-  const good = kind === 'specific';
-  document.getElementById('p1log').innerHTML =
-    '<span class="dim">POST 127.0.0.1:11434/api/generate  model=llama3.1:8b</span>\n' +
-    '<span class="dim">prompt: ~' + tokCount(typed) + ' tokens</span>\n\n' + reply + '\n\n' +
-    (good
+  const r = recorded('lab1', kind);
+  const log = document.getElementById('p1log');
+  if(!r){ log.innerHTML = noRun(); return; }
+  log.innerHTML =
+    '<span class="dim">POST 127.0.0.1:11434/api/generate  model=' + esc(REAL.model) + '</span>\n' +
+    '<span class="dim">prompt: ' + r.prompt_tokens + ' tokens · reply: ' + r.answer_tokens + ' tokens · ' +
+      r.seconds + ' s  (recorded ' + esc(REAL.date) + ')</span>\n' +
+    (typed !== PROMPTS[kind]
+      ? '<span class="dim">This page cannot call the model. Showing the recorded reply to the ' + kind +
+        ' prompt; run layer1_prompt.py to try your own wording.</span>\n' : '') +
+    '\n' + esc(r.answer) + '\n\n' +
+    (r.passed
       ? '<span class="ok">Usable.</span> But nothing here CHECKED that. You did, by reading it.\nAsk again tomorrow, phrase it differently, get something different.'
-      : '<span class="bad">Not usable.</span> No action verb, 24 words, two sentences.\nThe model was not wrong — the request never said any of that.') +
+      : '<span class="bad">Not usable:</span> ' + esc(r.reason) + ' (' + r.words + ' words).\nThe model was not wrong — the request never said any of that.') +
     '\n<span class="dim">The model has now forgotten this happened.</span>';
 });
 
@@ -1070,78 +1511,47 @@ document.getElementById('skToggle').addEventListener('click', () => {
   document.getElementById('skState').textContent = skOn ? 'loaded' : 'not loaded';
 });
 document.getElementById('skRun').addEventListener('click', () => {
-  document.getElementById('skLog').innerHTML = skOn
-    ? '<span class="dim">prompt = SKILL.md + your task  (2 blocks, ~46 tokens)</span>\n\n' +
-      'Inspect a hydraulic system for leaks and pressure faults before operation.\n\n' +
-      '<span class="ok">Passes all three house rules.</span>\nYou did not type those rules. The file did.\n' +
-      '<span class="dim">Your colleague running this at 4pm on Friday gets the same rules.</span>'
-    : '<span class="dim">prompt = your task only  (1 block, ~18 tokens)</span>\n\n' +
-      'Understanding of hydraulic system safety is something that the learner\nwill come to appreciate over time.\n\n' +
-      '<span class="bad">Fails: no action verb, two sentences.</span>\nSame model. Same task. The conventions were simply absent.';
+  const r = recorded('lab2', skOn ? 'with' : 'without');
+  const log = document.getElementById('skLog');
+  if(!r){ log.innerHTML = noRun(); return; }
+  log.innerHTML =
+    '<span class="dim">prompt = ' + (skOn ? 'SKILL.md + your task  (2 blocks, ' : 'your task only  (1 block, ') +
+      r.prompt_tokens + ' tokens) · model=' + esc(REAL.model) + '</span>\n\n' +
+    esc(r.answer) + '\n\n' +
+    (r.passed ? '<span class="ok">Passes all three house rules.</span>'
+              : '<span class="bad">Fails: ' + esc(r.reason) + '.</span>') + '\n' +
+    (skOn ? 'You did not type those rules. The file did.\n<span class="dim">Your colleague running this at 4pm on Friday gets the same rules.</span>'
+          : 'Same model. Same task. The conventions were simply absent.');
 });
 
 /* ---------- L3: make verify ---------- */
-const VERIFY_OK = [
-  ['ok','syntax: 13 Python file(s) compile'],
-  ['ok','json: 6 JSON file(s) parse'],
-  ['ok','structure: 46 required file(s) present'],
-  ['ok','offline: 13 Python file(s) contain no remote endpoints'],
-  ['ok','liascript: 2 deck(s), 25 answered questions, 86 speaker-note blocks'],
-  ['ok','anonymisation: no unredacted emails or phone numbers in the indexed corpus'],
-  ['ok','knowledgebase: 41 passages from 8 documents, all carry metadata'],
-  ['ok','agents: 6 agents, 6 prompts, all handoff targets resolve'],
-  ['ok','links: all relative Markdown links resolve']
-];
 let broken = false;
 document.getElementById('vBreak').addEventListener('click', () => {
   broken = !broken;
   document.getElementById('vBreak').textContent = broken ? 'Repair it' : 'Break something first';
 });
 document.getElementById('vRun').addEventListener('click', () => {
-  let out = '<span class="dim">$ make verify</span>\n\n';
-  VERIFY_OK.forEach(([, text], i) => {
-    if(broken && i === 5){ return; }
-    out += '  <span class="ok">ok</span>   ' + text + '\n';
-  });
-  if(broken){
-    out += '\n<span class="bad">1 FAILURE:</span>\n\n' +
-      '  <span class="bad">FAIL</span> [anonymisation] corpus/07_steering_minutes.md still\n' +
-      '       contains an unredacted email: maria.sanchez@example-partner.org\n\n' +
-      'VERIFICATION FAILED. Nothing may be marked passing until this exits 0.\n' +
-      '<span class="dim">exit code 1</span>\n\n' +
-      'The check found it. Not a reviewer, not luck, not next month.';
+  const log = document.getElementById('vLog');
+  const v = REAL && (broken ? REAL.lab3b : REAL.lab3);
+  if(!v){ log.innerHTML = noRun(); return; }
+  let out = '<span class="dim">$ make verify' + (broken ? '   (after planting an email address in the corpus)' : '') + '</span>\n\n';
+  v.ok.forEach(t => { out += '  <span class="ok">ok</span>   ' + esc(t) + '\n'; });
+  if(v.failures.length){
+    out += '\n<span class="bad">' + v.failures.length + ' FAILURE(S):</span>\n\n';
+    v.failures.forEach(f => { out += '  <span class="bad">FAIL</span> ' + esc(f) + '\n'; });
+    out += '\nVERIFICATION FAILED. Nothing may be marked passing until this exits 0.\n';
   } else {
-    out += '\nAll checks passed.\n<span class="dim">exit code 0</span>\n\n' +
-      'THIS is what "done" means here. Not the model\'s opinion of its work.';
+    out += '\nAll checks passed.\n';
   }
-  document.getElementById('vLog').innerHTML = out;
+  out += '<span class="dim">exit code ' + v.exit + '</span>\n\n' +
+    (broken ? 'The check found it. Not a reviewer, not luck, not next month.'
+            : (v.exit === 0 ? 'THIS is what "done" means here. Not the model\'s opinion of its work.'
+                            : 'Not done. The failures above say exactly why.'));
+  log.innerHTML = out;
 });
 
 /* ---------- L4: the agent loop ---------- */
-const LOOP = [
-  ['dim','The rule I follow: one action per step. Check it is allowed before acting,'],
-  ['dim','check a real file appeared after. Stop when every PDF is in the report,'],
-  ['dim','or after 40 steps, whichever comes first.\n'],
-  ['hi','Step 1'],
-  ['','  Model proposed list_pdfs, because: "Nothing is listed yet."'],
-  ['','  Preconditions hold. Running it.'],
-  ['ok','  Verified: manifest.json exists, 214 bytes. Step done.'],
-  ['hi','Step 2'],
-  ['','  Model proposed write_report, because: "I think we are probably finished."'],
-  ['bad','  OVERRIDE. Not allowed: 3 documents are not ready yet.'],
-  ['','  Doing convert_pdf_to_md on site_a instead.'],
-  ['ok','  Verified: site_a.md exists, 3,981 bytes. Step done.'],
-  ['dim','  (a small model proposing "done" early is the failure this whole'],
-  ['dim','   package is about. The harness caught it and wrote down why.)\n'],
-  ['','Steps 3-9   convert, summarise, extract tables for all three documents'],
-  ['ok','            every output verified: exists, non-empty, recorded in state.json'],
-  ['hi','Step 10'],
-  ['','  Model proposed write_report. Preconditions now hold.'],
-  ['ok','  Verified: report.md, report.html, report.pdf written.'],
-  ['hi','Stopping.'],
-  ['','  The report contains a section for all 3 input documents.'],
-  ['ok','  Stop condition met. Nothing left to do. Nobody typed anything.']
-];
+const LOOP = REAL && REAL.lab4 ? REAL.lab4.lines : [['bad', 'No recorded run is embedded in this page.']];
 let loopAt = 0;
 function loopDraw(){
   document.getElementById('loopLog').innerHTML = LOOP.slice(0, loopAt).map(([cls, text]) =>
@@ -1162,39 +1572,13 @@ document.getElementById('loopRun').addEventListener('click', () => {
 });
 
 /* ---------- L5: the evolution loop ---------- */
-const EVO = [
-  ['dim','Baseline with no skill at all: 0%   (nobody has written one)\n'],
-  ['hi','ITERATION 1'],
-  ['','  1. rollouts        0% on training tasks'],
-  ['','  2. wiki maintainer wrote patterns/opened-with-x-not-an-approved-action-verb.md'],
-  ['','  3. proposer        candidate skill, 3 lines'],
-  ['ok','  4. gate            33% > 0% previous -> KEPT\n'],
-  ['hi','ITERATION 2'],
-  ['','  1. rollouts        25% on training tasks'],
-  ['','  2. wiki maintainer wrote patterns/n-words-limit-is-n.md  (2 pages now)'],
-  ['','  3. proposer        candidate skill, 4 lines'],
-  ['ok','  4. gate            67% > 33% previous -> KEPT\n'],
-  ['hi','ITERATION 3'],
-  ['','  1. rollouts        50% on training tasks'],
-  ['','  2. wiki maintainer wrote patterns/more-than-one-sentence.md  (3 pages now)'],
-  ['','  3. proposer        candidate skill, 6 lines  (added a rule about context)'],
-  ['bad','  4. gate            0% <= 67% previous -> ROLLED BACK'],
-  ['dim','     The skill reverted. The three wiki pages did NOT.'],
-  ['dim','     skill-impact.md now records: "do not propose this again."\n'],
-  ['hi','ITERATION 4'],
-  ['','  1. rollouts        50% on training tasks'],
-  ['','  2. wiki maintainer updated existing patterns with new evidence'],
-  ['','  3. proposer        read the impact log, avoided the rejected change'],
-  ['ok','  4. gate            100% > 67% previous -> KEPT\n'],
-  ['hi','Baseline 0%  ->  final 100%'],
-  ['dim','The model never changed. Only the text around it did.'],
-  ['','And this time, nobody wrote that text.']
-];
+const EVO = REAL && REAL.lab5 ? REAL.lab5.lines : [['bad', 'No recorded run is embedded in this page.']];
 let evoAt = 0;
 function evoDraw(){
   document.getElementById('evoLog').innerHTML = EVO.slice(0, evoAt).map(([cls, text]) =>
     cls ? '<span class="' + cls + '">' + text + '</span>' : text).join('\n') ||
-    'Not started. Nobody has written a skill file. Validation score with no skill at all: 0%.';
+    'Not started. Nobody has written a skill file. Validation score with no skill at all: ' +
+    (REAL && REAL.lab5 ? REAL.lab5.baseline + '%' : 'unknown') + '.';
   document.getElementById('evoLog').scrollTop = 9e9;
 }
 document.getElementById('evoStep').addEventListener('click', () => {
@@ -1211,6 +1595,35 @@ document.getElementById('evoRun').addEventListener('click', () => {
   }, 200);
 });
 
+/* ---------- recorded run: provenance, real token counts, real files ---------- */
+document.querySelectorAll('.realhint').forEach(h => {
+  h.textContent = REAL ? 'recorded run · ' + REAL.model + ' · ' + REAL.date : 'no recorded run';
+});
+(function fillRecorded(){
+  if(!REAL) return;
+  document.getElementById('realProv').textContent =
+    'Every demo output on this page was recorded from a real run on ' + REAL.date +
+    ' with the local model ' + REAL.model + ' (' + REAL.modelInfo + ', Ollama ' + REAL.ollama +
+    '). Real output differs between runs and between models.';
+  if(REAL.lab0){
+    document.getElementById('realTok').innerHTML =
+      '<p style="font-size:13.5px;color:var(--ink2)">Real counts, measured with <code>' + esc(REAL.model) +
+      '</code>\'s own tokenizer on ' + esc(REAL.date) + ':</p>' +
+      '<table class="grid"><tr><th>Sentence</th><th>Words</th><th>Estimate above</th><th>Real tokens</th><th>Tokens per word</th></tr>' +
+      REAL.lab0.map(s => '<tr><td>' + esc(s.language) + ': ' + esc(s.text) + '</td><td>' + s.words +
+        '</td><td>' + s.page_estimate + '</td><td>' + s.real_tokens + '</td><td>' + s.tokens_per_word +
+        '</td></tr>').join('') + '</table>';
+  }
+  const l5 = REAL.lab5;
+  if(l5){
+    document.getElementById('realSkill').textContent = l5.skill || 'No skill was kept in this run.';
+    document.getElementById('realPatternName').textContent = 'workspace/wiki/patterns/' + (l5.patternName || '');
+    document.getElementById('realPattern').textContent = l5.pattern || 'Not recorded for this run.';
+    document.getElementById('realImpact').textContent = l5.impact || 'Not recorded for this run.';
+  }
+})();
+
+evoDraw();
 renderInspector();
 </script>
 </body>

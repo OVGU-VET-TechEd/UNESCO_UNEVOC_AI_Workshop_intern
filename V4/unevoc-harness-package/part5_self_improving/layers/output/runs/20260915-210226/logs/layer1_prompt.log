@@ -1,0 +1,34 @@
+--- vague prompt ---
+Write a learning objective about hydraulic safety.
+
+POST http://127.0.0.1:11434/api/generate  model=llama3.1:8b
+prompt: 18 tokens
+
+Here is a sample learning objective about hydraulic safety:
+
+**Learning Objective:**
+
+Upon completion of this training, the learner will be able to identify and mitigate potential hazards associated with hydraulic systems, including proper operation, maintenance, and emergency procedures, in order to prevent accidents and ensure a safe working environment.
+
+**Specifically, the learner will be able to:**
+
+* Identify potential hazards associated with hydraulic systems, including fluid leaks, pressure surges, and equipment malfunctions
+* Describe proper procedures for operating and maintaining hydraulic equipment, including pre-use checks and post-use shutdown procedures
+* Explain emergency procedures for responding to hydraulic system failures or accidents, including evacuation procedures and first aid techniques
+* Recognize the importance of personal protective equipment (PPE) and proper attire when working with hydraulic systems
+* Apply knowledge of hydraulic safety principles to prevent accidents and ensure a safe working environment.
+
+Not usable: it started with 'here', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate).
+
+--- specific prompt ---
+Write one learning objective for an apprentice mechanics module on hydraulic system safety. Start with an action verb, use at most 20 words, and write exactly one sentence. Reply with the sentence only.
+
+POST http://127.0.0.1:11434/api/generate  model=llama3.1:8b
+prompt: 49 tokens
+
+Identify and assess potential hazards associated with hydraulic system operation and maintenance procedures to ensure safe working practices.
+
+Usable: passes all three house rules.
+
+
+Report: part5_self_improving/layers/output/layer1_prompt.md

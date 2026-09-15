@@ -4,20 +4,20 @@
       "objective": "Inspect a hydraulic system for leaks and pressure faults before operation.",
       "model": "mock:demo",
       "attempts_used": 2,
-      "accepted_at": "2026-09-15T15:58:09"
+      "accepted_at": "2026-09-15T17:59:57"
     },
     "reading an electrical circuit diagram": {
       "objective": "Identify the main components shown in a standard electrical circuit diagram.",
       "model": "mock:demo",
       "attempts_used": 2,
-      "accepted_at": "2026-09-15T15:58:09"
+      "accepted_at": "2026-09-15T17:59:57"
     },
     "workplace risk assessment in a metal workshop": {
       "objective": "Assess common hazards in a metal workshop and record the required controls.",
       "model": "mock:demo",
       "attempts_used": 2,
-      "accepted_at": "2026-09-15T15:58:09"
+      "accepted_at": "2026-09-15T17:59:57"
     }
   },
-  "runs": 2
+  "runs": 1
 }

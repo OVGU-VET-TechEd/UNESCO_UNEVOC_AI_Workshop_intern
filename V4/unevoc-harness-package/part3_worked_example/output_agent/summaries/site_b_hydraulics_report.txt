@@ -1,2 +1,2 @@
-[model: mock:demo]
-Inspect a hydraulic system for leaks and pressure faults before operation.
+[model: llama3.1:8b]
+The document is a safety and training report for the hydraulics laboratory at Site B, which is used for pressure-system training. The report shows a reduction in incidents from 9 in the first quarter to 4 in the third and fourth quarters, although the replacement of an older test rig in the second quarter is cited as a possible explanation. The report also notes that training hours remained relatively stable throughout the year, ranging from 155 to 180 hours per quarter.

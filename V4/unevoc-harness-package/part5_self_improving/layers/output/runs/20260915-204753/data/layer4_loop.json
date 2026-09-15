@@ -1,0 +1,26 @@
+{
+  "lab": "layer4_loop",
+  "model": "llama3.1:8b",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T20:51:08",
+  "data": {
+    "agent_exit_code": 0,
+    "steps": 11,
+    "overrides": 7,
+    "override_reasons": [
+      "the PDFs have already been listed",
+      "site_a_workshop_report.pdf has already had `summarize_md` applied",
+      "site_b_hydraulics_report.pdf has already had `summarize_md` applied"
+    ],
+    "stop_condition_met": true,
+    "hit_step_limit": false,
+    "model_recorded_in_state": "llama3.1:8b",
+    "pdfs": 3,
+    "summaries": {
+      "site_a_workshop_report.pdf": "The site A metal workshop annual safety and training report covers the four quarters of the reporting year, summarising recorded incidents, delivered training hours, and the outcome of the annual equipment inspection. The report shows a total of 17 incidents recorded over the year, with a significant increase in training hours in the third quarter due to the introduction of a revised hot-work induction. The annual inspection identified two non-conformities related to extraction airflow, which were addressed before the end of the year.",
+      "site_b_hydraulics_report.pdf": "The document is the Site B Hydraulics Report, which outlines the safety and training record for the hydraulics laboratory at Site B. The report shows a reduction in incidents from 9 in the first quarter to 4 in the third and fourth quarters, with a corresponding increase in training hours. The replacement of an older test rig in the second quarter is cited as a possible explanation for the reduction in incidents.",
+      "site_c_electrical_report.pdf": "The Site C Electrical Report documents the annual safety and training performance of the Site C Electrical Training Centre. The centre recorded a low incident count throughout the year, with a total of 4 incidents, and no non-conformities were found during the annual inspection. Training hours dipped in the fourth quarter due to the examination period, but overall the centre's performance was consistent with its de-energised training model."
+    },
+    "report_written": true
+  }
+}

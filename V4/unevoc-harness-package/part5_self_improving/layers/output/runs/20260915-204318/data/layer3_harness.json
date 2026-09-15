@@ -1,0 +1,30 @@
+{
+  "lab": "layer3_harness",
+  "model": "none (no model call)",
+  "ollama_url": "http://127.0.0.1:11434",
+  "run_at": "2026-09-15T20:45:52",
+  "data": {
+    "planted_leak": false,
+    "corpus_restored": true,
+    "verify_exit_code": 0,
+    "checks_ok": [
+      "syntax: 22 Python file(s) compile",
+      "json: 32 JSON file(s) parse",
+      "structure: 49 required file(s) present",
+      "offline: 26 file(s) load nothing remote",
+      "liascript: part2_teaching/FILE_A_harness_engineering_liascript.md — 12 answered question(s), 45 speaker-note block(s)",
+      "liascript: part4_unesco_brief/D_liascript_deck_assistants.md — 13 answered question(s), 41 speaker-note block(s)",
+      "anonymisation: indexed corpus contains no unredacted emails or international phone numbers",
+      "anonymisation: NOTE — this checks shapes only. Indirect identifiers are not machine-checkable and still need a human.",
+      "knowledgebase: 41 passage(s) from 8 document(s), all carry metadata",
+      "agents: .github/agents/ — 6 file(s) with valid frontmatter",
+      "agents: .github/prompts/ — 6 file(s) with valid frontmatter",
+      "agents: .github/instructions/ — 3 file(s) with valid frontmatter",
+      "agents: handoff targets resolve (6 agent(s) declared)",
+      "agents: .continue/config.yaml points only at 127.0.0.1",
+      "links: all relative Markdown links resolve"
+    ],
+    "failures": [],
+    "adapters_missing": false
+  }
+}
