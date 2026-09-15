@@ -1,0 +1,22 @@
+[
+  {
+    "Quarter": "Q1",
+    "Incidents": "7",
+    "Training hours": "120"
+  },
+  {
+    "Quarter": "Q2",
+    "Incidents": "5",
+    "Training hours": "140"
+  },
+  {
+    "Quarter": "Q3",
+    "Incidents": "3",
+    "Training hours": "210"
+  },
+  {
+    "Quarter": "Q4",
+    "Incidents": "2",
+    "Training hours": "195"
+  }
+]

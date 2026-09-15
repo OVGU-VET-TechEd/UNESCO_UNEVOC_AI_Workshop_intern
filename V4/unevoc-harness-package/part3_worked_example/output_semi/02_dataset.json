@@ -1,0 +1,86 @@
+[
+  {
+    "name": "site a workshop report",
+    "source": "site_a_workshop_report.pdf",
+    "summary": "This document describes workshop safety procedures. It covers pressure checks, protective equipment and reporting duties for apprentices.",
+    "model": "mock:demo",
+    "rows": [
+      {
+        "Quarter": "Q1",
+        "Incidents": "7",
+        "Training hours": "120"
+      },
+      {
+        "Quarter": "Q2",
+        "Incidents": "5",
+        "Training hours": "140"
+      },
+      {
+        "Quarter": "Q3",
+        "Incidents": "3",
+        "Training hours": "210"
+      },
+      {
+        "Quarter": "Q4",
+        "Incidents": "2",
+        "Training hours": "195"
+      }
+    ]
+  },
+  {
+    "name": "site b hydraulics report",
+    "source": "site_b_hydraulics_report.pdf",
+    "summary": "Inspect a hydraulic system for leaks and pressure faults before operation.",
+    "model": "mock:demo",
+    "rows": [
+      {
+        "Quarter": "Q1",
+        "Incidents": "9",
+        "Training hours": "160"
+      },
+      {
+        "Quarter": "Q2",
+        "Incidents": "6",
+        "Training hours": "155"
+      },
+      {
+        "Quarter": "Q3",
+        "Incidents": "4",
+        "Training hours": "180"
+      },
+      {
+        "Quarter": "Q4",
+        "Incidents": "4",
+        "Training hours": "175"
+      }
+    ]
+  },
+  {
+    "name": "site c electrical report",
+    "source": "site_c_electrical_report.pdf",
+    "summary": "Identify the main components shown in a standard electrical circuit diagram.",
+    "model": "mock:demo",
+    "rows": [
+      {
+        "Quarter": "Q1",
+        "Incidents": "2",
+        "Training hours": "180"
+      },
+      {
+        "Quarter": "Q2",
+        "Incidents": "1",
+        "Training hours": "185"
+      },
+      {
+        "Quarter": "Q3",
+        "Incidents": "1",
+        "Training hours": "190"
+      },
+      {
+        "Quarter": "Q4",
+        "Incidents": "0",
+        "Training hours": "130"
+      }
+    ]
+  }
+]

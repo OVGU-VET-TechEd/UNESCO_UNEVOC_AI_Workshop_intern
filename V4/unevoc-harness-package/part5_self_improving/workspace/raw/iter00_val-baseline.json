@@ -1,0 +1,23 @@
+[
+  {
+    "task": "calibrating a torque wrench",
+    "answer": "Understanding of calibrating a torque wrench is something the learner will come to appreciate over time, and it matters a great deal in practice.",
+    "score": 0.0,
+    "reason": "opened with 'understanding', not an approved action verb",
+    "skill_present": false
+  },
+  {
+    "task": "interpreting a materials safety data sheet",
+    "answer": "Understanding of interpreting a materials safety data sheet is something the learner will come to appreciate over time, and it matters a great deal in practice.",
+    "score": 0.0,
+    "reason": "opened with 'understanding', not an approved action verb",
+    "skill_present": false
+  },
+  {
+    "task": "safe isolation of a three-phase supply",
+    "answer": "Understanding of safe isolation of a three-phase supply is something the learner will come to appreciate over time, and it matters a great deal in practice.",
+    "score": 0.0,
+    "reason": "opened with 'understanding', not an approved action verb",
+    "skill_present": false
+  }
+]

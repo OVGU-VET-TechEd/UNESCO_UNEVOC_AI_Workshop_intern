@@ -1,6 +1,6 @@
 # Anonymisation report
 
-Input: `/home/claude/build/unevoc-harness-package/part4_unesco_brief/demo_assistant/corpus_raw`  →  output: `/home/claude/build/unevoc-harness-package/part4_unesco_brief/demo_assistant/corpus`
+Input: `/Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part4_unesco_brief/demo_assistant/corpus_raw`  →  output: `/Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part4_unesco_brief/demo_assistant/corpus`
 
 Every replacement made is listed below. **A human must read this list before the corpus is indexed.** The scrubber narrows what you have to look for; it does not replace you. It cannot catch indirect identifiers such as "the only instructor at partner C".
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+'''exec' "/Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/.venv/bin/python" "$0" "$@"
+' '''
+import sys
+from numpy.f2py.f2py2e import main
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(main())

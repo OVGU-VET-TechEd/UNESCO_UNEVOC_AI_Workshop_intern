@@ -1,0 +1,2 @@
+[model: mock:demo]
+Identify the main components shown in a standard electrical circuit diagram.

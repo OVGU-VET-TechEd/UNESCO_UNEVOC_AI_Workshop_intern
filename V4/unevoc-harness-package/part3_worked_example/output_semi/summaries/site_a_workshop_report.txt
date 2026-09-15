@@ -1,0 +1,2 @@
+[model: mock:demo]
+This document describes workshop safety procedures. It covers pressure checks, protective equipment and reporting duties for apprentices.

@@ -1,0 +1,23 @@
+[
+  {
+    "task": "calibrating a torque wrench",
+    "answer": "Calibrate a torque wrench against a reference standard and record the result.",
+    "score": 1.0,
+    "reason": "ok",
+    "skill_present": true
+  },
+  {
+    "task": "interpreting a materials safety data sheet",
+    "answer": "Interpret a materials safety data sheet to identify required handling controls.",
+    "score": 1.0,
+    "reason": "ok",
+    "skill_present": true
+  },
+  {
+    "task": "safe isolation of a three-phase supply",
+    "answer": "Isolate a three-phase supply safely and verify the absence of voltage.\nRefer to the workshop handbook for further detail.",
+    "score": 0.0,
+    "reason": "more than one sentence",
+    "skill_present": true
+  }
+]
