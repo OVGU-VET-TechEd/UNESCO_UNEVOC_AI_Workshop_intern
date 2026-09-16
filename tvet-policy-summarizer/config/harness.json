@@ -1,0 +1,25 @@
+{
+  "input_dir": "input",
+  "output_dir": "output",
+  "work_dir": "work",
+  "log_dir": "logs",
+  "report_dir": "reports",
+  "default_agent": "tvet-policy-summarizer",
+  "default_reviewer": "tvet-summary-reviewer",
+  "backends": {
+    "ollama": {
+      "host": "http://127.0.0.1:11434",
+      "num_ctx": 8192,
+      "timeout": 900,
+      "keep_alive": "10m"
+    },
+    "openai_compatible": {
+      "base_url": "http://127.0.0.1:11434/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "json_mode": true,
+      "timeout": 300,
+      "extra_headers": {}
+    },
+    "mock": {}
+  }
+}
