@@ -1,0 +1,15 @@
+{
+  "min_words": 40,
+  "banned_terms": [
+    "groundbreaking", "ground-breaking", "landmark", "ambitious", "impressive", "excellent",
+    "outstanding", "remarkable", "commendable", "exemplary", "world-class", "cutting-edge",
+    "state-of-the-art", "revolutionary", "game-changing", "amazing", "unfortunately",
+    "fortunately", "obviously", "undoubtedly", "in my opinion", "we recommend",
+    "it is recommended", "it is important to note"
+  ],
+  "discouraged_terms": [
+    "comprehensive", "robust", "crucial", "vital", "significant", "successfully", "effectively",
+    "clearly", "very", "highly", "strongly", "holistic", "transformative", "great", "best practice"
+  ],
+  "first_person_regex": "(?<![A-Za-z])(I(?=\\s+[a-z])|me|my|we|We|us|our|Our|ours|you|You|your|Your)(?![A-Za-z])"
+}

@@ -1,0 +1,2 @@
+# Optional: better text extraction for some PDFs (used automatically as a fallback)
+pdfplumber>=0.10
