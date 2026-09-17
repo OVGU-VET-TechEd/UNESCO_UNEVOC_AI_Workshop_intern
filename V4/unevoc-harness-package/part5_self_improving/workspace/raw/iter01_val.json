@@ -1,23 +1,23 @@
 [
   {
     "task": "calibrating a torque wrench",
-    "answer": "Identify the correct torque settings for a range of applications using a calibrated torque wrench.",
+    "answer": "Calibrate a torque wrench against a reference standard and record the result.",
     "score": 1.0,
     "reason": "ok",
     "skill_present": true
   },
   {
     "task": "interpreting a materials safety data sheet",
-    "answer": "Identify the key safety procedures for working with hazardous materials as specified in a materials safety data sheet.",
-    "score": 1.0,
-    "reason": "ok",
+    "answer": "Interpret a materials safety data sheet to identify required handling controls, taking into account the full range of workshop conditions, supervision arrangements and the equipment actually available on the day of the assessment.",
+    "score": 0.0,
+    "reason": "33 words, limit is 20",
     "skill_present": true
   },
   {
     "task": "safe isolation of a three-phase supply",
-    "answer": "Identify the key safety procedures for working with a three-phase supply and explain their application in a safe isolation context.",
-    "score": 1.0,
-    "reason": "ok",
+    "answer": "Isolate a three-phase supply safely and verify the absence of voltage, taking into account the full range of workshop conditions, supervision arrangements and the equipment actually available on the day of the assessment.",
+    "score": 0.0,
+    "reason": "33 words, limit is 20",
     "skill_present": true
   }
 ]

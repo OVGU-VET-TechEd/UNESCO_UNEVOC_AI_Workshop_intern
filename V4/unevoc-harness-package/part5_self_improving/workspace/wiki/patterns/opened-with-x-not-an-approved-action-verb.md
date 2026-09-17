@@ -4,9 +4,9 @@
 
 **What happens:** the answer is rejected because opened with 'X', not an approved action verb.
 
-**Example:** `Upon completion of this module, the apprentice mechanic will be able to identify and describe the key safety procedures for working with hydraulic systems, incl`
+**Example:** `Understanding of hydraulic system safety for apprentice mechanics is something the learner will come to appreciate over time, and it matters a great deal in pra`
 
-**Proposed rule:** Approved action verbs must be used to begin each learning objective, such as "Identify", "Describe", "Explain", "Demonstrate", "Apply", or "Analyze".
+**Proposed rule:** Begin every objective with an approved action verb such as identify or inspect.
 
 ## Evidence
 

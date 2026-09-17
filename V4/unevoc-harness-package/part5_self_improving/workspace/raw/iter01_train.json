@@ -1,30 +1,30 @@
 [
   {
     "task": "hydraulic system safety for apprentice mechanics",
-    "answer": "Upon completion of this module, the apprentice mechanic will be able to identify and describe the key safety procedures for working with hydraulic systems, including proper lockout/tagout techniques and personal protective equipment requirements.",
+    "answer": "Understanding of hydraulic system safety for apprentice mechanics is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   },
   {
     "task": "reading an electrical circuit diagram",
-    "answer": "By the end of this module, learners will be able to accurately identify and interpret the components and connections within a basic electrical circuit diagram.",
+    "answer": "Understanding of reading an electrical circuit diagram is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'by', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   },
   {
     "task": "workplace risk assessment in a metal workshop",
-    "answer": "Upon completion of this module, learners will be able to identify and evaluate potential hazards in a metal workshop and develop a basic risk assessment to mitigate these risks.",
+    "answer": "Understanding of workplace risk assessment in a metal workshop is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   },
   {
     "task": "selecting personal protective equipment for welding",
-    "answer": "Upon completion of this module, learners will be able to identify the appropriate personal protective equipment (PPE) required for safe welding practices in various environments and work settings.",
+    "answer": "Understanding of selecting personal protective equipment for welding is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   }
 ]

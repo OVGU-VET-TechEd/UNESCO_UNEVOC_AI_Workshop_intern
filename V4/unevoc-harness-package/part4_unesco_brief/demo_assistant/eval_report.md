@@ -1,6 +1,6 @@
 # Evaluation report
 
-Run 2026-09-15 17:59 · model `mock:demo` · knowledge base `kb.json` · embeddings `none` · 41 passages from 8 documents · 0 s
+Run 2026-09-16 10:49 · model `mock:demo` · knowledge base `kb.json` · embeddings `none` · 41 passages from 8 documents · 0 s
 
 ## Headline numbers
 

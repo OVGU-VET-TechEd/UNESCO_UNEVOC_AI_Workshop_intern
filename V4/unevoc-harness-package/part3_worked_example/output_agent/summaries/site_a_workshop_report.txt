@@ -1,2 +1,2 @@
-[model: llama3.1:8b]
-The site A metal workshop annual safety and training report covers the four quarters of the reporting year and summarises recorded incidents and training hours. The report shows a total of 17 incidents, with the majority occurring in the first quarter, and a significant increase in training hours in the third quarter due to the introduction of a revised hot-work induction. The annual equipment inspection recorded two non-conformities, both related to extraction airflow in bays three and four.
+[model: mock:demo]
+This document describes workshop safety procedures. It covers pressure checks, protective equipment and reporting duties for apprentices.

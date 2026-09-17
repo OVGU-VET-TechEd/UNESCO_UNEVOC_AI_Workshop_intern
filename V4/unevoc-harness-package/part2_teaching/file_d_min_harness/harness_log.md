@@ -67,3 +67,24 @@
 - `17:59:57` ASK   attempt 2 of 3 for 'workplace risk assessment in a metal workshop' using model `mock:demo`.
 - `17:59:57` GOT   "Assess common hazards in a metal workshop and record the required controls."
 - `17:59:57` CHECK passed all three rules. Accepting this answer.
+
+## Run 1 — 2026-09-16 10:49:21 — model `mock:demo`
+
+- `10:49:21` ASK   attempt 1 of 3 for 'hydraulic system safety for apprentice mechanics' using model `mock:demo`.
+- `10:49:21` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `10:49:21` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `10:49:21` ASK   attempt 2 of 3 for 'hydraulic system safety for apprentice mechanics' using model `mock:demo`.
+- `10:49:21` GOT   "Inspect a hydraulic system for leaks and pressure faults before operation."
+- `10:49:21` CHECK passed all three rules. Accepting this answer.
+- `10:49:21` ASK   attempt 1 of 3 for 'reading an electrical circuit diagram' using model `mock:demo`.
+- `10:49:21` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `10:49:21` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `10:49:21` ASK   attempt 2 of 3 for 'reading an electrical circuit diagram' using model `mock:demo`.
+- `10:49:21` GOT   "Identify the main components shown in a standard electrical circuit diagram."
+- `10:49:21` CHECK passed all three rules. Accepting this answer.
+- `10:49:21` ASK   attempt 1 of 3 for 'workplace risk assessment in a metal workshop' using model `mock:demo`.
+- `10:49:21` GOT   "Understanding of the topic, which the learner will come to appreciate over time, is important."
+- `10:49:21` CHECK failed: it started with 'understanding', which is not one of the allowed action verbs (identify, describe, explain, demonstrate, apply, analyse, analyze, evaluate). Re-asking with that reason included.
+- `10:49:21` ASK   attempt 2 of 3 for 'workplace risk assessment in a metal workshop' using model `mock:demo`.
+- `10:49:21` GOT   "Assess common hazards in a metal workshop and record the required controls."
+- `10:49:21` CHECK passed all three rules. Accepting this answer.

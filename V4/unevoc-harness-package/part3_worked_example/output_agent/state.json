@@ -1,5 +1,5 @@
 {
-  "model": "llama3.1:8b",
+  "model": "mock:demo",
   "input_folder": "/Users/h_tegelbeckers/Nextcloud/PROF_INGPED_TECHED/Admin/Personal/Lehre/Tegelbeckers Hannes/03_Nebentätigkeit/2026/09_UNESCO_Workshop/UNESCO_UNEVOC_AI_Workshop_intern/V4/unevoc-harness-package/part3_worked_example/input_pdfs",
   "pdfs": [
     "site_a_workshop_report.pdf",
@@ -13,41 +13,19 @@
   },
   "summarised": {
     "site_a_workshop_report.pdf": {
-      "summary": "The site A metal workshop annual safety and training report covers the four quarters of the reporting year and summarises recorded incidents and training hours. The report shows a total of 17 incidents, with the majority occurring in the first quarter, and a significant increase in training hours in the third quarter due to the introduction of a revised hot-work induction. The annual equipment inspection recorded two non-conformities, both related to extraction airflow in bays three and four.",
-      "model": "llama3.1:8b"
+      "summary": "This document describes workshop safety procedures. It covers pressure checks, protective equipment and reporting duties for apprentices.",
+      "model": "mock:demo"
     },
     "site_b_hydraulics_report.pdf": {
-      "summary": "The document is a safety and training report for the hydraulics laboratory at Site B, which is used for pressure-system training. The report shows a reduction in incidents from 9 in the first quarter to 4 in the third and fourth quarters, although the replacement of an older test rig in the second quarter is cited as a possible explanation. The report also notes that training hours remained relatively stable throughout the year, ranging from 155 to 180 hours per quarter.",
-      "model": "llama3.1:8b"
+      "summary": "Inspect a hydraulic system for leaks and pressure faults before operation.",
+      "model": "mock:demo"
     },
     "site_c_electrical_report.pdf": {
-      "summary": "The Site C Electrical Report documents the annual safety and training performance of the Site C Electrical Training Centre. The centre recorded a low incident count throughout the year, with only one incident in the third quarter involving a hand tool rather than an electrical hazard. The training hours dipped in the fourth quarter due to the examination period, but no non-conformities were recorded at the annual inspection.",
-      "model": "llama3.1:8b"
+      "summary": "Identify the main components shown in a standard electrical circuit diagram.",
+      "model": "mock:demo"
     }
   },
   "tables": {
-    "site_c_electrical_report.pdf": [
-      {
-        "Quarter": "Q1",
-        "Incidents": "2",
-        "Training hours": "180"
-      },
-      {
-        "Quarter": "Q2",
-        "Incidents": "1",
-        "Training hours": "185"
-      },
-      {
-        "Quarter": "Q3",
-        "Incidents": "1",
-        "Training hours": "190"
-      },
-      {
-        "Quarter": "Q4",
-        "Incidents": "0",
-        "Training hours": "130"
-      }
-    ],
     "site_a_workshop_report.pdf": [
       {
         "Quarter": "Q1",
@@ -90,6 +68,28 @@
         "Quarter": "Q4",
         "Incidents": "4",
         "Training hours": "175"
+      }
+    ],
+    "site_c_electrical_report.pdf": [
+      {
+        "Quarter": "Q1",
+        "Incidents": "2",
+        "Training hours": "180"
+      },
+      {
+        "Quarter": "Q2",
+        "Incidents": "1",
+        "Training hours": "185"
+      },
+      {
+        "Quarter": "Q3",
+        "Incidents": "1",
+        "Training hours": "190"
+      },
+      {
+        "Quarter": "Q4",
+        "Incidents": "0",
+        "Training hours": "130"
       }
     ]
   },

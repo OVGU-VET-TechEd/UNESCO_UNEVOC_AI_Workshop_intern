@@ -1,23 +1,23 @@
 [
   {
     "task": "calibrating a torque wrench",
-    "answer": "Upon completion of this module, students will be able to accurately calibrate a torque wrench to within the manufacturer's specified tolerance.",
+    "answer": "Understanding of calibrating a torque wrench is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   },
   {
     "task": "interpreting a materials safety data sheet",
-    "answer": "Upon completion of this module, learners will be able to identify and interpret the key components of a materials safety data sheet (MSDS) to ensure safe handling and use of chemicals in the workplace.",
+    "answer": "Understanding of interpreting a materials safety data sheet is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   },
   {
     "task": "safe isolation of a three-phase supply",
-    "answer": "Upon completion of this module, learners will be able to safely isolate a three-phase supply in accordance with industry standards and regulations.",
+    "answer": "Understanding of safe isolation of a three-phase supply is something the learner will come to appreciate over time, and it matters a great deal in practice.",
     "score": 0.0,
-    "reason": "opened with 'upon', not an approved action verb",
+    "reason": "opened with 'understanding', not an approved action verb",
     "skill_present": false
   }
 ]
